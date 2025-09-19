@@ -58,6 +58,11 @@ export interface CreateUpdateEventoDto {
   paso2: paso2;
 }
 
+export interface CustomUrlCheckDto {
+  url?: string;
+  eventoId?: string;
+}
+
 export interface DatosCortesiaDto extends EntityDto<string> {
   sectorId?: string;
   nombreUsuario?: string;
@@ -89,6 +94,7 @@ export interface DatosEventoEntradas extends EntityDto<string> {
 export interface DtoReturnErrorData<T> {
   exitoso: boolean;
   mensajeError?: string;
+  subtitulo?: string;
   value: T;
 }
 
@@ -144,6 +150,7 @@ export interface EventoFuncionesDto {
 
 export interface EventoSingleDto extends CreationAuditedEntityDto<string> {
   nombre?: string;
+  customUrl?: string;
   descripcion?: string;
   observaciones?: string;
   fechaEfectiva?: string;
@@ -190,6 +197,7 @@ export interface EventosPorFuncionActivaFilterDto extends PagedAndSortedResultRe
 export interface FechasEfectivasEventoDetalle {
   fechaEfectiva?: string;
   disponible: boolean;
+  estado: EstadoPrecio;
 }
 
 export interface FuncionDto extends FullAuditedEntityDto<string> {
@@ -220,6 +228,7 @@ export interface FuncionesEventoDetalle {
   sectorNum: SectorNoTrackNumeradoDto[];
   sectorGen: SectorGenEntDisp[];
   agotada: boolean;
+  ventaDirectaId?: string;
 }
 
 export interface FuncionesPreciosDto {
@@ -232,7 +241,7 @@ export interface FuncionesPreciosDto {
 }
 
 export interface GetClientEventsDto {
-  rrppId?: string;
+  rrppUserId?: string;
   soloActivos: boolean;
   soloEventosParaVentaOnline?: boolean;
 }
@@ -281,6 +290,7 @@ export interface MisEventosDto extends EntityDto<string> {
   creationTime?: string;
   esPrivado: boolean;
   funciones: MisFuncionesDto[];
+  customUrl?: string;
 }
 
 export interface MisFuncionesDto {
@@ -400,7 +410,6 @@ export interface SectorDeEventoSeleccionadoDto extends EntityDto<string> {
 
 export interface SectorGenEntDisp {
   capacidad: number;
-  cantEntr: number;
   entradasDisponibles: number;
   pocasEntradas: boolean;
   sinEntradas: boolean;
@@ -438,6 +447,7 @@ export interface getEventoDto extends EntityDto<string> {
 
 export interface paso1 {
   nombre?: string;
+  customUrl?: string;
   funciones: CreateFuncionDto[];
   fechaDisponibilidad?: string;
   descripcion?: string;
@@ -498,13 +508,13 @@ export interface CortesiaSectoresIdDto {
 export interface DtoReturnError {
   exitoso: boolean;
   mensajeError?: string;
+  subtitulo?: string;
 }
 
 export interface EventoRRPPDto extends EntityDto<string> {
   nombre?: string;
   proximaFuncion?: string;
   creatorId?: string;
-  ventaDirectaId?: string;
   totalVendidas?: number;
   totalVentaDirecta?: number;
   pasoDeFecha?: boolean;
@@ -512,8 +522,6 @@ export interface EventoRRPPDto extends EntityDto<string> {
   esVentaDirecta: boolean;
   esReferido: boolean;
   tieneSubRRPPs: boolean;
-  precioIds: string[];
-  sectorIds: string[];
   funcionIds: string[];
 }
 

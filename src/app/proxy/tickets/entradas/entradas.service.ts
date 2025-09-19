@@ -14,11 +14,11 @@ export class EntradasService {
   apiName = 'Default';
   
 
-  buscarTicketQR = (eventoId: string, idLegible: string, isModal?: boolean, config?: Partial<Rest.Config>) =>
+  buscarTicketQR = (eventoId: string, idLegible: string, isModal?: boolean, seccionSelected?: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, DtoReturnErrorData<BuscarTicketQRResult>>({
       method: 'POST',
       url: `/api/app/entradas/buscar-ticket-qR/${eventoId}`,
-      params: { idLegible, isModal },
+      params: { idLegible, isModal, seccionSelected },
     },
     { apiName: this.apiName,...config });
   

@@ -59,6 +59,20 @@
               ],
               "outputHashing": "all"
             },
+            "testing": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testing.ts"
+                }
+              ]
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -81,6 +95,9 @@
             },
             "development": {
               "buildTarget": "app:build:development"
+            },
+            "testing": {
+              "buildTarget": "app:build:testing"
             },
             "ci": {
               "progress": false

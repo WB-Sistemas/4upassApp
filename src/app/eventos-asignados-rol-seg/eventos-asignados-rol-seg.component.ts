@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 import { EventosAsignadosDto } from '../proxy';
 import { SeguridadService } from '../proxy/tickets/seguridad';
 import { DateUtils } from 'src/app/utils/date-utils';
-import { Platform, AlertController, NavController } from '@ionic/angular';
+import { Platform, AlertController, NavController, RefresherCustomEvent } from '@ionic/angular';
 
 @Component({
   selector: 'app-eventos-asignados-rol-seg',
   templateUrl: './eventos-asignados-rol-seg.component.html',
   styleUrls: ['./eventos-asignados-rol-seg.component.scss'],
 })
-export class EventosAsignadosRolSegComponent implements OnInit  {
+export class EventosAsignadosRolSegComponent{
 
   eventosAsignados: EventosAsignadosDto[] = []
   redirect: boolean = false;
@@ -34,6 +34,8 @@ export class EventosAsignadosRolSegComponent implements OnInit  {
   EventosAsignadosTitle = 'Eventos Asignados';
 
   ngOnInit(){
+
+
     console.log('EventosAsignadosRolSegComponent ngOnInit - mostrarEventosActivos:', this.mostrarEventosActivos);
     if (!this.mostrarEventosActivos) {
       this.seguridadService.getEventosAsignadosRolSeg().subscribe(res=>{
@@ -53,6 +55,13 @@ export class EventosAsignadosRolSegComponent implements OnInit  {
         });
     }
 
+  }
+
+  handleRefresh(event: RefresherCustomEvent){
+    setTimeout(() => {
+      this.ngOnInit();
+      event.target.complete();
+    },2000);
   }
 
   ionViewDidEnter() {

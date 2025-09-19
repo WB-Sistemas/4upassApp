@@ -11,6 +11,15 @@ export class CompraService {
   apiName = 'Default';
   
 
+  cerrarEvento = (eventoId: string, funcionId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, void>({
+      method: 'POST',
+      url: '/api/app/compra/cerrar-evento',
+      params: { eventoId, funcionId },
+    },
+    { apiName: this.apiName,...config });
+  
+
   getLiquidacion = (input: GetLiquidacionDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, LiquidacionDto>({
       method: 'GET',

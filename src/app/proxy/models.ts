@@ -10,6 +10,7 @@ import type { FormaDescuento } from './tickets/descuentos/forma-descuento.enum';
 
 export interface RRPPUserDto {
   id?: string;
+  userId?: string;
   name?: string;
 }
 

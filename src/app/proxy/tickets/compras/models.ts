@@ -41,6 +41,7 @@ export interface LiquidacionDto {
   montoTotalVentaDirecta: number;
   comisionVentaDirecta: number;
   liquidacionTotalVentaDirecta: number;
+  esVentaDirecta: boolean;
   totalDisponibleParaVenta: number;
 }
 
@@ -50,4 +51,5 @@ export interface LiquidacionItemDto {
   cantidad: number;
   monto: number;
   totalIngresado: number;
+  esVentaDirecta: boolean;
 }

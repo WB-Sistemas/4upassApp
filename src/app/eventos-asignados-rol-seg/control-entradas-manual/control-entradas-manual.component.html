@@ -20,6 +20,11 @@
 </div>
 
 <ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div *ngIf="entr.length > 0; else noData">
     <ion-card *ngFor="let item of entr; index as i">
       <ion-card-content>

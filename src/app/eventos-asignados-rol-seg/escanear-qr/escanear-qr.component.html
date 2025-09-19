@@ -9,6 +9,10 @@
 
 <ion-content class="ion-padding">
 
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div class="ion-text-center ion-margin-bottom escaneos-container">
     <ion-card>
       <ion-card-content>
@@ -46,7 +50,35 @@
         <ion-button expand="block" (click)="redirect()" class="mi-boton no-effects" >
           Buscar Entrada
         </ion-button>
+
+        
       </div>
+      
+      @if(seccionesOptions.length > 0){
+
+        <div>
+          <ion-select
+            class="always-flip"
+            toggleIcon="caret-down-sharp"
+            interface="popover"
+            label="Seleccione sección"
+            [value]="seccionSelected"
+            (ionChange)="seccionOnChange($event)"
+          >
+            @for (seccion of seccionesOptions; track seccion) {
+            <ion-select-option [value]="seccion.num">{{ seccion.nombre }}</ion-select-option>
+            }
+          </ion-select>
+        </div>
+
+        <!-- <ion-item>
+          <ion-select aria-label="fruit" placeholder="Seleccione Sect ">
+          @for (seccion of seccionesOptions; track seccion) {
+            <ion-select-option [value]="seccion">{{ seccion.nombre }}</ion-select-option>
+          }
+          </ion-select>
+        </ion-item>       -->
+      }
 
       <!-- Contenedor para el QR, con margen arriba -->
       <div class="cont-qr" *ngIf="camaraActive">

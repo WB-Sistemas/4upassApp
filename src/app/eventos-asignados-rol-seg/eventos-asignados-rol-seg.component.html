@@ -8,6 +8,10 @@
 
 <ion-content class="ion-padding">
 
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ng-container *ngIf="eventosAsignados.length > 0; else sinEventos">
     <ion-accordion-group>
       <ion-accordion *ngFor="let evento of eventosAsignados; let i = index" value="{{evento.id}}">

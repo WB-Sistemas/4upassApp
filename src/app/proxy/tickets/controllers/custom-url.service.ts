@@ -25,6 +25,14 @@ export class CustomUrlService {
     { apiName: this.apiName,...config });
   
 
+  eventosUrlByUrl = (url: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, IActionResult>({
+      method: 'GET',
+      url: `/eventos/${url}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
   getEmailById = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, IActionResult>({
       method: 'GET',
@@ -45,14 +53,6 @@ export class CustomUrlService {
     this.restService.request<any, IActionResult>({
       method: 'GET',
       url: `/li/${id}`,
-    },
-    { apiName: this.apiName,...config });
-  
-
-  simiaUrlByUrl = (url: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, IActionResult>({
-      method: 'GET',
-      url: `/simia/${url}`,
     },
     { apiName: this.apiName,...config });
   

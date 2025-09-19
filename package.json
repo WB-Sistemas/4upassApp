@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:t": "ng serve --open --configuration testing",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

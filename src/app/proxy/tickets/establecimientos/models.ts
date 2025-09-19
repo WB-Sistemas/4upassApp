@@ -144,7 +144,10 @@ export interface UpdtSectorDto extends EntityDto<string> {
 
 export interface SectorAgrupadoDto {
   nombre?: string;
+  nombrePrecio?: string;
   cantidad: number;
+  cantidadEntradas: number;
+  cantidadPack: number;
   precioOriginal: number;
   precioTotal: number;
 }

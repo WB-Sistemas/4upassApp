@@ -10,23 +10,27 @@ ion-header {
   background: var(--ion-color-primary);
 }
 
-.my-toolbar {
-  padding-top: calc(env(safe-area-inset-top) + 20px);
-  height: calc(55px + env(safe-area-inset-top));
-  box-sizing: content-box;
-
+ion-toolbar.my-toolbar::part(container) {
+  /* Dejar el header justo debajo de la status bar usando sólo el safe-area */
+  padding-top: var(--ion-safe-area-top, env(safe-area-inset-top));
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+}
+
+/* Centrar títulos del header de forma consistente */
+ion-toolbar.my-toolbar ion-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 85%;
+  text-align: center;
+  pointer-events: none; /* no bloquear clicks de botones laterales */
 }
 
 ion-back-button {
-  position: absolute;
-  top: 50%; /* Ubicar verticalmente en mitad de toolbar */
-  transform: translateY(-50%); /* Centrar verticalmente respecto a su propio alto */
   color: #ebe0e0;
-  z-index: 10;
 }
 
 ion-title {
@@ -67,6 +71,15 @@ ion-label p {
 .title {
   color: white;
   font-size: 34px;
+}
+
+/* Revertir centrado absoluto: usar flujo nativo */
+ion-toolbar.my-toolbar ion-title {
+  position: static;
+  left: auto;
+  right: auto;
+  width: auto;
+  pointer-events: auto;
 }
 
 .accordion {
@@ -132,23 +145,13 @@ ion-label p {
 }
 
 @media (max-width: 480px) { 
-
-  .my-toolbar {
-    padding-top: calc(env(safe-area-inset-top) + 30px);
-    height: calc(70px + env(safe-area-inset-top));
-  }
-
   ion-title {
     font-size: 1.2rem !important;
-    margin-top: 20px;
-    margin-bottom: 20px;
     line-height: 1.2;
   }
 
   .title {
     font-size: 28px !important;
-    margin-top: 30px;
-    margin-bottom: 20px;
   }
 
   // ::ng-deep ion-accordion > ion-item[slot="header"] ion-label h2 {

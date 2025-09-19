@@ -18,6 +18,7 @@ export interface PrecioDto extends FullAuditedEntityDto<string> {
   fechaHasta?: string;
   horaEntradaVigencia?: string;
   cantidad?: number;
+  cantidadEntradas: number;
   chequeado: boolean;
   agregarHoraLimite?: boolean;
   monto: number;
@@ -34,6 +35,7 @@ export interface PrecioDto extends FullAuditedEntityDto<string> {
 export interface PrecioFiltroDto {
   nombre?: string;
   groupId: number;
+  sectoresIds: string[];
 }
 
 export interface PrecioNoTrackDto extends FullAuditedEntityDto<string> {
@@ -47,10 +49,10 @@ export interface PrecioNoTrackDto extends FullAuditedEntityDto<string> {
   sectorId?: string;
   disponible: boolean;
   cantidad: number;
+  cantidadEntradas: number;
   entradas: number;
   espacioDisponible: number;
   agotado: boolean;
-  habilitado: boolean;
   descripcion?: string;
 }
 
@@ -79,6 +81,7 @@ export interface PreciosDescuentos {
 export interface SectorDePrecioSeleccionadoDto extends EntityDto<string> {
   nombre?: string;
   cantidad: number;
+  cantidadEntradas: number;
   precioId?: string;
   cortesias?: number;
   ventas?: number;
@@ -92,6 +95,7 @@ export interface SectorMonto {
   orden: number;
   funcionId?: string;
   cantidad: number;
+  cantidadEntradas: number;
   chequeado: boolean;
   capacidad: number;
   agregarHoraLimite?: boolean;

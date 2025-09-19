@@ -11,6 +11,9 @@ import { CacheEventoService } from 'src/app/shared/cache-evento.service';
 import { DateUtils } from 'src/app/utils/date-utils';
 import { DeviceUtils } from 'src/app/utils/device-utils';
 import { TiposDocList } from 'src/app/utils/doc-identificacion-utils';
+import { ControlEntradasService, SeccionOutputDTO } from 'src/app/proxy/tickets/control-entradas';
+import { DropdownChangeEvent } from 'primeng/dropdown';
+import { RefresherCustomEvent } from '@ionic/angular';
 
 const cacheKey: string = 'camaraId';
 
@@ -33,14 +36,19 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   datosEntradaExito?: EntradaSimpleDto;
   datosEntradaError?: ReturnDataErrors;
   solicitudCompleta: boolean = false;
-  form: FormGroup;
+  form!: FormGroup;
   modalActive: boolean = false;
   processingValue: boolean = false;
   horaDeScan: Date = new Date();
   modalExpiradoActive: boolean = false;
   fechaExpiracion: Date = new Date();
   camaraHabilitada: boolean = false;
+  isErrorSeccion: boolean = false;
+  errorSeccionSub:string = '';
+  datosSeccionError: ReturnDataErrors = { } as ReturnDataErrors;
+  seccionSelected: number | null = null;
 
+  seccionesOptions: SeccionOutputDTO[] = [];
   tipoIdentificacionNombre: string = '';
   tipoIdentificacion: { name: string, value: TipoDocs }[] = [];
   isMobile: boolean = false;
@@ -54,15 +62,25 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     private cacheLocal: CacheEventoService,
     private router: Router,
     private reportesService: ReportesService,
-    private localization: LocalizationService 
-  ) { 
-    this.form = this.initForm()
-  }
+    private localization: LocalizationService, 
+    private controlEntradasService:ControlEntradasService
+  ) { }
 
   ngOnInit(): void {
     this.isMobile = DeviceUtils.isMobile();
     this.tipoIdentificacion = TiposDocList(this.localization);
+
     this.eventoId = this.ar.snapshot.paramMap.get("eventoId") ?? '';
+    this.form = this.initForm();
+
+    this.controlEntradasService.getByControlEntradas(this.eventoId).subscribe(res => {
+      if(!res || !res.secciones.length) return
+      this.seccionesOptions = res.secciones
+    })
+
+    this.ar.queryParams.subscribe(params => {
+      this.seccionSelected = params["seccionSelected"] ? Number(params["seccionSelected"]) : null;
+    });
     
     this.idReferencia?.valueChanges
       .pipe(
@@ -76,21 +94,55 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
       this.escaneados = res.escaneadas
       this.total = res.total
     })
+
   }
+
+  handleRefresh(event: RefresherCustomEvent){
+      setTimeout(() => {
+        this.ngOnInit();
+        this.seccionOnChange({} as Event);
+        event.target.complete();
+    },2000);
+  }
+  
   initForm() {
     return this.fb.group({
       idReferencia: [null]
     });
   }
+
   ngOnDestroy(): void {
     if (this.camaraActive) {
       this.camaraActive = false;
       this.scanQr.desactivarCamara();
     }
   }
+
+  seccionOnChange(event: Event): void {
+
+    const detail = (event as CustomEvent).detail;
+    const value = Number(detail?.value);
+
+    this.seccionSelected = value;
+
+    // Navega con el nuevo parámetro y actualiza contadores
+    this.router.navigate([], {
+      relativeTo: this.ar,
+      queryParams: { seccionSelected: value },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
+
+    this.reportesService.getTotalEntradasEscaneadas('', this.eventoId, value).subscribe(res => {
+      this.escaneados = res.escaneadas
+      this.total = res.total
+    })
+  }
+
   procesarValor(valor: string) {
-    console.warn('procesarValor', valor, this.eventoId);
-    this.entradaService.buscarTicketQR(this.eventoId, valor.toUpperCase(), true).subscribe(res => {
+    console.warn('procesarValor', valor);
+    
+    this.entradaService.buscarTicketQR(this.eventoId, valor.toUpperCase(), true, this.seccionSelected ?? 0).subscribe(res => {
 
       this.mensajeError = res.mensajeError ?? '';
       this.exitoso = res.exitoso;
@@ -105,6 +157,12 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
       else if (this.mensajeError.includes("Entrada expirada")){
         this.modalExpiradoActive = true;
         this.fechaExpiracion = DateUtils.IsoString(res.value.returnDataErrors.expiredDate ?? '');
+      }
+      else if (this.mensajeError.includes("Sección") || this.mensajeError.includes("sección")){
+        this.isErrorSeccion = true
+        this.errorSeccionSub = res.value.returnDataErrors.subtitle ?? ''
+        this.datosSeccionError = res.value.returnDataErrors;
+        this.horaDeScan = DateUtils.IsoString(res.value.returnDataErrors.scanTime ?? '');
       }
       else if(res.value){
         this.datosEntradaError = res.value.returnDataErrors;
@@ -164,7 +222,12 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
 
   confirmScan() {
     this.modalActive = false;
-    this.entradaService.buscarTicketQR(this.eventoId, this.datosEntradaExito?.idLegible?.toUpperCase()??'', false).subscribe(res => {
+    this.entradaService.buscarTicketQR(
+      this.eventoId,
+      this.datosEntradaExito?.idLegible?.toUpperCase() ?? '',
+      false,
+      this.seccionSelected ?? 0
+    ).subscribe(res => {
       this.solicitudCompleta = true;
       this.exitoso = res.exitoso;
       this.mensajeError = res.mensajeError ?? '';

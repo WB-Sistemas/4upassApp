@@ -6,6 +6,7 @@ import { EntradaSimpleDto, EntradasService } from 'src/app/proxy/tickets/entrada
 import { CustomModalService } from 'src/app/services/custom-modal.service';
 import { DeviceUtils } from 'src/app/utils/device-utils';
 import { TiposDocList } from 'src/app/utils/doc-identificacion-utils';
+import { RefresherCustomEvent } from '@ionic/angular';
 
 @Component({
   selector: 'app-control-entradas-manual',
@@ -40,6 +41,13 @@ export class ControlEntradasManualComponent  implements OnInit {
       this.eventoId = params["eventoId"]
       console.log('Evento ID:', this.eventoId);
     })
+  }
+
+  handleRefresh(event: RefresherCustomEvent){
+      setTimeout(() => {
+        this.ngOnInit();
+        event.target.complete();
+      },2000);
   }
 
   confirmScan(scanned: boolean, idLegible: string) {

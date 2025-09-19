@@ -1708,11 +1708,11 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.Controllers.CustomUrlController"
             },
-            "SimiaUrlByUrl": {
-              "uniqueName": "SimiaUrlByUrl",
-              "name": "SimiaUrl",
+            "EventosUrlByUrl": {
+              "uniqueName": "EventosUrlByUrl",
+              "name": "EventosUrl",
               "httpMethod": "GET",
-              "url": "simia/{url}",
+              "url": "eventos/{url}",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
@@ -6313,15 +6313,15 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.RRPP.RelacionesPublicasAppService"
             },
-            "DeleteRRPPAsyncByRRPPId": {
-              "uniqueName": "DeleteRRPPAsyncByRRPPId",
+            "DeleteRRPPAsyncByRRPPUserId": {
+              "uniqueName": "DeleteRRPPAsyncByRRPPUserId",
               "name": "DeleteRRPPAsync",
               "httpMethod": "DELETE",
-              "url": "api/app/relaciones-publicas/r-rPP/{RRPPId}",
+              "url": "api/app/relaciones-publicas/r-rPP/{RRPPUserId}",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
-                  "name": "RRPPId",
+                  "name": "RRPPUserId",
                   "typeAsString": "System.Guid, System.Private.CoreLib",
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -6331,8 +6331,8 @@
               ],
               "parameters": [
                 {
-                  "nameOnMethod": "RRPPId",
-                  "name": "RRPPId",
+                  "nameOnMethod": "RRPPUserId",
+                  "name": "RRPPUserId",
                   "jsonName": null,
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -6355,6 +6355,43 @@
               "name": "GetUsersWithRRPPAsync",
               "httpMethod": "GET",
               "url": "api/app/relaciones-publicas/users-with-rRPP",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "dto",
+                  "typeAsString": "WB.Tickets.GetIdDto, WB.Tickets.Application.Contracts",
+                  "type": "WB.Tickets.GetIdDto",
+                  "typeSimple": "WB.Tickets.GetIdDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "dto",
+                  "name": "Id",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "dto"
+                }
+              ],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<RRPPUserDto>",
+                "typeSimple": "[RRPPUserDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "WB.Tickets.RRPP.RelacionesPublicasAppService"
+            },
+            "GetUsersWithRRPPVentaDirectaAsyncByDto": {
+              "uniqueName": "GetUsersWithRRPPVentaDirectaAsyncByDto",
+              "name": "GetUsersWithRRPPVentaDirectaAsync",
+              "httpMethod": "GET",
+              "url": "api/app/relaciones-publicas/users-with-rRPPVenta-directa",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
@@ -6461,34 +6498,34 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.RRPP.RelacionesPublicasAppService"
             },
-            "GetUsersWithSubRRPPAsyncByDto": {
-              "uniqueName": "GetUsersWithSubRRPPAsyncByDto",
+            "GetUsersWithSubRRPPAsyncByClienteId": {
+              "uniqueName": "GetUsersWithSubRRPPAsyncByClienteId",
               "name": "GetUsersWithSubRRPPAsync",
               "httpMethod": "GET",
-              "url": "api/app/relaciones-publicas/users-with-sub-rRPP",
+              "url": "api/app/relaciones-publicas/users-with-sub-rRPP/{clienteId}",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
-                  "name": "dto",
-                  "typeAsString": "WB.Tickets.GetIdDto, WB.Tickets.Application.Contracts",
-                  "type": "WB.Tickets.GetIdDto",
-                  "typeSimple": "WB.Tickets.GetIdDto",
+                  "name": "clienteId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
                   "isOptional": false,
                   "defaultValue": null
                 }
               ],
               "parameters": [
                 {
-                  "nameOnMethod": "dto",
-                  "name": "Id",
+                  "nameOnMethod": "clienteId",
+                  "name": "clienteId",
                   "jsonName": null,
-                  "type": "System.Guid?",
-                  "typeSimple": "string?",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
                   "isOptional": false,
                   "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "dto"
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
                 }
               ],
               "returnValue": {
@@ -6498,11 +6535,11 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.RRPP.RelacionesPublicasAppService"
             },
-            "GetEventosRRPPAsyncByInputAndRRPPId": {
-              "uniqueName": "GetEventosRRPPAsyncByInputAndRRPPId",
+            "GetEventosRRPPAsyncByInputAndUserRRPPId": {
+              "uniqueName": "GetEventosRRPPAsyncByInputAndUserRRPPId",
               "name": "GetEventosRRPPAsync",
               "httpMethod": "GET",
-              "url": "api/app/relaciones-publicas/eventos-rRPP/{RRPPId}",
+              "url": "api/app/relaciones-publicas/eventos-rRPP/{userRRPPId}",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
@@ -6514,7 +6551,7 @@
                   "defaultValue": null
                 },
                 {
-                  "name": "RRPPId",
+                  "name": "userRRPPId",
                   "typeAsString": "System.Guid, System.Private.CoreLib",
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -6620,8 +6657,8 @@
                   "descriptorName": "input"
                 },
                 {
-                  "nameOnMethod": "RRPPId",
-                  "name": "RRPPId",
+                  "nameOnMethod": "userRRPPId",
+                  "name": "userRRPPId",
                   "jsonName": null,
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -6817,15 +6854,15 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.RRPP.RelacionesPublicasAppService"
             },
-            "DeleteEventoRRPPAsyncByRrppIdAndEventoId": {
-              "uniqueName": "DeleteEventoRRPPAsyncByRrppIdAndEventoId",
+            "DeleteEventoRRPPAsyncByRrppUserIdAndEventoId": {
+              "uniqueName": "DeleteEventoRRPPAsyncByRrppUserIdAndEventoId",
               "name": "DeleteEventoRRPPAsync",
               "httpMethod": "DELETE",
               "url": "api/app/relaciones-publicas/evento-rRPP",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
-                  "name": "rrppId",
+                  "name": "rrppUserId",
                   "typeAsString": "System.Guid, System.Private.CoreLib",
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -6843,8 +6880,8 @@
               ],
               "parameters": [
                 {
-                  "nameOnMethod": "rrppId",
-                  "name": "rrppId",
+                  "nameOnMethod": "rrppUserId",
+                  "name": "rrppUserId",
                   "jsonName": null,
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -6931,15 +6968,15 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.RRPP.RelacionesPublicasAppService"
             },
-            "GetSubRRPPFromOneEventoOfRRPPAsyncByRrppIdAndInput": {
-              "uniqueName": "GetSubRRPPFromOneEventoOfRRPPAsyncByRrppIdAndInput",
+            "GetSubRRPPFromOneEventoOfRRPPAsyncByRrppUserIdAndInput": {
+              "uniqueName": "GetSubRRPPFromOneEventoOfRRPPAsyncByRrppUserIdAndInput",
               "name": "GetSubRRPPFromOneEventoOfRRPPAsync",
               "httpMethod": "GET",
-              "url": "api/app/relaciones-publicas/sub-rRPPFrom-one-evento-of-rRPP/{rrppId}",
+              "url": "api/app/relaciones-publicas/sub-rRPPFrom-one-evento-of-rRPP/{rrppUserId}",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
-                  "name": "rrppId",
+                  "name": "rrppUserId",
                   "typeAsString": "System.Guid, System.Private.CoreLib",
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -6957,8 +6994,8 @@
               ],
               "parameters": [
                 {
-                  "nameOnMethod": "rrppId",
-                  "name": "rrppId",
+                  "nameOnMethod": "rrppUserId",
+                  "name": "rrppUserId",
                   "jsonName": null,
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -7060,15 +7097,15 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.RRPP.RelacionesPublicasAppService"
             },
-            "ReenviarEmailAsyncByRrppIdAndEventoId": {
-              "uniqueName": "ReenviarEmailAsyncByRrppIdAndEventoId",
+            "ReenviarEmailAsyncByRrppUserIdAndEventoId": {
+              "uniqueName": "ReenviarEmailAsyncByRrppUserIdAndEventoId",
               "name": "ReenviarEmailAsync",
               "httpMethod": "POST",
               "url": "api/app/relaciones-publicas/reenviar-email",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
-                  "name": "rrppId",
+                  "name": "rrppUserId",
                   "typeAsString": "System.Guid, System.Private.CoreLib",
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -7086,8 +7123,8 @@
               ],
               "parameters": [
                 {
-                  "nameOnMethod": "rrppId",
-                  "name": "rrppId",
+                  "nameOnMethod": "rrppUserId",
+                  "name": "rrppUserId",
                   "jsonName": null,
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -7273,7 +7310,7 @@
                 },
                 {
                   "nameOnMethod": "dto",
-                  "name": "RRPPId",
+                  "name": "RRPPUserId",
                   "jsonName": null,
                   "type": "System.Guid?",
                   "typeSimple": "string?",
@@ -7756,15 +7793,15 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.Precios.PrecioAppService"
             },
-            "GetPreciosByFuncionAsyncByFuncionId": {
-              "uniqueName": "GetPreciosByFuncionAsyncByFuncionId",
-              "name": "GetPreciosByFuncionAsync",
+            "GetPreciosByFuncionOrEventoAsyncById": {
+              "uniqueName": "GetPreciosByFuncionOrEventoAsyncById",
+              "name": "GetPreciosByFuncionOrEventoAsync",
               "httpMethod": "GET",
-              "url": "api/app/precio/precios-by-funcion/{funcionId}",
+              "url": "api/app/precio/{id}/precios-by-funcion-or-evento",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
-                  "name": "funcionId",
+                  "name": "id",
                   "typeAsString": "System.Guid, System.Private.CoreLib",
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -7774,8 +7811,8 @@
               ],
               "parameters": [
                 {
-                  "nameOnMethod": "funcionId",
-                  "name": "funcionId",
+                  "nameOnMethod": "id",
+                  "name": "id",
                   "jsonName": null,
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -10785,6 +10822,63 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.Entradas.CompraAppService"
             },
+            "CerrarEventoAsyncByEventoIdAndFuncionId": {
+              "uniqueName": "CerrarEventoAsyncByEventoIdAndFuncionId",
+              "name": "CerrarEventoAsync",
+              "httpMethod": "POST",
+              "url": "api/app/compra/cerrar-evento",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "eventoId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "funcionId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "eventoId",
+                  "name": "eventoId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "funcionId",
+                  "name": "funcionId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "WB.Tickets.Entradas.CompraAppService"
+            },
             "GetMontoTotalAsyncByFuncionId": {
               "uniqueName": "GetMontoTotalAsyncByFuncionId",
               "name": "GetMontoTotalAsync",
@@ -11654,8 +11748,8 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.Entradas.EntradasAppService"
             },
-            "BuscarTicketQRAsyncByEventoIdAndIdLegibleAndIsModal": {
-              "uniqueName": "BuscarTicketQRAsyncByEventoIdAndIdLegibleAndIsModal",
+            "BuscarTicketQRAsyncByEventoIdAndIdLegibleAndIsModalAndSeccionSelected": {
+              "uniqueName": "BuscarTicketQRAsyncByEventoIdAndIdLegibleAndIsModalAndSeccionSelected",
               "name": "BuscarTicketQRAsync",
               "httpMethod": "POST",
               "url": "api/app/entradas/buscar-ticket-qR/{eventoId}",
@@ -11684,6 +11778,14 @@
                   "typeSimple": "boolean",
                   "isOptional": true,
                   "defaultValue": false
+                },
+                {
+                  "name": "seccionSelected",
+                  "typeAsString": "System.Nullable`1[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                  "type": "System.Int32?",
+                  "typeSimple": "number?",
+                  "isOptional": true,
+                  "defaultValue": null
                 }
               ],
               "parameters": [
@@ -11717,6 +11819,18 @@
                   "jsonName": null,
                   "type": "System.Boolean",
                   "typeSimple": "boolean",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "seccionSelected",
+                  "name": "seccionSelected",
+                  "jsonName": null,
+                  "type": "System.Int32?",
+                  "typeSimple": "number?",
                   "isOptional": false,
                   "defaultValue": null,
                   "constraintTypes": null,
@@ -12333,8 +12447,8 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.Entradas.ReportesAppService"
             },
-            "GetTotalEntradasEscaneadasAsyncByFuncionIdAndEventoId": {
-              "uniqueName": "GetTotalEntradasEscaneadasAsyncByFuncionIdAndEventoId",
+            "GetTotalEntradasEscaneadasAsyncByFuncionIdAndEventoIdAndSeccion": {
+              "uniqueName": "GetTotalEntradasEscaneadasAsyncByFuncionIdAndEventoIdAndSeccion",
               "name": "GetTotalEntradasEscaneadasAsync",
               "httpMethod": "GET",
               "url": "api/app/reportes/total-entradas-escaneadas",
@@ -12354,6 +12468,14 @@
                   "type": "System.Guid",
                   "typeSimple": "string",
                   "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "seccion",
+                  "typeAsString": "System.Nullable`1[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                  "type": "System.Int32?",
+                  "typeSimple": "number?",
+                  "isOptional": true,
                   "defaultValue": null
                 }
               ],
@@ -12376,6 +12498,18 @@
                   "jsonName": null,
                   "type": "System.Guid",
                   "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "seccion",
+                  "name": "seccion",
+                  "jsonName": null,
+                  "type": "System.Int32?",
+                  "typeSimple": "number?",
                   "isOptional": false,
                   "defaultValue": null,
                   "constraintTypes": null,
@@ -13669,7 +13803,7 @@
               "parameters": [
                 {
                   "nameOnMethod": "dto",
-                  "name": "RrppId",
+                  "name": "RrppUserId",
                   "jsonName": null,
                   "type": "System.Guid?",
                   "typeSimple": "string?",
@@ -13730,7 +13864,7 @@
               "parameters": [
                 {
                   "nameOnMethod": "dto",
-                  "name": "RrppId",
+                  "name": "RrppUserId",
                   "jsonName": null,
                   "type": "System.Guid?",
                   "typeSimple": "string?",
@@ -13772,15 +13906,15 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.Eventos.EventosAppService"
             },
-            "GetEventosAsignadosIdsAsyncByRRPPId": {
-              "uniqueName": "GetEventosAsignadosIdsAsyncByRRPPId",
+            "GetEventosAsignadosIdsAsyncByUserRRPPId": {
+              "uniqueName": "GetEventosAsignadosIdsAsyncByUserRRPPId",
               "name": "GetEventosAsignadosIdsAsync",
               "httpMethod": "GET",
-              "url": "api/app/eventos/eventos-asignados-ids/{RRPPId}",
+              "url": "api/app/eventos/eventos-asignados-ids/{userRRPPId}",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
-                  "name": "RRPPId",
+                  "name": "userRRPPId",
                   "typeAsString": "System.Guid, System.Private.CoreLib",
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -13790,8 +13924,8 @@
               ],
               "parameters": [
                 {
-                  "nameOnMethod": "RRPPId",
-                  "name": "RRPPId",
+                  "nameOnMethod": "userRRPPId",
+                  "name": "userRRPPId",
                   "jsonName": null,
                   "type": "System.Guid",
                   "typeSimple": "string",
@@ -15564,6 +15698,43 @@
               "allowAnonymous": null,
               "implementFrom": "WB.Tickets.Eventos.EventosAppService"
             },
+            "CustomUrlExistsAsyncByInput": {
+              "uniqueName": "CustomUrlExistsAsyncByInput",
+              "name": "CustomUrlExistsAsync",
+              "httpMethod": "POST",
+              "url": "api/app/eventos/custom-url-exists",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "WB.Tickets.Eventos.CustomUrlCheckDto, WB.Tickets.Application.Contracts",
+                  "type": "WB.Tickets.Eventos.CustomUrlCheckDto",
+                  "typeSimple": "WB.Tickets.Eventos.CustomUrlCheckDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "WB.Tickets.Eventos.CustomUrlCheckDto",
+                  "typeSimple": "WB.Tickets.Eventos.CustomUrlCheckDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "WB.Tickets.Eventos.DtoReturnErrorData<System.Boolean>",
+                "typeSimple": "WB.Tickets.Eventos.DtoReturnErrorData<boolean>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "WB.Tickets.Eventos.EventosAppService"
+            },
             "CreateAsyncByInput": {
               "uniqueName": "CreateAsyncByInput",
               "name": "CreateAsync",
@@ -15731,6 +15902,434 @@
               },
               "allowAnonymous": null,
               "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<WB.Tickets.Eventos.getEventoDto,WB.Tickets.Eventos.getEventoDto,System.Guid,WB.Tickets.Eventos.GetEventosListFilterDto>"
+            }
+          }
+        },
+        "WB.Tickets.ControlEntradas.ControlEntradasAppService": {
+          "controllerName": "ControlEntradas",
+          "controllerGroupName": "ControlEntradas",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "WB.Tickets.ControlEntradas.ControlEntradasAppService",
+          "interfaces": [],
+          "actions": {
+            "CrearControlEntradaAsyncByEventoIdAndInput": {
+              "uniqueName": "CrearControlEntradaAsyncByEventoIdAndInput",
+              "name": "CrearControlEntradaAsync",
+              "httpMethod": "POST",
+              "url": "api/app/control-entradas/crear-control-entrada/{eventoId}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "eventoId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO, WB.Tickets.Application.Contracts",
+                  "type": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO",
+                  "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "eventoId",
+                  "name": "eventoId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO",
+                  "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "WB.Tickets.ControlEntradas.ControlEntradasAppService"
+            },
+            "GetByControlEntradasAsyncByEventoId": {
+              "uniqueName": "GetByControlEntradasAsyncByEventoId",
+              "name": "GetByControlEntradasAsync",
+              "httpMethod": "GET",
+              "url": "api/app/control-entradas/by-control-entradas/{eventoId}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "eventoId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "eventoId",
+                  "name": "eventoId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "WB.Tickets.ControlEntradas.ControlEntradasOutputDTO",
+                "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasOutputDTO"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "WB.Tickets.ControlEntradas.ControlEntradasAppService"
+            },
+            "ActualizarControlEntradaAsyncByEventoIdAndInput": {
+              "uniqueName": "ActualizarControlEntradaAsyncByEventoIdAndInput",
+              "name": "ActualizarControlEntradaAsync",
+              "httpMethod": "POST",
+              "url": "api/app/control-entradas/actualizar-control-entrada/{eventoId}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "eventoId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO, WB.Tickets.Application.Contracts",
+                  "type": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO",
+                  "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "eventoId",
+                  "name": "eventoId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO",
+                  "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasInputDTO",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "WB.Tickets.ControlEntradas.ControlEntradasAppService"
+            },
+            "PrimerFechaEventoFuturoAsyncByEventoId": {
+              "uniqueName": "PrimerFechaEventoFuturoAsyncByEventoId",
+              "name": "PrimerFechaEventoFuturoAsync",
+              "httpMethod": "POST",
+              "url": "api/app/control-entradas/primer-fecha-evento-futuro/{eventoId}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "eventoId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "eventoId",
+                  "name": "eventoId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Boolean",
+                "typeSimple": "boolean"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "WB.Tickets.ControlEntradas.ControlEntradasAppService"
+            },
+            "CreateAsyncByInput": {
+              "uniqueName": "CreateAsyncByInput",
+              "name": "CreateAsync",
+              "httpMethod": "POST",
+              "url": "api/app/control-entradas",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "WB.Tickets.ControlEntradas.ControlEntradasDTO, WB.Tickets.Application.Contracts",
+                  "type": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                  "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                  "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasDTO"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<WB.Tickets.ControlEntradas.ControlEntradasDTO,WB.Tickets.ControlEntradas.ControlEntradasDTO>"
+            },
+            "UpdateAsyncByIdAndInput": {
+              "uniqueName": "UpdateAsyncByIdAndInput",
+              "name": "UpdateAsync",
+              "httpMethod": "PUT",
+              "url": "api/app/control-entradas/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "WB.Tickets.ControlEntradas.ControlEntradasDTO, WB.Tickets.Application.Contracts",
+                  "type": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                  "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                  "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasDTO"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<WB.Tickets.ControlEntradas.ControlEntradasDTO,System.Guid,WB.Tickets.ControlEntradas.ControlEntradasDTO>"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/app/control-entradas/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>"
+            },
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/app/control-entradas/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+                "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasDTO"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<WB.Tickets.ControlEntradas.ControlEntradasDTO,WB.Tickets.ControlEntradas.ControlEntradasDTO,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>"
+            },
+            "GetListAsyncByInput": {
+              "uniqueName": "GetListAsyncByInput",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/app/control-entradas",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto, Volo.Abp.Ddd.Application.Contracts",
+                  "type": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+                  "typeSimple": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<WB.Tickets.ControlEntradas.ControlEntradasDTO>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<WB.Tickets.ControlEntradas.ControlEntradasDTO>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<WB.Tickets.ControlEntradas.ControlEntradasDTO,WB.Tickets.ControlEntradas.ControlEntradasDTO,System.Guid,Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto>"
             }
           }
         },
@@ -18955,6 +19554,18 @@
           "regex": null
         },
         {
+          "name": "Subtitulo",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "Value",
           "jsonName": null,
           "type": "T",
@@ -19022,6 +19633,18 @@
         },
         {
           "name": "MensajeError",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Subtitulo",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
@@ -25651,6 +26274,18 @@
           "regex": null
         },
         {
+          "name": "CantidadEntradas",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "Chequeado",
           "jsonName": null,
           "type": "System.Boolean",
@@ -28953,6 +29588,18 @@
           "regex": null
         },
         {
+          "name": "UserId",
+          "jsonName": null,
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "Name",
           "jsonName": null,
           "type": "System.String",
@@ -29245,6 +29892,18 @@
           "minimum": null,
           "maximum": null,
           "regex": null
+        },
+        {
+          "name": "RRPPId",
+          "jsonName": null,
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
         }
       ]
     },
@@ -29295,18 +29954,6 @@
         },
         {
           "name": "CreatorId",
-          "jsonName": null,
-          "type": "System.Guid?",
-          "typeSimple": "string?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "VentaDirectaId",
           "jsonName": null,
           "type": "System.Guid?",
           "typeSimple": "string?",
@@ -29394,30 +30041,6 @@
           "jsonName": null,
           "type": "System.Boolean",
           "typeSimple": "boolean",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "PrecioIds",
-          "jsonName": null,
-          "type": "[System.Guid]",
-          "typeSimple": "[string]",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "SectorIds",
-          "jsonName": null,
-          "type": "[System.Guid]",
-          "typeSimple": "[string]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -29792,7 +30415,7 @@
           "regex": null
         },
         {
-          "name": "RRPPId",
+          "name": "RRPPUserId",
           "jsonName": null,
           "type": "System.Guid?",
           "typeSimple": "string?",
@@ -30210,6 +30833,18 @@
         },
         {
           "name": "Cantidad",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CantidadEntradas",
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
@@ -30703,6 +31338,18 @@
           "regex": null
         },
         {
+          "name": "CantidadEntradas",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "PrecioId",
           "jsonName": null,
           "type": "System.Guid",
@@ -30764,6 +31411,18 @@
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "SectoresIds",
+          "jsonName": null,
+          "type": "[System.Guid]",
+          "typeSimple": "[string]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -31337,6 +31996,18 @@
           "regex": null
         },
         {
+          "name": "CantidadEntradas",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "Entradas",
           "jsonName": null,
           "type": "System.Int32",
@@ -31362,18 +32033,6 @@
         },
         {
           "name": "Agotado",
-          "jsonName": null,
-          "type": "System.Boolean",
-          "typeSimple": "boolean",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "Habilitado",
           "jsonName": null,
           "type": "System.Boolean",
           "typeSimple": "boolean",
@@ -31982,6 +32641,18 @@
           "regex": null
         },
         {
+          "name": "GroupId",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "SectorGen",
           "jsonName": null,
           "type": "[WB.Tickets.Funciones.SectorGen]",
@@ -32042,6 +32713,18 @@
           "name": "Monto",
           "jsonName": null,
           "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CantidadEntradas",
+          "jsonName": null,
+          "type": "System.Int32",
           "typeSimple": "number",
           "isRequired": false,
           "minLength": null,
@@ -33381,6 +34064,18 @@
           "minimum": null,
           "maximum": null,
           "regex": null
+        },
+        {
+          "name": "Telefono",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
         }
       ]
     },
@@ -33698,6 +34393,18 @@
           "regex": null
         },
         {
+          "name": "EsVentaDirecta",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "TotalDisponibleParaVenta",
           "jsonName": null,
           "type": "System.Int32",
@@ -33771,6 +34478,18 @@
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "EsVentaDirecta",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -34325,7 +35044,43 @@
           "regex": null
         },
         {
+          "name": "NombrePrecio",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "Cantidad",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CantidadEntradas",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CantidadPack",
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
@@ -34878,6 +35633,30 @@
         },
         {
           "name": "NombreSector",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "NombreSeccion",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Subtitle",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
@@ -36006,6 +36785,18 @@
           "minimum": null,
           "maximum": null,
           "regex": null
+        },
+        {
+          "name": "CustomUrl",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
         }
       ]
     },
@@ -36569,7 +37360,7 @@
       "genericArguments": null,
       "properties": [
         {
-          "name": "RrppId",
+          "name": "RrppUserId",
           "jsonName": null,
           "type": "System.Guid?",
           "typeSimple": "string?",
@@ -37679,6 +38470,18 @@
           "regex": null
         },
         {
+          "name": "CustomUrl",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
           "name": "Descripcion",
           "jsonName": null,
           "type": "System.String",
@@ -38280,6 +39083,18 @@
           "minimum": null,
           "maximum": null,
           "regex": null
+        },
+        {
+          "name": "VentaDirectaId",
+          "jsonName": null,
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
         }
       ]
     },
@@ -38313,6 +39128,18 @@
           "minimum": null,
           "maximum": null,
           "regex": null
+        },
+        {
+          "name": "Estado",
+          "jsonName": null,
+          "type": "EstadoPrecio",
+          "typeSimple": "EstadoPrecio",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
         }
       ]
     },
@@ -38325,18 +39152,6 @@
       "properties": [
         {
           "name": "Capacidad",
-          "jsonName": null,
-          "type": "System.Int32",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "CantEntr",
           "jsonName": null,
           "type": "System.Int32",
           "typeSimple": "number",
@@ -38427,6 +39242,18 @@
       "properties": [
         {
           "name": "Nombre",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CustomUrl",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
@@ -39930,6 +40757,303 @@
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "WB.Tickets.Eventos.CustomUrlCheckDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Url",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "EventoId",
+          "jsonName": null,
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "WB.Tickets.ControlEntradas.ControlEntradasInputDTO": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Control",
+          "jsonName": null,
+          "type": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+          "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TipoControl",
+          "jsonName": null,
+          "type": "WB.Tickets.TipoControl.TipoControlEntrada",
+          "typeSimple": "WB.Tickets.TipoControl.TipoControlEntrada",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Secciones",
+          "jsonName": null,
+          "type": "[WB.Tickets.ControlEntradas.SeccionDTO]",
+          "typeSimple": "[WB.Tickets.ControlEntradas.SeccionDTO]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "WB.Tickets.ControlEntradas.ControlEntradasDTO": {
+      "baseType": "Volo.Abp.Application.Dtos.EntityDto<System.Guid>",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "EventoId",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "TipoControl",
+          "jsonName": null,
+          "type": "WB.Tickets.TipoControl.TipoControlEntrada",
+          "typeSimple": "WB.Tickets.TipoControl.TipoControlEntrada",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "WB.Tickets.TipoControl.TipoControlEntrada": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "Sector",
+        "Precio",
+        "SectorPrecio",
+        "Todas"
+      ],
+      "enumValues": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "genericArguments": null,
+      "properties": null
+    },
+    "WB.Tickets.ControlEntradas.SeccionDTO": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Nombre",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Num",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "SectoresYPrecios",
+          "jsonName": null,
+          "type": "[WB.Tickets.SeccionEntradasDTO.SeccionEntradaSectoreYPreciosDTO]",
+          "typeSimple": "[WB.Tickets.SeccionEntradasDTO.SeccionEntradaSectoreYPreciosDTO]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "WB.Tickets.SeccionEntradasDTO.SeccionEntradaSectoreYPreciosDTO": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "SectorId",
+          "jsonName": null,
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "EventoId",
+          "jsonName": null,
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "GroupId",
+          "jsonName": null,
+          "type": "System.Int32?",
+          "typeSimple": "number?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "WB.Tickets.ControlEntradas.ControlEntradasOutputDTO": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Control",
+          "jsonName": null,
+          "type": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+          "typeSimple": "WB.Tickets.ControlEntradas.ControlEntradasDTO",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Secciones",
+          "jsonName": null,
+          "type": "[WB.Tickets.ControlEntradas.SeccionOutputDTO]",
+          "typeSimple": "[WB.Tickets.ControlEntradas.SeccionOutputDTO]",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "WB.Tickets.ControlEntradas.SeccionOutputDTO": {
+      "baseType": "Volo.Abp.Application.Dtos.EntityDto<System.Guid>",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Nombre",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Num",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "SectoresYPrecios",
+          "jsonName": null,
+          "type": "[WB.Tickets.SeccionEntradasDTO.SeccionEntradaSectoreYPreciosDTO]",
+          "typeSimple": "[WB.Tickets.SeccionEntradasDTO.SeccionEntradaSectoreYPreciosDTO]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

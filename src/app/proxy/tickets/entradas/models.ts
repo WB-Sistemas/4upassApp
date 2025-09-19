@@ -173,6 +173,7 @@ export interface ReporteVentasDto extends EntityDto<string> {
   valorTotal: number;
   funciones: object;
   email?: string;
+  telefono?: string;
 }
 
 export interface ReporteVentasRequestDto extends PagedAndSortedResultRequestDto {
@@ -194,6 +195,8 @@ export interface ReturnDataErrors {
   nameScanBy?: string;
   expiredDate?: string;
   nombreSector?: string;
+  nombreSeccion?: string;
+  subtitle?: string;
 }
 
 export interface SectoresForETicketsDto {

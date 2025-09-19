@@ -1,4 +1,4 @@
-import type { BuscarFuncionesDto, CodigoSectorDto, ConfiguracionDto, CortesiaDeEventos, CreateUpdateEventoDto, DatosCortesiaDto, DatosEventoEntradas, DtoReturnErrorData, EventoCarouselDto, EventoDropdownDto, EventoDto, EventoFuncionesDto, EventoSingleDto, EventosCortesiaDto, EventosPorFuncionActivaDto, EventosPorFuncionActivaFilterDto, GetClientEventsDto, GetComprasDto, GetEventoDetalleDto, GetEventosDestacadosDto, GetEventosListFilterDto, MisEventosDto, PedidosDto, PreciosSectoresDto, ReturnEventoDto, UpdateCarrouselDto, getEventoDto } from './models';
+import type { BuscarFuncionesDto, CodigoSectorDto, ConfiguracionDto, CortesiaDeEventos, CreateUpdateEventoDto, CustomUrlCheckDto, DatosCortesiaDto, DatosEventoEntradas, DtoReturnErrorData, EventoCarouselDto, EventoDropdownDto, EventoDto, EventoFuncionesDto, EventoSingleDto, EventosCortesiaDto, EventosPorFuncionActivaDto, EventosPorFuncionActivaFilterDto, GetClientEventsDto, GetComprasDto, GetEventoDetalleDto, GetEventosDestacadosDto, GetEventosListFilterDto, MisEventosDto, PedidosDto, PreciosSectoresDto, ReturnEventoDto, UpdateCarrouselDto, getEventoDto } from './models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { ListResultDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
@@ -41,6 +41,15 @@ export class EventosService {
       method: 'POST',
       url: '/api/app/eventos/evento',
       params: { eventoIdStr },
+      body: input,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  customUrlExists = (input: CustomUrlCheckDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, DtoReturnErrorData<boolean>>({
+      method: 'POST',
+      url: '/api/app/eventos/custom-url-exists',
       body: input,
     },
     { apiName: this.apiName,...config });
@@ -138,10 +147,10 @@ export class EventosService {
     { apiName: this.apiName,...config });
   
 
-  getEventosAsignadosIds = (RRPPId: string, config?: Partial<Rest.Config>) =>
+  getEventosAsignadosIds = (userRRPPId: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, string[]>({
       method: 'GET',
-      url: `/api/app/eventos/eventos-asignados-ids/${RRPPId}`,
+      url: `/api/app/eventos/eventos-asignados-ids/${userRRPPId}`,
     },
     { apiName: this.apiName,...config });
   
@@ -159,7 +168,7 @@ export class EventosService {
     this.restService.request<any, EventoDto[]>({
       method: 'GET',
       url: '/api/app/eventos/eventos-one-rRPP',
-      params: { rrppId: dto.rrppId, soloActivos: dto.soloActivos, soloEventosParaVentaOnline: dto.soloEventosParaVentaOnline },
+      params: { rrppUserId: dto.rrppUserId, soloActivos: dto.soloActivos, soloEventosParaVentaOnline: dto.soloEventosParaVentaOnline },
     },
     { apiName: this.apiName,...config });
   
@@ -272,7 +281,7 @@ export class EventosService {
     this.restService.request<any, EventoDropdownDto[]>({
       method: 'GET',
       url: '/api/app/eventos/user-eventos-list',
-      params: { rrppId: dto.rrppId, soloActivos: dto.soloActivos, soloEventosParaVentaOnline: dto.soloEventosParaVentaOnline },
+      params: { rrppUserId: dto.rrppUserId, soloActivos: dto.soloActivos, soloEventosParaVentaOnline: dto.soloEventosParaVentaOnline },
     },
     { apiName: this.apiName,...config });
   

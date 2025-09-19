@@ -12,23 +12,14 @@ body{
   color: var(--ion-text-color);
 }
 
-.my-toolbar {
-  padding-top: calc(env(safe-area-inset-top) + 20px);
-  height: calc(55px + env(safe-area-inset-top));
-  box-sizing: content-box;
-
-  display: flex;
+ion-toolbar.my-toolbar::part(container) {
+  min-height: 56px;
   align-items: center;
-  justify-content: center;
-  position: relative;
+  justify-content: space-between;
 }
 
 ion-back-button {
-  position: absolute;
-  top: 50%; /* Ubicar verticalmente en mitad de toolbar */
-  transform: translateY(-50%); /* Centrar verticalmente respecto a su propio alto */
   color: #ebe0e0;
-  z-index: 10;
 }
 
 ion-title {
@@ -59,6 +50,25 @@ ion-button.no-effects {
   --background-activated-opacity: 0;
   --background-focused-opacity: 0;
   --background-hover-opacity: 0;
+}
+
+/* Centrar el título del header en esta pantalla */
+ion-toolbar.my-toolbar {
+  position: relative;
+}
+ion-toolbar.my-toolbar ion-title {
+  position: static;
+  left: auto;
+  right: auto;
+  width: auto;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Ajuste fino: reducir ancho interno del título para centrar mejor */
+ion-toolbar.my-toolbar .toolbar-title {
+  width: 85% !important;
+  margin: 0 auto;
 }
 
 //texto de referencia
@@ -458,6 +468,16 @@ ion-text{
   height: 72px;
 }
 
+.always-flip{
+  color: white;
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+.select-text{
+  font-size: 16px;
+}
+
 @media screen and (min-width: 800px) {
   .box {
     margin: 24px auto;
@@ -465,11 +485,6 @@ ion-text{
 }
 
 @media (max-width: 480px) { 
-
-  .my-toolbar {
-   padding-top: calc(env(safe-area-inset-top) + 30px);
-    height: calc(70px + env(safe-area-inset-top));
-  }
 
   ion-title {
     font-size: 1.2rem !important;

@@ -6,16 +6,10 @@ body {
   color: var(--ion-text-color);
 }
 
-// ===== Toolbar superior =====
-.my-toolbar {
-  padding-top: calc(env(safe-area-inset-top) + 20px);
-  height: calc(55px + env(safe-area-inset-top));
-  box-sizing: content-box;
-
-  display: flex;
+ion-toolbar.my-toolbar::part(container) {
+  min-height: 56px;
   align-items: center;
-  justify-content: center;
-  position: relative;
+  justify-content: space-between;
 }
 
 // ion-toolbar.my-toolbar::part(container) {
@@ -23,11 +17,7 @@ body {
 // }
 
 ion-back-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   color: #ebe0e0;
-  z-index: 10;
 }
 
 ion-title {
@@ -41,7 +31,27 @@ ion-title {
   line-height: 1;
 }
 
-// ===== Buscador (fijo debajo del toolbar) =====
+/* Centrar el título del header en esta pantalla */
+ion-toolbar.my-toolbar {
+  position: relative;
+}
+
+ion-toolbar.my-toolbar ion-title {
+  position: static;
+  left: auto;
+  right: auto;
+  --width: 85% !important;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Ajuste fino: reducir ancho interno del título para centrar mejor */
+ion-toolbar.my-toolbar .toolbar-title {
+  width: 85% !important;
+  margin: 0 auto;
+}
+
+
 ion-item.input-search {
   position: sticky;
   top: calc(56px + env(safe-area-inset-top));
@@ -54,7 +64,7 @@ ion-item.input-search {
   --inner-padding-end: 16px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   align-items: center;
-  margin: 0; // que quede pegado al toolbar
+  margin: 0;
   border-radius: 0 0 4px 4px;
 }
 
@@ -73,12 +83,10 @@ ion-input {
   outline: none;
 }
 
-// ===== Subtítulos generales =====
 .sub {
   color: #ada5bd;
 }
 
-// ===== Cards de contenido =====
 ion-card {
   margin: 10px;
   background-color: #fff;
@@ -151,7 +159,6 @@ ion-card.modal-content {
   }
 }
 
-// ===== Íconos de opciones =====
 .option-icons {
   font-size: 16px;
   color: $ME_iconsColor;
@@ -198,11 +205,6 @@ ion-card.modal-content {
 }
 
 @media (max-width: 480px) { 
-
-  .my-toolbar {
-    padding-top: calc(env(safe-area-inset-top) + 30px);
-    height: calc(70px + env(safe-area-inset-top));
-  }
 
   ion-title {
     font-size: 1.2rem !important;

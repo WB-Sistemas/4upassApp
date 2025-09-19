@@ -46,10 +46,10 @@ export class PrecioService {
     { apiName: this.apiName,...config });
   
 
-  getPreciosByFuncion = (funcionId: string, config?: Partial<Rest.Config>) =>
+  getPreciosByFuncionOrEvento = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, PrecioFiltroDto[]>({
       method: 'GET',
-      url: `/api/app/precio/precios-by-funcion/${funcionId}`,
+      url: `/api/app/precio/${id}/precios-by-funcion-or-evento`,
     },
     { apiName: this.apiName,...config });
   

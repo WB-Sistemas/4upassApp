@@ -97,11 +97,11 @@ export class ReportesService {
     { apiName: this.apiName,...config });
   
 
-  getTotalEntradasEscaneadas = (funcionId: string, eventoId: string, config?: Partial<Rest.Config>) =>
+  getTotalEntradasEscaneadas = (funcionId: string, eventoId: string, seccion?: number, config?: Partial<Rest.Config>) =>
     this.restService.request<any, TotalEntradasDto>({
       method: 'GET',
       url: '/api/app/reportes/total-entradas-escaneadas',
-      params: { funcionId, eventoId },
+      params: { funcionId, eventoId, seccion },
     },
     { apiName: this.apiName,...config });
   

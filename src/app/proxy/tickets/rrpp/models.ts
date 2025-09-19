@@ -6,7 +6,7 @@ import type { RRPPUserDto } from '../../models';
 
 export interface CountSubRRPPDto {
   eventoIds: string[];
-  rrppId?: string;
+  rrppUserId?: string;
 }
 
 export interface CreateUpdateRRPPDto extends EntityDto {
@@ -36,6 +36,7 @@ export interface EventosRRPPDto extends EntityDto<string> {
   esVentaDirecta?: boolean;
   esReferido?: boolean;
   tieneSubRRPPs: boolean;
+  rrppId?: string;
 }
 
 export interface GetEventosRRPPFilterDto extends PagedAndSortedResultRequestDto {
