@@ -1,4 +1,4 @@
-import type { CountSubRRPPDto, CreateUpdateRRPPDto, EventosRRPPDto, GetEventosRRPPFilterDto, GetRRPPListFilterDto, GetSubRRPPFromOneEventoOfRRPPDto, GetSubRRPPFromOneEventoOfRRPPFilterDto, InsertRRPPToVentaDirectaDto, RelacionesPublicasDto, RrppAutocompleteDto, UpdateRRPPInputDto } from './models';
+import type { CountSubRRPPDto, CreateUpdateRRPPDto, EventosRRPPDto, GetEventoWithRrppDto, GetEventosRRPPFilterDto, GetRRPPListFilterDto, GetSubRRPPFromOneEventoOfRRPPDto, GetSubRRPPFromOneEventoOfRRPPFilterDto, InsertRRPPToVentaDirectaDto, RelacionesPublicasDto, RrppAutocompleteDto, UpdateRRPPInputDto } from './models';
 import type { TipoRRPP } from './tipo-rrpp.enum';
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
@@ -59,15 +59,6 @@ export class RelacionesPublicasService {
     { apiName: this.apiName,...config });
   
 
-  deleteEventoSubRRPP = (rrppId: string, EventoId: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, void>({
-      method: 'DELETE',
-      url: '/api/app/relaciones-publicas/evento-sub-rRPP',
-      params: { rrppId, eventoId: EventoId },
-    },
-    { apiName: this.apiName,...config });
-  
-
   deleteRRPP = (RRPPUserId: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'DELETE',
@@ -84,11 +75,11 @@ export class RelacionesPublicasService {
     { apiName: this.apiName,...config });
   
 
-  getEventosAsignadosRRPP = (input: GetEventosRRPPFilterDto, tipo: TipoRRPP, config?: Partial<Rest.Config>) =>
+  getEventosAsignadosRRPP = (input: GetEventosRRPPFilterDto, tipo: TipoRRPP, forDropdown?: boolean, config?: Partial<Rest.Config>) =>
     this.restService.request<any, PagedResultDto<EventoRRPPDto>>({
       method: 'GET',
       url: '/api/app/relaciones-publicas/eventos-asignados-rRPP',
-      params: { nombreEvento: input.nombreEvento, totalVendidos: input.totalVendidos, cortesiaTransferible: input.cortesiaTransferible, ventaDirecta: input.ventaDirecta, search: input.search, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount, tipo },
+      params: { nombreEvento: input.nombreEvento, totalVendidos: input.totalVendidos, cortesiaTransferible: input.cortesiaTransferible, ventaDirecta: input.ventaDirecta, search: input.search, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount, tipo, forDropdown },
     },
     { apiName: this.apiName,...config });
   
@@ -98,6 +89,15 @@ export class RelacionesPublicasService {
       method: 'GET',
       url: `/api/app/relaciones-publicas/eventos-rRPP/${userRRPPId}`,
       params: { nombreEvento: input.nombreEvento, totalVendidos: input.totalVendidos, cortesiaTransferible: input.cortesiaTransferible, ventaDirecta: input.ventaDirecta, search: input.search, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getEventosWithRrpp = (timezoneName: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, GetEventoWithRrppDto[]>({
+      method: 'GET',
+      url: '/api/app/relaciones-publicas/eventos-with-rrpp',
+      params: { timezoneName },
     },
     { apiName: this.apiName,...config });
   
@@ -125,6 +125,31 @@ export class RelacionesPublicasService {
       method: 'GET',
       url: `/api/app/relaciones-publicas/r-rPPEmails-by-evento-id/${eventoId}`,
       params: { autocomplete },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getRrppAndSubRrppForEvento = (eventoId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, RRPPUserDto[]>({
+      method: 'GET',
+      url: `/api/app/relaciones-publicas/rrpp-and-sub-rrpp-for-evento/${eventoId}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getRrppByPrettyId = (pretty: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, RRPPUserDto>({
+      method: 'GET',
+      url: '/api/app/relaciones-publicas/rrpp-by-pretty-id',
+      params: { pretty },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getRrppIdsInBoleteria = (EventoId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, string[]>({
+      method: 'GET',
+      url: `/api/app/relaciones-publicas/rrpp-ids-in-boleteria/${EventoId}`,
     },
     { apiName: this.apiName,...config });
   
@@ -178,6 +203,14 @@ export class RelacionesPublicasService {
       method: 'GET',
       url: '/api/app/relaciones-publicas/users-with-rRPP',
       params: { id: dto.id },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getUsersWithRRPPByFuncionId = (funcionId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, RRPPUserDto[]>({
+      method: 'GET',
+      url: `/api/app/relaciones-publicas/users-with-rRPPBy-funcion-id/${funcionId}`,
     },
     { apiName: this.apiName,...config });
   
@@ -237,6 +270,15 @@ export class RelacionesPublicasService {
     this.restService.request<any, DtoReturnErrorData<string>>({
       method: 'POST',
       url: '/api/app/relaciones-publicas/set-evento-to-rRPP',
+      body: request,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  setRRPPToEvento = (request: AsignacionRRPPEventoDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, DtoReturnErrorData<string>>({
+      method: 'POST',
+      url: '/api/app/relaciones-publicas/set-rRPPTo-evento',
       body: request,
     },
     { apiName: this.apiName,...config });

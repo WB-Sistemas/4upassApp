@@ -2,7 +2,7 @@
 import { LocalizationService } from '@abp/ng.core';
 import { Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TipoDocs } from 'src/app/proxy/usuario';
 import { EntradaSimpleDto,EntradasService,ReportesService,ReturnDataErrors } from 'src/app/proxy/tickets/entradas';
 import { debounceTime, filter } from 'rxjs';
@@ -12,10 +12,9 @@ import { DateUtils } from 'src/app/utils/date-utils';
 import { DeviceUtils } from 'src/app/utils/device-utils';
 import { TiposDocList } from 'src/app/utils/doc-identificacion-utils';
 import { ControlEntradasService, SeccionOutputDTO } from 'src/app/proxy/tickets/control-entradas';
-import { DropdownChangeEvent } from 'primeng/dropdown';
-import { RefresherCustomEvent } from '@ionic/angular';
 
 const cacheKey: string = 'camaraId';
+export type EntradaSimplePlus = Omit<EntradaSimpleDto, 'fecha'> & { fecha: Date };
 
 @Component({
   selector: 'app-escanear-qr',
@@ -33,27 +32,28 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   eventoId: string = '';
   exitoso: boolean = false;
   mensajeError: string = '';
-  datosEntradaExito?: EntradaSimpleDto;
+  // datosEntradaExito?: EntradaSimpleDto;
   datosEntradaError?: ReturnDataErrors;
   solicitudCompleta: boolean = false;
-  form!: FormGroup;
+  form: FormGroup;
   modalActive: boolean = false;
   processingValue: boolean = false;
   horaDeScan: Date = new Date();
   modalExpiradoActive: boolean = false;
   fechaExpiracion: Date = new Date();
   camaraHabilitada: boolean = false;
-  isErrorSeccion: boolean = false;
-  errorSeccionSub:string = '';
-  datosSeccionError: ReturnDataErrors = { } as ReturnDataErrors;
-  seccionSelected: number | null = null;
+  datosEntradaExito?: EntradaSimplePlus;
 
-  seccionesOptions: SeccionOutputDTO[] = [];
   tipoIdentificacionNombre: string = '';
   tipoIdentificacion: { name: string, value: TipoDocs }[] = [];
   isMobile: boolean = false;
   escaneados:number = 0; 
   total:number = 0;  
+  seccionSelected: number | null = null;
+  seccionesOptions: SeccionOutputDTO[] = [];
+  isErrorSeccion: boolean = false;
+  errorSeccionSub: string = '';
+  datosSeccionError?: ReturnDataErrors;
   
   constructor(
     private ar: ActivatedRoute,
@@ -62,24 +62,28 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     private cacheLocal: CacheEventoService,
     private router: Router,
     private reportesService: ReportesService,
-    private localization: LocalizationService, 
-    private controlEntradasService:ControlEntradasService
-  ) { }
+    private localization: LocalizationService,
+    private controlEntradasService: ControlEntradasService
+  ) { 
+    this.form = this.initForm()
+  }
 
   ngOnInit(): void {
     this.isMobile = DeviceUtils.isMobile();
     this.tipoIdentificacion = TiposDocList(this.localization);
-
     this.eventoId = this.ar.snapshot.paramMap.get("eventoId") ?? '';
-    this.form = this.initForm();
-
-    this.controlEntradasService.getByControlEntradas(this.eventoId).subscribe(res => {
-      if(!res || !res.secciones.length) return
-      this.seccionesOptions = res.secciones
-    })
 
     this.ar.queryParams.subscribe(params => {
       this.seccionSelected = params["seccionSelected"] ? Number(params["seccionSelected"]) : null;
+    });
+
+    this.controlEntradasService.getByControlEntradas(this.eventoId).subscribe(res => {
+      if(!res || !res.secciones?.length) return;
+      this.seccionesOptions = res.secciones;
+      if(this.seccionSelected === null && this.seccionesOptions.length === 1){
+        this.seccionSelected = this.seccionesOptions[0].num;
+      }
+      this.loadTotales();
     });
     
     this.idReferencia?.valueChanges
@@ -90,77 +94,44 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
         this.procesarValor(value);
       });
 
-    this.reportesService.getTotalEntradasEscaneadas('', this.eventoId).subscribe(res => {
-      this.escaneados = res.escaneadas
-      this.total = res.total
-    })
-
+    this.loadTotales();
   }
-
-  handleRefresh(event: RefresherCustomEvent){
-      setTimeout(() => {
-        this.ngOnInit();
-        this.seccionOnChange({} as Event);
-        event.target.complete();
-    },2000);
-  }
-  
   initForm() {
     return this.fb.group({
       idReferencia: [null]
     });
   }
-
   ngOnDestroy(): void {
     if (this.camaraActive) {
       this.camaraActive = false;
       this.scanQr.desactivarCamara();
     }
   }
-
-  seccionOnChange(event: Event): void {
-
-    const detail = (event as CustomEvent).detail;
-    const value = Number(detail?.value);
-
-    this.seccionSelected = value;
-
-    // Navega con el nuevo parámetro y actualiza contadores
-    this.router.navigate([], {
-      relativeTo: this.ar,
-      queryParams: { seccionSelected: value },
-      queryParamsHandling: 'merge',
-      replaceUrl: true
-    });
-
-    this.reportesService.getTotalEntradasEscaneadas('', this.eventoId, value).subscribe(res => {
-      this.escaneados = res.escaneadas
-      this.total = res.total
-    })
-  }
-
   procesarValor(valor: string) {
-    console.warn('procesarValor', valor);
-    
-    this.entradaService.buscarTicketQR(this.eventoId, valor.toUpperCase(), true, this.seccionSelected ?? 0).subscribe(res => {
-
+    console.warn('procesarValor', valor, this.eventoId);
+    this.entradaService.buscarTicketQR(this.eventoId, valor.toUpperCase(), true, this.seccionSelected ?? undefined).subscribe(res => {
+      console.log('res escaneo: ',res);
       this.mensajeError = res.mensajeError ?? '';
       this.exitoso = res.exitoso;
       this.modalActive = true;
+      this.isErrorSeccion = false;
+      this.errorSeccionSub = '';
+      this.datosSeccionError = undefined;
       if (this.camaraActive) {
         this.desactivarQr();
       }
       if (res.exitoso) {
-        this.datosEntradaExito = res.value.entradaSimpleDto
+        const ent = res.value.entradaSimpleDto;
+        this.datosEntradaExito = {... ent, fecha: DateUtils.IsoString(ent.fecha ?? '')};
         this.tipoIdentificacionNombre = this.getTipoIdentificacionNombre(this.datosEntradaExito.tipoIdentificacion);
       }
       else if (this.mensajeError.includes("Entrada expirada")){
         this.modalExpiradoActive = true;
         this.fechaExpiracion = DateUtils.IsoString(res.value.returnDataErrors.expiredDate ?? '');
       }
-      else if (this.mensajeError.includes("Sección") || this.mensajeError.includes("sección")){
-        this.isErrorSeccion = true
-        this.errorSeccionSub = res.value.returnDataErrors.subtitle ?? ''
+      else if (this.mensajeError.toLowerCase().includes("secci")) {
+        this.isErrorSeccion = true;
+        this.errorSeccionSub = res.value.returnDataErrors?.subtitle ?? '';
         this.datosSeccionError = res.value.returnDataErrors;
         this.horaDeScan = DateUtils.IsoString(res.value.returnDataErrors.scanTime ?? '');
       }
@@ -210,6 +181,10 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     this.datosEntradaExito = undefined;
     this.mensajeError = '';
     this.exitoso = false;
+    this.isErrorSeccion = false;
+    this.errorSeccionSub = '';
+    this.datosSeccionError = undefined;
+    this.modalExpiradoActive = false;
   }
 
   cerrarModal(){
@@ -218,29 +193,26 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     this.datosEntradaExito = undefined;
     this.mensajeError = '';
     this.exitoso = false;
+    this.isErrorSeccion = false;
+    this.errorSeccionSub = '';
+    this.datosSeccionError = undefined;
+    this.modalExpiradoActive = false;
   }
 
   confirmScan() {
     this.modalActive = false;
-    this.entradaService.buscarTicketQR(
-      this.eventoId,
-      this.datosEntradaExito?.idLegible?.toUpperCase() ?? '',
-      false,
-      this.seccionSelected ?? 0
-    ).subscribe(res => {
+    this.entradaService.buscarTicketQR(this.eventoId, this.datosEntradaExito?.idLegible?.toUpperCase()??'', false, this.seccionSelected ?? undefined).subscribe(res => {
       this.solicitudCompleta = true;
       this.exitoso = res.exitoso;
       this.mensajeError = res.mensajeError ?? '';
       if (res.exitoso) {
-        this.datosEntradaExito = res.value.entradaSimpleDto;
+        const ent = res.value.entradaSimpleDto;
+        this.datosEntradaExito = {... ent, fecha: DateUtils.IsoString(ent.fecha ?? '')};
         this.tipoIdentificacionNombre = this.getTipoIdentificacionNombre(this.datosEntradaExito.tipoIdentificacion);
         this.processingValue = false;
         this.switchQr();
 
-        this.reportesService.getTotalEntradasEscaneadas('', this.eventoId).subscribe(res => {
-          this.escaneados = res.escaneadas;
-          this.total = res.total;
-        });
+        this.loadTotales();
       } else {
         this.modalActive = true;
         this.datosEntradaError = res.value.returnDataErrors;
@@ -270,7 +242,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   }
 
   redirect(){
-    let queryParams = { eventoId: this.eventoId }
+    let queryParams = { eventoId: this.eventoId, seccionSelected: this.seccionSelected ?? undefined }
     const url = "eventos-asignados/control-manual"
     this.router.navigate([url], {queryParams});
 
@@ -281,6 +253,25 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     this.selectedCameraId = device.deviceId;
     this.cacheLocal.saveCache(cacheKey, this.selectedCameraId);
     this.scanQr.cambiarCamara(device);
+  }
+
+  seccionOnChange(event: any){
+    const value = Number(event?.detail?.value ?? event);
+    this.seccionSelected = isNaN(value) ? null : value;
+    this.router.navigate([], {
+      relativeTo: this.ar,
+      queryParams: { seccionSelected: this.seccionSelected ?? undefined },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
+    this.loadTotales();
+  }
+
+  loadTotales(){
+    this.reportesService.getTotalEntradasEscaneadas('', this.eventoId, this.seccionSelected ?? undefined).subscribe(res => {
+      this.escaneados = res.escaneadas
+      this.total = res.total
+    })
   }
 
   get idReferencia() {

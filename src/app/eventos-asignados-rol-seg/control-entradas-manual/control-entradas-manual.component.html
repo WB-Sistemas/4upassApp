@@ -20,11 +20,6 @@
 </div>
 
 <ion-content>
-
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-
   <div *ngIf="entr.length > 0; else noData">
     <ion-card *ngFor="let item of entr; index as i">
       <ion-card-content>
@@ -39,10 +34,18 @@
           <p>{{ item.email }}</p>
           <p class="sub">Id:</p>
           <p> {{ item.idLegible }}</p>
+          <p class="sub">Funcion: </p>
+          <p>{{item.fecha | date}}</p>
           <p class="sub">N° de referencia:</p>
           <p *ngIf="item.idRef">{{ item.idRef }}</p>
+          <p class="sub">Tipo de Precio: </p>
+          <p>{{item.nombre}}</p>
           <p class="sub">Sector:</p>
           <p style="padding-bottom: 5px;">{{ item.nombreSector }}</p>
+          <p class="sub" *ngIf="item.nombreFila">Fila: </p>
+          <p *ngIf="item.nombreFila">{{item.nombreFila}}</p>
+          <p class="sub" *ngIf="item.nombreAsiento">Butaca: </p>
+          <p *ngIf="item.nombreFila">{{item.nombreAsiento}}</p>
         </ion-text>
 
         <ion-button

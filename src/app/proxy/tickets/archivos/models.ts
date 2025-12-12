@@ -6,6 +6,7 @@ export interface ArchivoDto extends EntityDto<string> {
   url?: string;
   preSignedUrl?: string;
   externo: boolean;
+  privado: boolean;
 }
 
 export interface GetArchivosListDto extends PagedAndSortedResultRequestDto {

@@ -2,8 +2,10 @@ import type { PrecioDto, PrecioFiltroDto, PreciosDescuentos, TipoPrecioYSectores
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
+import type { GetSectoresDto } from '../establecimientos/models';
 import type { EstadoPrecio } from '../../estado-precio.enum';
 import type { PreciosSectoresDto } from '../eventos/models';
+import type { GetIdListDto } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +52,15 @@ export class PrecioService {
     this.restService.request<any, PrecioFiltroDto[]>({
       method: 'GET',
       url: `/api/app/precio/${id}/precios-by-funcion-or-evento`,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getSectoresByPrecioId = (dto: GetIdListDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, GetSectoresDto[]>({
+      method: 'GET',
+      url: '/api/app/precio/sectores-by-precio-id',
+      params: { ids: dto.ids },
     },
     { apiName: this.apiName,...config });
   

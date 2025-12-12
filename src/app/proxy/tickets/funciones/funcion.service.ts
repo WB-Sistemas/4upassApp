@@ -61,11 +61,11 @@ export class FuncionService {
     { apiName: this.apiName,...config });
   
 
-  getPrecioByFuncion = (FuncionId: string, VentaDirectaId: string, config?: Partial<Rest.Config>) =>
+  getPrecioByFuncion = (FuncionId: string, VentaDirectaId: string, esMapeado?: boolean, config?: Partial<Rest.Config>) =>
     this.restService.request<any, GetPrecioByFuncionDto[]>({
       method: 'GET',
       url: '/api/app/funcion/precio-by-funcion',
-      params: { funcionId: FuncionId, ventaDirectaId: VentaDirectaId },
+      params: { funcionId: FuncionId, ventaDirectaId: VentaDirectaId, esMapeado },
     },
     { apiName: this.apiName,...config });
   

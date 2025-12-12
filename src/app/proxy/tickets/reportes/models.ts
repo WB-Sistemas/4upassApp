@@ -7,10 +7,12 @@ export interface DatosSubRRPP {
   totalVendidosLink?: number;
   totalRecaudadoLink?: number;
   cortesiasEnviadas?: number;
+  ventaDirecta?: number;
   totalRecaudadoVentaDirecta?: number;
 }
 
 export interface GetAllVentasRRPPDto extends EntityDto<string> {
+  userId?: string;
   nombreRRPP?: string;
   cortesiaTransferible?: number;
   ventasDirectasCargadas?: number;
@@ -19,6 +21,9 @@ export interface GetAllVentasRRPPDto extends EntityDto<string> {
   cortesiasEnviadas?: number;
   totalRecaudadoVentaDirecta?: number;
   subRRPPs: DatosSubRRPP[];
+  ventaDirecta?: number;
+  identificadorString?: string;
+  asignadoEvento: boolean;
 }
 
 export interface GetVentasRRPPAndSubRRPPDto extends PagedAndSortedResultRequestDto {

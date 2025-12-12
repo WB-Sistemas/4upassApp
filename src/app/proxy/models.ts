@@ -11,6 +11,7 @@ import type { FormaDescuento } from './tickets/descuentos/forma-descuento.enum';
 export interface RRPPUserDto {
   id?: string;
   userId?: string;
+  clienteId?: string;
   name?: string;
 }
 
@@ -49,17 +50,20 @@ export interface CarrouselDto {
 }
 
 export interface CortesiaArchivoDto {
+  id?: string;
   funcionId?: string;
   sectorId?: string;
   rrppId?: string;
   ventaDirectaId?: string;
-  precioId?: string;
+  groupId: number;
   tipo: TipoInvitacion;
   cantidad: number;
   nombre?: string;
   email?: string;
   normalizedEmail?: string;
   estado: EstadoCortesia;
+  telefono?: string;
+  datoExtra?: string;
 }
 
 export interface CortesiaInputDto extends PagedAndSortedResultRequestDto {
@@ -90,10 +94,17 @@ export interface EventoConFuncionesDto {
   codigosEnviados: number;
 }
 
+export interface EventoFuncionAsignadaDto extends EntityDto<string> {
+  fecha?: string;
+  final?: string;
+}
+
 export interface EventosAsignadosDto extends EntityDto<string> {
   nombre?: string;
   fecha?: string;
+  final?: string;
   ubicacion?: string;
+  funciones: EventoFuncionAsignadaDto[];
 }
 
 export interface FlujoCompraDto {
@@ -125,6 +136,7 @@ export interface GetDatosBancariosEventosDto extends EntityDto {
   monto: number;
   nombreArchivo?: string;
   archivoId?: string;
+  archivoUrl?: string;
   titular?: string;
   cuit?: string;
   banco?: string;
@@ -145,6 +157,7 @@ export interface GetEventoWithCortesiaDto extends PagedAndSortedResultRequestDto
   preciosGroups: number[];
   sectores: string[];
   subRRPPs: string[];
+  rrpPs: string[];
 }
 
 export interface GetEventosWithCortesiaDto extends PagedAndSortedResultRequestDto {
@@ -188,6 +201,7 @@ export interface ReporteDropdownsDto {
   metodosPagos: string[];
   tiposPrecios: string[];
   totalSumado: number;
+  esBoleteria: boolean;
 }
 
 export interface SectorGraficoDto {

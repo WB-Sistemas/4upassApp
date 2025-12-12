@@ -1,7 +1,7 @@
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
-import type { CortesiaDto, DescuentoDto } from '../descuentos/models';
+import type { CortesiaCreatedDto, CortesiaDto, DescuentoDto } from '../descuentos/models';
 import type { CortesiaSectoresIdDto, DtoReturnError, SendCortesiasDto } from '../eventos/models';
 import type { CortesiaArchivoDto, DescuentoSimpleDto, InputCuponesIndividualesDto } from '../../models';
 import type { UsuarioDto } from '../usuarios/models';
@@ -13,10 +13,20 @@ export class DescuentosService {
   apiName = 'Default';
   
 
-  anularCortesia = (cortesiaId: string, config?: Partial<Rest.Config>) =>
+  anularCortesia = (cortesiaId: string, setearVentaDirectaNull?: boolean, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'POST',
       url: `/api/app/descuentos/anular-cortesia/${cortesiaId}`,
+      params: { setearVentaDirectaNull },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  anularCortesiaMultiple = (cortesiaIds: string[], config?: Partial<Rest.Config>) =>
+    this.restService.request<any, void>({
+      method: 'POST',
+      url: '/api/app/descuentos/anular-cortesia-multiple',
+      body: cortesiaIds,
     },
     { apiName: this.apiName,...config });
   
@@ -30,10 +40,11 @@ export class DescuentosService {
     { apiName: this.apiName,...config });
   
 
-  createCortesias = (dto: CortesiaArchivoDto[], config?: Partial<Rest.Config>) =>
-    this.restService.request<any, void>({
+  createCortesias = (dto: CortesiaArchivoDto[], crearYEnviar?: boolean, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, CortesiaCreatedDto[]>({
       method: 'POST',
       url: '/api/app/descuentos/cortesias',
+      params: { crearYEnviar },
       body: dto,
     },
     { apiName: this.apiName,...config });

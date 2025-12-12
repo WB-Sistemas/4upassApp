@@ -4,10 +4,14 @@ import type { Entidad } from '../entidades-externas/entidad.enum';
 export interface MetodosPago {
   mercadoPago: boolean;
   macroClick: boolean;
+  openpayAr: boolean;
+  plusPagos: boolean;
 }
 
 export interface MercadoPagoTransient_WebhookRequest {
   type?: string;
+  topic?: string;
+  id?: string;
   data: MercadoPagoTransient_WebhookRequest_Data;
 }
 
@@ -38,4 +42,5 @@ export interface SolicitudPagoDto extends FullAuditedEntityDto<string> {
   compraId?: string;
   entidadExternaId?: string;
   urlPost?: string;
+  timeZoneName?: string;
 }

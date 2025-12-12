@@ -26,6 +26,15 @@ export class LinkService {
     { apiName: this.apiName,...config });
   
 
+  verificarLinkEventoByUrl = (url: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, boolean>({
+      method: 'POST',
+      url: '/api/app/link/verificar-link-evento',
+      params: { url },
+    },
+    { apiName: this.apiName,...config });
+  
+
   verificarLinkYoutube = (videoId: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, boolean>({
       method: 'POST',

@@ -2,6 +2,7 @@ import type { EstablecimientoDropDto, EstablecimientoDto, EstablecimientoNoTrack
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
+import type { GetIdDto } from '../models';
 import type { PrecioPer } from '../precios/models';
 
 @Injectable({
@@ -9,6 +10,15 @@ import type { PrecioPer } from '../precios/models';
 })
 export class EstablecimientoService {
   apiName = 'Default';
+  
+
+  asignarEstablecimientoAClientes = (establecimientoId: string, clienteIds: string[], config?: Partial<Rest.Config>) =>
+    this.restService.request<any, void>({
+      method: 'POST',
+      url: `/api/app/establecimiento/asignar-establecimiento-aClientes/${establecimientoId}`,
+      body: clienteIds,
+    },
+    { apiName: this.apiName,...config });
   
 
   create = (input: EstablecimientoDto, config?: Partial<Rest.Config>) =>
@@ -36,6 +46,14 @@ export class EstablecimientoService {
     { apiName: this.apiName,...config });
   
 
+  getClientesAsignados = (establecimientoId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, string[]>({
+      method: 'GET',
+      url: `/api/app/establecimiento/clientes-asignados/${establecimientoId}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
   getEstabDrop = (config?: Partial<Rest.Config>) =>
     this.restService.request<any, EstablecimientoDropDto[]>({
       method: 'GET',
@@ -48,6 +66,14 @@ export class EstablecimientoService {
     this.restService.request<any, EstablecimientoNoTrackDto>({
       method: 'GET',
       url: `/api/app/establecimiento/estab-evento/${eventoId}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getEstabMapeado = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, EstablecimientoDropDto[]>({
+      method: 'GET',
+      url: '/api/app/establecimiento/estab-mapeado',
     },
     { apiName: this.apiName,...config });
   
@@ -74,6 +100,16 @@ export class EstablecimientoService {
     this.restService.request<any, EstablecimientoNoTrackDto[]>({
       method: 'GET',
       url: '/api/app/establecimiento/localidades',
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getNombreEstabMapeado = (dto: GetIdDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, string>({
+      method: 'GET',
+      responseType: 'text',
+      url: '/api/app/establecimiento/nombre-estab-mapeado',
+      params: { id: dto.id },
     },
     { apiName: this.apiName,...config });
   

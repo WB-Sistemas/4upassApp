@@ -9,6 +9,7 @@ export enum EstadoEnvio {
   Excluido = 5,
   RechazadoSoft = 6,
   RechazadoHard = 7,
+  NoExiste = 8,
 }
 
 export const estadoEnvioOptions = mapEnumToOptions(EstadoEnvio);

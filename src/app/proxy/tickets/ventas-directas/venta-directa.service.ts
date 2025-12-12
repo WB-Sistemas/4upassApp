@@ -1,7 +1,9 @@
-import type { SendEmailVentaDirectaDto } from './models';
+import type { SendEmailVentaDirectaDto, VerDisponibilidadDto } from './models';
 import { RestService, Rest } from '@abp/ng.core';
+import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
-import type { CompraDto, IniciarCompraDto } from '../entradas/models';
+import type { IniciarCompraDto } from '../entradas/models';
+import type { DtoReturnErrorData } from '../eventos/models';
 import type { SolicitudPagoDto } from '../pagos/models';
 
 @Injectable({
@@ -9,6 +11,15 @@ import type { SolicitudPagoDto } from '../pagos/models';
 })
 export class VentaDirectaService {
   apiName = 'Default';
+  
+
+  esBoleteria = (eventoId: string, rrppId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, boolean>({
+      method: 'POST',
+      url: '/api/app/venta-directa/es-boleteria',
+      params: { eventoId, rrppId },
+    },
+    { apiName: this.apiName,...config });
   
 
   generarSolicitud = (finalizarCompraDto: SendEmailVentaDirectaDto, config?: Partial<Rest.Config>) =>
@@ -20,8 +31,17 @@ export class VentaDirectaService {
     { apiName: this.apiName,...config });
   
 
-  iniciarCompraVentaDirecta = (iniciarCompraDto: IniciarCompraDto, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, CompraDto>({
+  getVerDisponibilidad = (eventoId: string, skipCount: number, maxResultCount: number, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, PagedResultDto<VerDisponibilidadDto>>({
+      method: 'GET',
+      url: `/api/app/venta-directa/ver-disponibilidad/${eventoId}`,
+      params: { skipCount, maxResultCount },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  iniciarCompraVentaDirecta = (iniciarCompraDto: IniciarCompraDto, cancellationToken?: any, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, DtoReturnErrorData<object>>({
       method: 'POST',
       url: '/api/app/venta-directa/iniciar-compra-venta-directa',
       body: iniciarCompraDto,

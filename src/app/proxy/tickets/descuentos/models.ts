@@ -27,6 +27,11 @@ export interface DescuentoDto extends FullAuditedEntityDto<string> {
   sectorId?: string;
 }
 
+export interface CortesiaCreatedDto {
+  id?: string;
+  linkDescargarEntradas?: string;
+}
+
 export interface CortesiaDto {
   funcionId?: string;
   cantidadPorPersona: number;

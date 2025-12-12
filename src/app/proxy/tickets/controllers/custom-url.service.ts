@@ -1,6 +1,7 @@
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
 import type { IActionResult } from '../../microsoft/asp-net-core/mvc/models';
+import type { NotificacionWebHookData } from '../notificaciones/models';
 
 @Injectable({
   providedIn: 'root',
@@ -17,18 +18,26 @@ export class CustomUrlService {
     { apiName: this.apiName,...config });
   
 
-  descargarEntradasById = (id: string, config?: Partial<Rest.Config>) =>
+  descargarCortesiaByCortesiaId = (cortesiaId: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, IActionResult>({
       method: 'GET',
-      url: `/imprimir-entradas/${id}`,
+      url: `/imprimir-cortesia/${cortesiaId}`,
     },
     { apiName: this.apiName,...config });
   
 
-  eventosUrlByUrl = (url: string, config?: Partial<Rest.Config>) =>
+  descargarEntradaByEntradaId = (entradaId: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, IActionResult>({
       method: 'GET',
-      url: `/eventos/${url}`,
+      url: `/imprimir-entrada/${entradaId}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  descargarEntradasById = (id: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, IActionResult>({
+      method: 'GET',
+      url: `/imprimir-entradas/${id}`,
     },
     { apiName: this.apiName,...config });
   
@@ -53,6 +62,15 @@ export class CustomUrlService {
     this.restService.request<any, IActionResult>({
       method: 'GET',
       url: `/li/${id}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  postEmailStatusByBody = (body: NotificacionWebHookData, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, IActionResult>({
+      method: 'POST',
+      url: '/email-wh',
+      body: body,
     },
     { apiName: this.apiName,...config });
   

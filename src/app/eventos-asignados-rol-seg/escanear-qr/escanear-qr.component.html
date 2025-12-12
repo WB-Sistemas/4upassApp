@@ -9,10 +9,6 @@
 
 <ion-content class="ion-padding">
 
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-
   <div class="ion-text-center ion-margin-bottom escaneos-container">
     <ion-card>
       <ion-card-content>
@@ -24,6 +20,16 @@
     </ion-card>
   </div>
 
+  <ion-card *ngIf="seccionesOptions.length > 0">
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Seccion</ion-label>
+        <ion-select [value]="seccionSelected" placeholder="Seleccione seccion" (ionChange)="seccionOnChange($event)">
+          <ion-select-option *ngFor="let sec of seccionesOptions" [value]="sec.num">{{ sec.nombre }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
   <!-- Botón Buscar Entrada para desktop -->
   <ng-container *ngIf="!isMobile">
     <div class="cont-bot">
@@ -50,41 +56,14 @@
         <ion-button expand="block" (click)="redirect()" class="mi-boton no-effects" >
           Buscar Entrada
         </ion-button>
-
-        
       </div>
-      
-      @if(seccionesOptions.length > 0){
-
-        <div>
-          <ion-select
-            class="always-flip"
-            toggleIcon="caret-down-sharp"
-            interface="popover"
-            label="Seleccione sección"
-            [value]="seccionSelected"
-            (ionChange)="seccionOnChange($event)"
-          >
-            @for (seccion of seccionesOptions; track seccion) {
-            <ion-select-option [value]="seccion.num">{{ seccion.nombre }}</ion-select-option>
-            }
-          </ion-select>
-        </div>
-
-        <!-- <ion-item>
-          <ion-select aria-label="fruit" placeholder="Seleccione Sect ">
-          @for (seccion of seccionesOptions; track seccion) {
-            <ion-select-option [value]="seccion">{{ seccion.nombre }}</ion-select-option>
-          }
-          </ion-select>
-        </ion-item>       -->
-      }
 
       <!-- Contenedor para el QR, con margen arriba -->
       <div class="cont-qr" *ngIf="camaraActive">
         <app-qr 
           [encendido]="camaraActive"
           (valor)="procesarValor($event)"
+          (devices)="initCameras($event)"
         ></app-qr>
       </div>
 
@@ -104,8 +83,16 @@
           <p style="text-align: start; color: #212529;  margin: 0px;">{{ datosEntradaExito?.numeroDNI }}</p>
           <p class="sub-title" style="color: #ada5bd; text-align: start;  margin: 0px;" >ID:</p>
           <p style="text-align: start; color: #212529; margin: 0px; ">{{ datosEntradaExito?.idLegible }}</p>
+          <p class="sub-title" style="color: #ada5bd; text-align: start;  margin: 0px;" >Funcion:</p>
+          <p style="text-align: start; color: #212529; margin: 0px; ">{{datosEntradaExito?.fecha | date}}</p>
+          <p class="sub-title" style="color: #ada5bd; text-align: start; margin: 0px;" >Tipo de Precio: </p>
+          <p style="text-align: start; color: #212529; margin: 0px;">{{datosEntradaExito?.nombre}}</p>
           <p class="sub-title" style="color: #ada5bd; text-align: start; margin: 0px;" >Sector:</p>
           <p class="text-wrap" style="margin: 0px; text-align: start; color: #212529">{{ datosEntradaExito?.nombreSector  }}</p>
+          <p class="sub-title" style="color: #ada5bd; text-align: start;  margin: 0px;" *ngIf="datosEntradaExito?.nombreFila">Fila: </p>
+          <p class="text-wrap" style="margin: 0px; text-align: start; color: #212529" >{{datosEntradaExito?.nombreFila}}</p>
+          <p class="sub-title" style="color: #ada5bd; text-align: start;  margin: 0px;" *ngIf="datosEntradaExito?.nombreAsiento">Butaca: </p>
+          <p class="text-wrap" style="margin: 0px; text-align: start; color: #212529">{{datosEntradaExito?.nombreAsiento}}</p>
         </div>
       </div>
       <div class="actions mt-4">
@@ -125,8 +112,36 @@
       <div class="icon-container">
         <img src="assets/errorScan.svg" alt="Error" class="icon-success" />
       </div>
-      <div class="info-error fw-bold mt-4 w-100" [ngClass]="{ 'padd-per': !datosEntradaError && !fechaExpiracion }">
+      <div class="info-error fw-bold mt-4 w-100" [ngClass]="{ 'padd-per': !datosEntradaError && !fechaExpiracion && !isErrorSeccion }">
         <p class="error w-100">{{ mensajeError || 'Error inesperado' }}</p>
+
+        <div *ngIf="isErrorSeccion && errorSeccionSub" class="details mt-4 mb-3">
+          <div class="icons w-100 justify-content-center">
+            <div class="data-error">
+              <p class="sub-title" style="margin: 0px; text-align: center;">{{ errorSeccionSub }}</p>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="isErrorSeccion && datosSeccionError && !errorSeccionSub" class="details mt-4 mb-3">
+          <div class="icons">
+            <div class="icon-cont">
+              <ion-icon name="time-outline"></ion-icon>
+            </div>
+            <div class="data-error">
+              <p class="sub-title" style="margin: 0px;">{{ datosSeccionError?.scanTime | date: "dd-LLL-yyyy" }}</p>
+              <p class="detail-error">{{ horaDeScan ? (horaDeScan | date: "HH:mm'hs'") : '' }}</p>
+            </div>
+          </div>
+          <div class="icons">
+            <div class="icon-cont">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <div class="data-error">
+              <p class="sub-title" style="margin: 0px;">Escaneado Por</p>
+              <p class="detail-error">{{ datosSeccionError?.nameScanBy }}</p>
+            </div>
+          </div>
+        </div>
 
         <!-- Datos de escaneo -->
         <div *ngIf="datosEntradaError" class="details mt-4 mb-3">

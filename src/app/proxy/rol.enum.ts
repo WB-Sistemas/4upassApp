@@ -7,6 +7,7 @@ export enum Rol {
   Seguridad = 8,
   RRPP = 16,
   SUB_RRPP = 32,
+  Auditor = 64,
 }
 
 export const rolOptions = mapEnumToOptions(Rol);

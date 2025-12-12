@@ -9,6 +9,8 @@ export enum EstadoCortesia {
   Enviando = 5,
   Anulada = 6,
   Escaneada = 7,
+  Compartida = 8,
+  EnviadaYCompartida = 9,
 }
 
 export const estadoCortesiaOptions = mapEnumToOptions(EstadoCortesia);

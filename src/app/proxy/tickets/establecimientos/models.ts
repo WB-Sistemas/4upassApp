@@ -4,16 +4,19 @@ import type { PrecioDto, PrecioNoTrackDto, PrecioPer } from '../precios/models';
 import type { EventoDto } from '../eventos/models';
 import type { ArchivoDto } from '../archivos/models';
 import type { TipoArchivo } from '../../tipo-archivo.enum';
+import type { EstadoTemplateEstab } from '../../estado-template-estab.enum';
 
 export interface AsientosDto extends FullAuditedEntityDto<string> {
   num?: string;
   ocupado: boolean;
+  numeroMostrar?: string;
 }
 
 export interface CreateFilaDto {
   nombre?: string;
   asientos: AsientosDto[];
   anulada: boolean;
+  orden: number;
 }
 
 export interface CreateSectorDto extends EntityDto<string> {
@@ -28,20 +31,24 @@ export interface CreateSectorDto extends EntityDto<string> {
   capacidad?: number;
   descripcion?: string;
   numFilas?: number;
+  grupo?: number;
   filas: CreateFilaDto[];
 }
 
 export interface EstablecimientoDropDto extends EntityDto<string> {
   nombre?: string;
   nombreEvento?: string;
+  ubicacion?: string;
 }
 
 export interface EstablecimientoDto extends FullAuditedEntityDto<string> {
   nombre?: string;
-  idProvincia: number;
+  idProvincia?: number;
   descProvincia?: string;
   idLocalidad?: string;
   descLocalidad?: string;
+  lugar?: string;
+  lugarManual: boolean;
   ubicacion?: string;
   eventos: EventoDto[];
   sectores: SectorDto[];
@@ -50,17 +57,21 @@ export interface EstablecimientoDto extends FullAuditedEntityDto<string> {
 export interface EstablecimientoNoTrackDto {
   id?: string;
   nombre?: string;
+  nombreNormalizado?: string;
   idPais?: string;
-  idProvincia: number;
+  idProvincia?: number;
   descProvincia?: string;
   idLocalidad?: string;
   descLocalidad?: string;
+  lugar?: string;
+  lugarManual: boolean;
   ubicacion?: string;
   imgEstabId?: string;
   imagenEstab: ArchivoDto;
   urlYoutube?: string;
   urlSpotify?: string;
   tipoArchivo: TipoArchivo;
+  template: EstadoTemplateEstab;
   sectorGeneral: SectorNoTrackGeneralDto[];
   sectorNumerado: SectorNoTrackNumeradoDto[];
 }
@@ -70,12 +81,14 @@ export interface FilaNoTrackDto extends FullAuditedEntityDto<string> {
   asientos: AsientosDto[];
   sectorId?: string;
   asientosDisponibles: number;
+  orden: number;
 }
 
 export interface SectorDto extends FullAuditedEntityDto<string> {
   nombre?: string;
   guiaMapa?: string;
   tipo: TipoSector;
+  descripcion?: string;
   establecimientoId?: string;
   establecimiento: EstablecimientoDto;
   precios: PrecioDto[];
@@ -96,6 +109,8 @@ export interface SectorNoTrackDto extends FullAuditedEntityDto<string> {
   orden?: number;
   agotado?: boolean;
   entradasVendidas?: number;
+  grupo?: number;
+  nombreGrupo?: string;
 }
 
 export interface SectorNoTrackGeneralDto extends SectorNoTrackDto {
@@ -107,8 +122,14 @@ export interface SectorNoTrackGeneralDto extends SectorNoTrackDto {
 
 export interface SectorNoTrackNumeradoDto extends SectorNoTrackDto {
   numFilas: number;
+  capacidad: number;
+  cantMax?: number;
+  sectorId?: string;
+  precioId?: string;
   filas: FilaNoTrackDto[];
   entradasDisponibles: number;
+  pocasEntradasSectorNum: boolean;
+  sinEntradasSectorNum: boolean;
 }
 
 export interface UpdateEstabDto extends EntityDto<string> {
@@ -118,10 +139,12 @@ export interface UpdateEstabDto extends EntityDto<string> {
   imgEstabId?: string;
   nombre?: string;
   idPais?: string;
-  idProvincia: number;
+  idProvincia?: number;
   descProvincia?: string;
   idLocalidad?: string;
   descLocalidad?: string;
+  lugar?: string;
+  lugarManual: boolean;
   ubicacion?: string;
   sectores: UpdtSectorDto[];
 }
@@ -142,6 +165,19 @@ export interface UpdtSectorDto extends EntityDto<string> {
   filas: CreateFilaDto[];
 }
 
+export interface ErroresAsientoDto {
+  errores: ErroresAsientoDto_ErrorAsientoDto[];
+}
+
+export interface ErroresAsientoDto_ErrorAsientoDto {
+  asientoId?: string;
+  nombre?: string;
+}
+
+export interface GetSectoresDto extends EntityDto<string> {
+  nombre?: string;
+}
+
 export interface SectorAgrupadoDto {
   nombre?: string;
   nombrePrecio?: string;
@@ -150,4 +186,5 @@ export interface SectorAgrupadoDto {
   cantidadPack: number;
   precioOriginal: number;
   precioTotal: number;
+  detalleAsientos: string[];
 }

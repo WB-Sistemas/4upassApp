@@ -15,6 +15,12 @@ export interface DatosCompraDto {
   descuento: DescuentoDto;
 }
 
+export interface EstadisticaDto {
+  label?: string;
+  value: number;
+  esDinero: boolean;
+}
+
 export interface EventoConFechaDeFuncionDto {
   funcionId?: string;
   nombre?: string;
@@ -43,6 +49,10 @@ export interface LiquidacionDto {
   liquidacionTotalVentaDirecta: number;
   esVentaDirecta: boolean;
   totalDisponibleParaVenta: number;
+  servicio: number;
+  anticipos: number;
+  estadisticas: EstadisticaDto[];
+  porcentajeComisionVentaDirecta: number;
 }
 
 export interface LiquidacionItemDto {
@@ -52,4 +62,12 @@ export interface LiquidacionItemDto {
   monto: number;
   totalIngresado: number;
   esVentaDirecta: boolean;
+  cantidadPack: number;
+  esDinero: boolean;
+}
+
+export interface SetAnticipoDto {
+  eventoId?: string;
+  funcionId?: string;
+  monto: number;
 }

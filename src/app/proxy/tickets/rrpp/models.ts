@@ -3,6 +3,7 @@ import type { TipoDocs } from '../../usuario/tipo-docs.enum';
 import type { EstablecimientoDto, SectorDto } from '../establecimientos/models';
 import type { EstadoEvento } from '../../estado-evento.enum';
 import type { RRPPUserDto } from '../../models';
+import type { TipoRRPP } from './tipo-rrpp.enum';
 
 export interface CountSubRRPPDto {
   eventoIds: string[];
@@ -21,6 +22,7 @@ export interface CreateUpdateRRPPDto extends EntityDto {
 export interface EventosRRPPDto extends EntityDto<string> {
   creatorId?: string;
   nombre?: string;
+  customUrl?: string;
   ubicacion?: string;
   fechaEfectiva?: string;
   establecimiento: EstablecimientoDto;
@@ -37,6 +39,12 @@ export interface EventosRRPPDto extends EntityDto<string> {
   esReferido?: boolean;
   tieneSubRRPPs: boolean;
   rrppId?: string;
+  rrppIdentificador?: string;
+}
+
+export interface GetEventoWithRrppDto extends EntityDto<string> {
+  nombre?: string;
+  activo: boolean;
 }
 
 export interface GetEventosRRPPFilterDto extends PagedAndSortedResultRequestDto {
@@ -93,6 +101,10 @@ export interface RelacionesPublicasDto extends EntityDto<string> {
   email?: string;
   telefono?: string;
   userId?: string;
+  tipo: TipoRRPP;
+  identificador: number;
+  nombreIdentificador?: string;
+  identificadorString?: string;
 }
 
 export interface RrppAutocompleteDto {

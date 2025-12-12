@@ -1,12 +1,14 @@
-import type { BuscarFuncionesDto, CodigoSectorDto, ConfiguracionDto, CortesiaDeEventos, CreateUpdateEventoDto, CustomUrlCheckDto, DatosCortesiaDto, DatosEventoEntradas, DtoReturnErrorData, EventoCarouselDto, EventoDropdownDto, EventoDto, EventoFuncionesDto, EventoSingleDto, EventosCortesiaDto, EventosPorFuncionActivaDto, EventosPorFuncionActivaFilterDto, GetClientEventsDto, GetComprasDto, GetEventoDetalleDto, GetEventosDestacadosDto, GetEventosListFilterDto, MisEventosDto, PedidosDto, PreciosSectoresDto, ReturnEventoDto, UpdateCarrouselDto, getEventoDto } from './models';
+import type { EventoClonarDto } from './clonar/models';
+import type { BuscarFuncionesDto, CodigoSectorDto, ConfiguracionDto, CortesiaDeEventos, CreateUpdateEventoDto, CustomUrlCheckDto, DatosCortesiaDto, DatosEventoEntradas, DtoReturnErrorData, EventoCarouselDto, EventoDropdownDto, EventoDto, EventoFuncionesDto, EventoSingleDto, EventosCortesiaDto, EventosPorFuncionActivaDto, EventosPorFuncionActivaFilterDto, GetClientEventsDto, GetComprasDto, GetEventoDetalleDto, GetEventoDto, GetEventosDestacadosDto, GetEventosListFilterDto, MisEventosDto, PedidosDto, PreciosSectoresDto, ReturnEventoDto, UpdateCarrouselDto } from './models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { ListResultDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
+import type { ComisionesParamDto, CortesiaParamDto, EventosActivosInputDto, EventosParamDto, FuncionesParamDto, GetEventosActivosDropdownDto, MetodosPagoParamDto, PutComisionesParamDto, PutCortesiaParamDto, PutFuncionesParamDto, PutMetodoDePagoDto } from '../application/contracts/eventos/models';
 import type { ArchivoDto } from '../archivos/models';
 import type { CreateDescuentoPrecio } from '../descuentos/models';
 import type { SectorDto } from '../establecimientos/models';
 import type { EstadoPrecio } from '../../estado-precio.enum';
-import type { GetIdDto } from '../models';
+import type { GetEventoFuncionIdDto } from '../models';
 import type { CarrouselDto, CortesiaInputDto, EventoConFuncionesDto, GetEventoWithCortesiaDto, GetEventosWithCortesiaDto, UpdateCortesiaInputDto } from '../../models';
 import type { Rol } from '../../rol.enum';
 
@@ -15,6 +17,14 @@ import type { Rol } from '../../rol.enum';
 })
 export class EventosService {
   apiName = 'Default';
+  
+
+  clonarEvento = (eventoId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, EventoClonarDto>({
+      method: 'POST',
+      url: `/api/app/eventos/clonar-evento/${eventoId}`,
+    },
+    { apiName: this.apiName,...config });
   
 
   codigoUsado = (codigos: string[], eventoId: string, compraId: string, config?: Partial<Rest.Config>) =>
@@ -27,8 +37,8 @@ export class EventosService {
     { apiName: this.apiName,...config });
   
 
-  create = (input: getEventoDto, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, getEventoDto>({
+  create = (input: GetEventoDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, GetEventoDto>({
       method: 'POST',
       url: '/api/app/eventos',
       body: input,
@@ -80,7 +90,7 @@ export class EventosService {
   
 
   get = (id: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, getEventoDto>({
+    this.restService.request<any, GetEventoDto>({
       method: 'GET',
       url: `/api/app/eventos/${id}`,
     },
@@ -104,10 +114,11 @@ export class EventosService {
     { apiName: this.apiName,...config });
   
 
-  getDatosEventosEntradas = (eventoId: string, config?: Partial<Rest.Config>) =>
+  getDatosEventosEntradas = (eventoIdentificador: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, DatosEventoEntradas>({
       method: 'GET',
-      url: `/api/app/eventos/datos-eventos-entradas/${eventoId}`,
+      url: '/api/app/eventos/datos-eventos-entradas',
+      params: { eventoIdentificador },
     },
     { apiName: this.apiName,...config });
   
@@ -130,11 +141,19 @@ export class EventosService {
     { apiName: this.apiName,...config });
   
 
-  getEventoDetalle = (eventoId: string, estados?: EstadoPrecio[], rrppId?: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, GetEventoDetalleDto>({
+  getEventoDetalle = (eventoIdentificador: string, estados?: EstadoPrecio[], rrppIdStr?: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, DtoReturnErrorData<GetEventoDetalleDto>>({
       method: 'GET',
       url: '/api/app/eventos/evento-detalle',
-      params: { eventoId, estados, rrppId },
+      params: { eventoIdentificador, estados, rrppIdStr },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getEventoParametrizable = (EventoId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, EventosParamDto>({
+      method: 'GET',
+      url: `/api/app/eventos/evento-parametrizable/${EventoId}`,
     },
     { apiName: this.apiName,...config });
   
@@ -143,6 +162,15 @@ export class EventosService {
     this.restService.request<any, EventoSingleDto>({
       method: 'GET',
       url: `/api/app/eventos/evento-upd/${eventoId}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getEventosActivosParamByInput = (input: EventosActivosInputDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, GetEventosActivosDropdownDto[]>({
+      method: 'GET',
+      url: '/api/app/eventos/eventos-activos-param',
+      params: { search: input.search },
     },
     { apiName: this.apiName,...config });
   
@@ -168,7 +196,7 @@ export class EventosService {
     this.restService.request<any, EventoDto[]>({
       method: 'GET',
       url: '/api/app/eventos/eventos-one-rRPP',
-      params: { rrppUserId: dto.rrppUserId, soloActivos: dto.soloActivos, soloEventosParaVentaOnline: dto.soloEventosParaVentaOnline },
+      params: { rrppUserId: dto.rrppUserId, soloActivos: dto.soloActivos, soloEventosParaVentaOnline: dto.soloEventosParaVentaOnline, filtrarPorEntradas: dto.filtrarPorEntradas },
     },
     { apiName: this.apiName,...config });
   
@@ -216,10 +244,10 @@ export class EventosService {
   
 
   getList = (eventoInput: GetEventosListFilterDto, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, PagedResultDto<getEventoDto>>({
+    this.restService.request<any, PagedResultDto<GetEventoDto>>({
       method: 'GET',
       url: '/api/app/eventos',
-      params: { nombre: eventoInput.nombre, idProvincia: eventoInput.idProvincia, idLocalidad: eventoInput.idLocalidad, fecha: eventoInput.fecha, categoria: eventoInput.categoria, estadoFuncion: eventoInput.estadoFuncion, sorting: eventoInput.sorting, skipCount: eventoInput.skipCount, maxResultCount: eventoInput.maxResultCount },
+      params: { nombre: eventoInput.nombre, idProvincia: eventoInput.idProvincia, idLocalidad: eventoInput.idLocalidad, fecha: eventoInput.fecha, categoria: eventoInput.categoria, estadoFuncion: eventoInput.estadoFuncion, soloGenerales: eventoInput.soloGenerales, excluirAgotados: eventoInput.excluirAgotados, incluirNumeradasConCodigo: eventoInput.incluirNumeradasConCodigo, sorting: eventoInput.sorting, skipCount: eventoInput.skipCount, maxResultCount: eventoInput.maxResultCount },
     },
     { apiName: this.apiName,...config });
   
@@ -228,25 +256,25 @@ export class EventosService {
     this.restService.request<any, PagedResultDto<MisEventosDto>>({
       method: 'GET',
       url: `/api/app/eventos/eventos/${clienteId}`,
-      params: { nombre: filtro.nombre, idProvincia: filtro.idProvincia, idLocalidad: filtro.idLocalidad, fecha: filtro.fecha, categoria: filtro.categoria, estadoFuncion: filtro.estadoFuncion, sorting: filtro.sorting, skipCount: filtro.skipCount, maxResultCount: filtro.maxResultCount, rolUsuario },
+      params: { nombre: filtro.nombre, idProvincia: filtro.idProvincia, idLocalidad: filtro.idLocalidad, fecha: filtro.fecha, categoria: filtro.categoria, estadoFuncion: filtro.estadoFuncion, soloGenerales: filtro.soloGenerales, excluirAgotados: filtro.excluirAgotados, incluirNumeradasConCodigo: filtro.incluirNumeradasConCodigo, sorting: filtro.sorting, skipCount: filtro.skipCount, maxResultCount: filtro.maxResultCount, rolUsuario },
     },
     { apiName: this.apiName,...config });
   
 
-  getListEventosActivos = (filtro: GetEventosListFilterDto, clienteId: string, rolUsuario: Rol, conPrecio?: boolean, config?: Partial<Rest.Config>) =>
+  getListEventosActivos = (filtro: GetEventosListFilterDto, conPrecio?: boolean, config?: Partial<Rest.Config>) =>
     this.restService.request<any, ListResultDto<BuscarFuncionesDto>>({
       method: 'GET',
-      url: `/api/app/eventos/eventos-activos/${clienteId}`,
-      params: { nombre: filtro.nombre, idProvincia: filtro.idProvincia, idLocalidad: filtro.idLocalidad, fecha: filtro.fecha, categoria: filtro.categoria, estadoFuncion: filtro.estadoFuncion, sorting: filtro.sorting, skipCount: filtro.skipCount, maxResultCount: filtro.maxResultCount, rolUsuario, conPrecio },
+      url: '/api/app/eventos/eventos-activos',
+      params: { nombre: filtro.nombre, idProvincia: filtro.idProvincia, idLocalidad: filtro.idLocalidad, fecha: filtro.fecha, categoria: filtro.categoria, estadoFuncion: filtro.estadoFuncion, soloGenerales: filtro.soloGenerales, excluirAgotados: filtro.excluirAgotados, incluirNumeradasConCodigo: filtro.incluirNumeradasConCodigo, sorting: filtro.sorting, skipCount: filtro.skipCount, maxResultCount: filtro.maxResultCount, conPrecio },
     },
     { apiName: this.apiName,...config });
   
 
-  getListEventosConFuncionesLiquidacion = (input: GetIdDto, config?: Partial<Rest.Config>) =>
+  getListEventosConFuncionesLiquidacion = (input: GetEventoFuncionIdDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, EventoConFuncionesDto[]>({
       method: 'GET',
       url: '/api/app/eventos/eventos-con-funciones-liquidacion',
-      params: { id: input.id },
+      params: { eventoId: input.eventoId, funcionId: input.funcionId },
     },
     { apiName: this.apiName,...config });
   
@@ -264,7 +292,7 @@ export class EventosService {
     this.restService.request<any, PagedResultDto<DatosCortesiaDto>>({
       method: 'GET',
       url: '/api/app/eventos/one-evento-with-cortesia',
-      params: { nombreUsuario: filtro.nombreUsuario, nombre: filtro.nombre, email: filtro.email, sector: filtro.sector, cantidad: filtro.cantidad, fecha: filtro.fecha, estado: filtro.estado, estadosSeleccionados: filtro.estadosSeleccionados, tipo: filtro.tipo, preciosGroups: filtro.preciosGroups, sectores: filtro.sectores, subRRPPs: filtro.subRRPPs, sorting: filtro.sorting, skipCount: filtro.skipCount, maxResultCount: filtro.maxResultCount, funcionId, clienteId, rolUsuario },
+      params: { nombreUsuario: filtro.nombreUsuario, nombre: filtro.nombre, email: filtro.email, sector: filtro.sector, cantidad: filtro.cantidad, fecha: filtro.fecha, estado: filtro.estado, estadosSeleccionados: filtro.estadosSeleccionados, tipo: filtro.tipo, preciosGroups: filtro.preciosGroups, sectores: filtro.sectores, subRRPPs: filtro.subRRPPs, rrpPs: filtro.rrpPs, sorting: filtro.sorting, skipCount: filtro.skipCount, maxResultCount: filtro.maxResultCount, funcionId, clienteId, rolUsuario },
     },
     { apiName: this.apiName,...config });
   
@@ -281,7 +309,51 @@ export class EventosService {
     this.restService.request<any, EventoDropdownDto[]>({
       method: 'GET',
       url: '/api/app/eventos/user-eventos-list',
-      params: { rrppUserId: dto.rrppUserId, soloActivos: dto.soloActivos, soloEventosParaVentaOnline: dto.soloEventosParaVentaOnline },
+      params: { rrppUserId: dto.rrppUserId, soloActivos: dto.soloActivos, soloEventosParaVentaOnline: dto.soloEventosParaVentaOnline, filtrarPorEntradas: dto.filtrarPorEntradas },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  marcarCortesiaCompartida = (cortesiaId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, void>({
+      method: 'POST',
+      url: `/api/app/eventos/marcar-cortesia-compartida/${cortesiaId}`,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  putComisionesParamByEventoIdAndInput = (eventoId: string, input: PutComisionesParamDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, ComisionesParamDto>({
+      method: 'PUT',
+      url: `/api/app/eventos/comisiones-param/${eventoId}`,
+      body: input,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  putCortesiaParamByEventoIdAndInput = (eventoId: string, input: PutCortesiaParamDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, CortesiaParamDto>({
+      method: 'PUT',
+      url: `/api/app/eventos/cortesia-param/${eventoId}`,
+      body: input,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  putFuncionesParamByEventoIdAndInput = (eventoId: string, input: PutFuncionesParamDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, FuncionesParamDto>({
+      method: 'PUT',
+      url: `/api/app/eventos/funciones-param/${eventoId}`,
+      body: input,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  putMetodoDePagoParamByEventoIdAndInput = (eventoId: string, input: PutMetodoDePagoDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, MetodosPagoParamDto>({
+      method: 'PUT',
+      url: `/api/app/eventos/metodo-de-pago-param/${eventoId}`,
+      body: input,
     },
     { apiName: this.apiName,...config });
   
@@ -297,8 +369,8 @@ export class EventosService {
     { apiName: this.apiName,...config });
   
 
-  update = (id: string, input: getEventoDto, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, getEventoDto>({
+  update = (id: string, input: GetEventoDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, GetEventoDto>({
       method: 'PUT',
       url: `/api/app/eventos/${id}`,
       body: input,

@@ -1,11 +1,13 @@
-import type { BuscarTicketQRResult, CompraDto, DatoCompraDto, ETicketsDto, EntradaSimpleDto, EntradasDto, EntradasGetDto, FinalizarCompraDto, GenerarEntradaDto, IniciarCompraDto, UpdateDatosUsuarioForETickets } from './models';
+import type { BuscarTicketQRResult, CompraDto, DatoCompraDto, ETicketsDto, EntradaSimpleDto, EntradasDto, EntradasGetDto, FinalizarCompraDto, IniciarCompraDto, UpdateDatosUsuarioForETickets } from './models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { ListResultDto, PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
 import type { DatosCompraDto } from '../compras/models';
+import type { ErroresAsientoDto } from '../establecimientos/models';
 import type { DtoReturnError, DtoReturnErrorData } from '../eventos/models';
 import type { IActionResult } from '../../microsoft/asp-net-core/mvc/models';
 import type { MercadoPagoTransient_WebhookRequest, SolicitudPagoDto } from '../pagos/models';
+import type { OpenpayWebhookPayload } from '../pagos/openpay-ar/models';
 
 @Injectable({
   providedIn: 'root',
@@ -67,16 +69,6 @@ export class EntradasService {
     { apiName: this.apiName,...config });
   
 
-  generarQrEntrada = (entrada: GenerarEntradaDto, timeZoneName: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, number[]>({
-      method: 'POST',
-      url: '/api/app/entradas/generar-qr-entrada',
-      params: { timeZoneName },
-      body: entrada,
-    },
-    { apiName: this.apiName,...config });
-  
-
   generarQrEntradaByIdCompra = (compraId: string, timeZoneName: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, number[]>({
       method: 'POST',
@@ -92,16 +84,6 @@ export class EntradasService {
       url: '/api/app/entradas/generar-qr-entrada-by-ids',
       params: { timeZoneName },
       body: entradasIds,
-    },
-    { apiName: this.apiName,...config });
-  
-
-  generarQrEntradas = (entradas: GenerarEntradaDto[], timeZoneName: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, number[]>({
-      method: 'POST',
-      url: '/api/app/entradas/generar-qr-entradas',
-      params: { timeZoneName },
-      body: entradas,
     },
     { apiName: this.apiName,...config });
   
@@ -174,8 +156,8 @@ export class EntradasService {
     { apiName: this.apiName,...config });
   
 
-  iniciarCompra = (iniciarCompraDto: IniciarCompraDto, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, CompraDto>({
+  iniciarCompra = (iniciarCompraDto: IniciarCompraDto, cancellationToken?: any, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, DtoReturnErrorData<object>>({
       method: 'POST',
       url: '/api/app/entradas/iniciar-compra',
       body: iniciarCompraDto,
@@ -183,21 +165,64 @@ export class EntradasService {
     { apiName: this.apiName,...config });
   
 
-  mercadoPagoWebHookByRequest = (request: MercadoPagoTransient_WebhookRequest, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, IActionResult>({
+  marcarEntradaCompartida = (entradaId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, void>({
       method: 'POST',
-      url: '/api/app/entradas/mercado-pago-web-hook',
-      params: { type: request.type, ["data.id"]: request.data.id },
+      url: `/api/app/entradas/marcar-entrada-compartida/${entradaId}`,
     },
     { apiName: this.apiName,...config });
   
 
-  pagoExitosoWebHookByJsonAndEntidad = (json: object, entidad: number, config?: Partial<Rest.Config>) =>
+  mercadoPagoWebHook = (compraId: string, request: MercadoPagoTransient_WebhookRequest, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, IActionResult>({
+      method: 'POST',
+      url: `/api/app/entradas/mercado-pago-web-hook/${compraId}`,
+      params: { type: request.type, topic: request.topic, id: request.id, ["data.id"]: request.data.id },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  mercadoPagoWebHookGeneric = (request: MercadoPagoTransient_WebhookRequest, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, IActionResult>({
+      method: 'POST',
+      url: '/api/app/entradas/mercado-pago-web-hook',
+      params: { type: request.type, topic: request.topic, id: request.id, ["data.id"]: request.data.id },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  openpayArWebHook = (compraId: string, payload: OpenpayWebhookPayload, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, IActionResult>({
+      method: 'POST',
+      url: `/api/app/entradas/openpay-ar-web-hook/${compraId}`,
+      body: payload,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  openpayArWebHookGeneric = (payload: OpenpayWebhookPayload, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, IActionResult>({
+      method: 'POST',
+      url: '/api/app/entradas/openpay-ar-web-hook',
+      body: payload,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  pagoExitosoWebHookByJson = (json: object, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'POST',
       url: '/api/app/entradas/pago-exitoso-web-hook',
-      params: { entidad },
       body: json,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  proxyImport = (a: CompraDto, b: ErroresAsientoDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, void>({
+      method: 'POST',
+      url: '/api/app/entradas/proxy-import',
+      body: b,
     },
     { apiName: this.apiName,...config });
   

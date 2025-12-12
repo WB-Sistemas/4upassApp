@@ -27,6 +27,14 @@ export class NotificacionService {
     { apiName: this.apiName,...config });
   
 
+  enviarEmailClienteUnaVez = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, void>({
+      method: 'POST',
+      url: '/api/app/notificacion/enviar-email-cliente-una-vez',
+    },
+    { apiName: this.apiName,...config });
+  
+
   get = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, NotificacionesDto>({
       method: 'GET',

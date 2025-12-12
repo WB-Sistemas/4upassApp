@@ -11,6 +11,7 @@ import type { Entidad } from '../entidades-externas/entidad.enum';
 export interface AsientosForETicketsDto {
   id?: string;
   num?: string;
+  numeroMostrar?: string;
   ocupado: boolean;
 }
 
@@ -21,17 +22,13 @@ export interface BuscarTicketQRResult {
 
 export interface CompraDto extends FullAuditedEntityDto<string> {
   numEntradas: number;
+  name?: string;
   estado: EstadoCompra;
   usuarioId?: string;
   usuario: IdentityUserDto;
+  numeroDNI?: string;
+  tipoIdentificacion: TipoDocs;
   entradas: EntradasCombinadasDto[];
-}
-
-export interface CompradorPDFDto {
-  nombre?: string;
-  apellido?: string;
-  dni?: string;
-  tipoDni?: TipoDocs;
 }
 
 export interface DatoCompraDto {
@@ -51,6 +48,7 @@ export interface DatosUsuario {
 
 export interface ETicketsDto {
   eventoId?: string;
+  textoVisualETickets?: string;
   entradas: EntradasCombinadasDto[];
 }
 
@@ -60,10 +58,14 @@ export interface EntradaSimpleDto {
   idLegible?: string;
   tipoIdentificacion: TipoDocs;
   numeroDNI?: string;
+  fecha?: string;
+  nombre?: string;
   nombreSector?: string;
   used?: boolean;
   idRef?: string;
   email?: string;
+  nombreFila?: string;
+  nombreAsiento?: string;
 }
 
 export interface EntradasCombinadasDto extends EntradasDto {
@@ -82,10 +84,17 @@ export interface EntradasCombinadasDto extends EntradasDto {
   monto: number;
   cortesia: boolean;
   cortesiaConPrecio: boolean;
+  compartidoWhatsapp: boolean;
+  linkDescargarEntradas?: string;
+  urlReemplazar?: string;
 }
 
 export interface EntradasDto extends FullAuditedEntityDto<string> {
   idLegible?: string;
+  name?: string;
+  numeroDNI?: string;
+  tipoIdentificacion?: TipoDocs;
+  monto: number;
   tipo: TipoEntrada;
   funcionId?: string;
   funcion: FuncionDto;
@@ -93,6 +102,7 @@ export interface EntradasDto extends FullAuditedEntityDto<string> {
   precio: PrecioDto;
   compraId?: string;
   compra: CompraDto;
+  datoExtra?: string;
 }
 
 export interface EntradasGetDto {
@@ -110,6 +120,7 @@ export interface EntradasNoTrackDto extends FullAuditedEntityDto<string> {
 export interface FilaForEticketsDto {
   filaId?: string;
   nombre?: string;
+  orden: number;
 }
 
 export interface FinalizarCompraDto extends FullAuditedEntityDto<string> {
@@ -123,17 +134,6 @@ export interface FinalizarCompraDto extends FullAuditedEntityDto<string> {
   paymentId?: string;
 }
 
-export interface GenerarEntradaDto {
-  id?: string;
-  idLegible?: string;
-  nombreEvento?: string;
-  fecha?: string;
-  lugar: LugarPDFDto;
-  comprador: CompradorPDFDto;
-  idReferencia?: string;
-  cortesia: boolean;
-}
-
 export interface IniciarCompraDto {
   funcionId?: string;
   listaEntradaDto: ItemCompraDto[];
@@ -143,21 +143,15 @@ export interface IniciarCompraDto {
 
 export interface ItemCompraDto {
   sectorId?: string;
+  nombreSector?: string;
   entradasNumeradas: string[];
   cantidad: number;
   precioId?: string;
 }
 
-export interface LugarPDFDto {
-  sector?: string;
-  fila?: string;
-  asiento?: string;
-  precio: number;
-  descripcion?: string;
-}
-
 export interface ReporteVentasDto extends EntityDto<string> {
   nombreComprador?: string;
+  apellidoComprador?: string;
   fechaFuncion?: string;
   nombreSector?: string;
   nombrePrecio?: string;
@@ -174,11 +168,14 @@ export interface ReporteVentasDto extends EntityDto<string> {
   funciones: object;
   email?: string;
   telefono?: string;
+  numeroFactura?: string;
+  fechaFactura?: string;
+  provincia?: string;
 }
 
 export interface ReporteVentasRequestDto extends PagedAndSortedResultRequestDto {
   eventoId?: string;
-  rrppId?: string;
+  rrppIds: string[];
   desde?: string;
   hasta?: string;
   timezoneName?: string;
@@ -206,6 +203,7 @@ export interface SectoresForETicketsDto {
   guiaMapa?: string;
   establecimientoId?: string;
   descripcion?: string;
+  orden: number;
 }
 
 export interface UpdateDatosUsuarioForETickets {

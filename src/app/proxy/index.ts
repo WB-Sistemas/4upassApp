@@ -8,6 +8,8 @@ export * from './estado-envio.enum';
 export * from './estado-evento.enum';
 export * from './estado-funcion.enum';
 export * from './estado-precio.enum';
+export * from './estado-template-estab.enum';
+export * from './grupo-app-services.service';
 export * from './models';
 export * from './rol.enum';
 export * from './tipo-archivo.enum';

@@ -1,8 +1,9 @@
-import type { UserIsActiveDto } from './models';
+import type { UserIsActiveDto, UserRolesResultDto, UsersInRolesRequestDto } from './models';
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
 import type { DtoReturnError, DtoReturnErrorData } from '../eventos/models';
 import type { AddDatosBancariosEventosDto, GetDatosBancariosEventosDto } from '../../models';
+import type { EmailVerificationResult } from '../notificaciones/models';
 import type { AddDatosBancariosDto, CreateUsuarioDto, DatosBancariosDto, EditUsuarioDto, UsuarioDto } from '../usuarios/models';
 import type { ResetPasswordDto } from '../../volo/abp/account/models';
 
@@ -104,8 +105,8 @@ export class AccountService {
     { apiName: this.apiName,...config });
   
 
-  getEmailValidByEmail = (email: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, boolean>({
+  getEmailValid = (email: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, EmailVerificationResult>({
       method: 'GET',
       url: '/api/app/account/email-valid',
       params: { email },
@@ -131,10 +132,10 @@ export class AccountService {
   
 
   getManyEmailsValid = (emails: string[], config?: Partial<Rest.Config>) =>
-    this.restService.request<any, boolean[]>({
-      method: 'GET',
-      url: '/api/app/account/many-emails-valid',
-      params: { emails },
+    this.restService.request<any, Record<string, EmailVerificationResult>>({
+      method: 'POST',
+      url: '/api/app/account/get-many-emails-valid',
+      body: emails,
     },
     { apiName: this.apiName,...config });
   
@@ -192,6 +193,15 @@ export class AccountService {
     { apiName: this.apiName,...config });
   
 
+  getUsersInRoles = (input: UsersInRolesRequestDto, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, UserRolesResultDto[]>({
+      method: 'POST',
+      url: '/api/app/account/get-users-in-roles',
+      body: input,
+    },
+    { apiName: this.apiName,...config });
+  
+
   insertDatosBancariosALiquidar = (inputList: AddDatosBancariosEventosDto[], config?: Partial<Rest.Config>) =>
     this.restService.request<any, DtoReturnError>({
       method: 'POST',
@@ -215,6 +225,14 @@ export class AccountService {
       method: 'POST',
       url: '/api/app/account/reset-password',
       body: dto,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  setPrincipalToCuentaBancaria = (datoBancarioId: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, void>({
+      method: 'POST',
+      url: `/api/app/account/set-principal-to-cuenta-bancaria/${datoBancarioId}`,
     },
     { apiName: this.apiName,...config });
   

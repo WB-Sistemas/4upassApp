@@ -1,32 +1,37 @@
 import type { TipoInvitacion } from '../../tipo-invitacion.enum';
 import type { CreationAuditedEntityDto, EntityDto, FullAuditedEntityDto, PagedAndSortedResultRequestDto, PagedResultRequestDto } from '@abp/ng.core';
 import type { EstadoCortesia } from '../../estado-cortesia.enum';
-import type { EstadoEvento } from '../../estado-evento.enum';
+import type { EstadoFuncion } from '../../estado-funcion.enum';
 import type { ArchivoDto } from '../archivos/models';
-import type { CreateSectorDto, EstablecimientoDto, EstablecimientoNoTrackDto, SectorNoTrackGeneralDto, SectorNoTrackNumeradoDto } from '../establecimientos/models';
+import type { EstadoTemplateEstab } from '../../estado-template-estab.enum';
+import type { EstadoEvento } from '../../estado-evento.enum';
+import type { CreateSectorDto, EstablecimientoDto, EstablecimientoNoTrackDto, SectorNoTrackNumeradoDto } from '../establecimientos/models';
 import type { CategoriaEvento } from '../../categoria-evento.enum';
 import type { RRPPUserDto, SeguridadUserDto } from '../../models';
+import type { AuditoriaUserDto } from '../application/contracts/auditoria/models';
 import type { EstadoPrecio } from '../../estado-precio.enum';
-import type { EstadoFuncion } from '../../estado-funcion.enum';
 import type { EntradasDto } from '../entradas/models';
-import type { PrecioDto, PrecioNoTrackDto } from '../precios/models';
+import type { PrecioDto } from '../precios/models';
 import type { DescuentoDto } from '../descuentos/models';
+import type { TipoArchivo } from '../../tipo-archivo.enum';
 import type { EstadoCompra } from '../entradas/estado-compra.enum';
 import type { TipoEntrada } from '../entradas/tipo-entrada.enum';
 import type { TipoSector } from '../establecimientos/tipo-sector.enum';
-import type { TipoArchivo } from '../../tipo-archivo.enum';
 
 export interface BuscarFuncionesDto {
   nombre?: string;
+  final?: string;
   funcionId?: string;
   eventoId?: string;
   tipo: TipoInvitacion;
   codigo: boolean;
   precios: PrecioDeEventoSeleccionadoDto[];
   fecha?: string;
+  agotadoGeneral?: boolean;
 }
 
 export interface CodigoSectorDto {
+  groupId: number;
   sectorId?: string;
   codigo?: string;
 }
@@ -51,11 +56,12 @@ export interface CortesiaDeEventos {
 export interface CreateFuncionDto extends EntityDto<string> {
   fecha?: string;
   eventoId?: string;
+  final?: string;
 }
 
 export interface CreateUpdateEventoDto {
-  paso1: paso1;
-  paso2: paso2;
+  paso1: Paso1;
+  paso2: Paso2;
 }
 
 export interface CustomUrlCheckDto {
@@ -71,11 +77,17 @@ export interface DatosCortesiaDto extends EntityDto<string> {
   cantidad: number;
   fecha?: string;
   estado: EstadoCortesia;
-  estadoEvento: EstadoEvento;
+  estadoFuncion: EstadoFuncion;
   tipo: TipoInvitacion;
   idSubRRPP?: string;
   nombreSubRRPP?: string;
+  idRRPP?: string;
+  nombreRRPP?: string;
   tipoPrecio?: string;
+  telefono?: string;
+  compartidoWhatsapp: boolean;
+  linkDescargarEntradas?: string;
+  urlReemplazar?: string;
 }
 
 export interface DatosEventoEntradas extends EntityDto<string> {
@@ -89,17 +101,25 @@ export interface DatosEventoEntradas extends EntityDto<string> {
   terminos?: string;
   esPrivado: boolean;
   esCodigoAcceso: boolean;
+  template: EstadoTemplateEstab;
+  estabId?: string;
+  customUrl?: string;
+  pixelTracking?: string;
 }
 
-export interface DtoReturnErrorData<T> {
+export interface DtoReturnError {
   exitoso: boolean;
   mensajeError?: string;
   subtitulo?: string;
+}
+
+export interface DtoReturnErrorData<T> extends DtoReturnError {
   value: T;
 }
 
 export interface EventoCarouselDto extends EntityDto<string> {
   nombre?: string;
+  customUrl?: string;
   descripcion?: string;
   imagenesDetalle: ArchivoDto[];
   imageBannerId?: string;
@@ -109,11 +129,16 @@ export interface EventoCarouselDto extends EntityDto<string> {
   isInCarrousel?: boolean;
   pocasEntradas: boolean;
   sinEntradas: boolean;
+  tieneSectorNum: boolean;
+  tieneSectorGen: boolean;
+  pocasEntradasSectorNum: boolean;
+  sinEntradasSectorNum: boolean;
 }
 
 export interface EventoDropdownDto extends EntityDto<string> {
   nombre?: string;
   creatorId?: string;
+  final?: string;
 }
 
 export interface EventoDto extends FullAuditedEntityDto<string> {
@@ -138,6 +163,11 @@ export interface EventoDto extends FullAuditedEntityDto<string> {
   esPrivado: boolean;
   pasoDeFecha?: boolean;
   nombreCreador?: string;
+  fechaSinHora?: boolean;
+  nombreDocumento?: string;
+  cortesiaConPrecio: boolean;
+  ocultarFechaEntrada: boolean;
+  entradaSinDatosCliente: boolean;
 }
 
 export interface EventoFuncionesDto {
@@ -169,6 +199,10 @@ export interface EventoSingleDto extends CreationAuditedEntityDto<string> {
   duracion?: string;
   usuariosSeguridadSeleccionados: SeguridadUserDto[];
   usuariosRRPPSeleccionados: RRPPUserDto[];
+  usuariosAuditoresSeleccionados: AuditoriaUserDto[];
+  esTemplate: boolean;
+  boleteriaSelected: string[];
+  forzarMismaCantidadEnPrecios: boolean;
 }
 
 export interface EventosCortesiaDto extends EntityDto<string> {
@@ -213,22 +247,23 @@ export interface FuncionDto extends FullAuditedEntityDto<string> {
 export interface FuncionNoTrackDto {
   funcionId?: string;
   fecha?: string;
+  final?: string;
   eventoId?: string;
-  precios: PrecioNoTrackDto[];
-  sectorNum: SectorNoTrackNumeradoDto[];
-  sectorGen: SectorNoTrackGeneralDto[];
-  agotada: boolean;
+  tieneEntradaVendidas: number;
 }
 
 export interface FuncionesEventoDetalle {
   funcionId?: string;
   fecha?: string;
+  final?: string;
   eventoId?: string;
   precios: FechasEfectivasEventoDetalle[];
   sectorNum: SectorNoTrackNumeradoDto[];
   sectorGen: SectorGenEntDisp[];
   agotada: boolean;
   ventaDirectaId?: string;
+  pocasEntradasSectorNum?: boolean;
+  sinEntradasSectorNum?: boolean;
 }
 
 export interface FuncionesPreciosDto {
@@ -244,6 +279,7 @@ export interface GetClientEventsDto {
   rrppUserId?: string;
   soloActivos: boolean;
   soloEventosParaVentaOnline?: boolean;
+  filtrarPorEntradas: boolean;
 }
 
 export interface GetComprasDto extends PagedResultRequestDto {
@@ -264,6 +300,36 @@ export interface GetEventoDetalleDto {
   esCodigoAcceso: boolean;
   esMayorEdad: boolean;
   duracion?: string;
+  pixelTracking?: string;
+}
+
+export interface GetEventoDto extends EntityDto<string> {
+  nombre?: string;
+  customUrl?: string;
+  estado: EstadoEvento;
+  tiempoDeCompra: number;
+  descripcion?: string;
+  observaciones?: string;
+  establecimientoId?: string;
+  precioDesde?: number;
+  proximaFuncion?: string;
+  ubicacion?: string;
+  imagenesDetalle: ArchivoDto[];
+  imageBannerId?: string;
+  imageHomeId?: string;
+  imageBannerUrl?: string;
+  imageHomeUrl?: string;
+  isInCarrousel?: boolean;
+  creatorId?: string;
+  cantidadEntradasPorUsuario: number;
+  pocasEntradas: boolean;
+  sinEntradas: boolean;
+  duracion?: string;
+  esGratis?: boolean;
+  pocasEntradasSectorNum: boolean;
+  sinEntradasSectorNum: boolean;
+  tieneSectorNum: boolean;
+  tieneSectorGen: boolean;
 }
 
 export interface GetEventosDestacadosDto extends EntityDto<string> {
@@ -282,6 +348,9 @@ export interface GetEventosListFilterDto extends PagedAndSortedResultRequestDto 
   fecha?: string;
   categoria?: CategoriaEvento;
   estadoFuncion?: EstadoFuncion;
+  soloGenerales?: boolean;
+  excluirAgotados?: boolean;
+  incluirNumeradasConCodigo?: boolean;
 }
 
 export interface MisEventosDto extends EntityDto<string> {
@@ -297,6 +366,51 @@ export interface MisFuncionesDto {
   id?: string;
   fecha?: string;
   estado: EstadoFuncion;
+}
+
+export interface Paso1 {
+  nombre?: string;
+  customUrl?: string;
+  funciones: CreateFuncionDto[];
+  fechaDisponibilidad?: string;
+  descripcion?: string;
+  observaciones?: string;
+  terminosYCond?: string;
+  establecimientoId?: string;
+  categorias: CategoriaEvento[];
+  imagenHomeId?: string;
+  imagenHome: ArchivoDto;
+  imagenesDetalle: ArchivoDto[];
+  imagenBannerId?: string;
+  imagenBanner: ArchivoDto;
+  esPrivado: boolean;
+  esCodigoAcceso: boolean;
+  esMayorEdad: boolean;
+  duracion?: string;
+  seguridadIds: string[];
+  rrppIds: string[];
+  auditorIds: string[];
+  boleteria: string[];
+}
+
+export interface Paso2 {
+  nombre?: string;
+  idPais?: string;
+  idProvincia?: number;
+  descProvincia?: string;
+  idLocalidad?: string;
+  descLocalidad?: string;
+  lugar?: string;
+  lugarManual: boolean;
+  ubicacion?: string;
+  idImage?: string;
+  nombreImg?: string;
+  urlImg?: string;
+  urlYoutube?: string;
+  urlSpotify?: string;
+  tipoArchivo: TipoArchivo;
+  template: boolean;
+  sectores: CreateSectorDto[];
 }
 
 export interface PedidosCompraDto {
@@ -362,6 +476,7 @@ export interface PedidosSectorDto {
 }
 
 export interface PrecioDeEventoSeleccionadoDto {
+  groupId: number;
   nombre?: string;
   estado: EstadoPrecio;
   funcionId?: string;
@@ -406,6 +521,7 @@ export interface SectorDeEventoSeleccionadoDto extends EntityDto<string> {
   nombre?: string;
   precioId?: string;
   cortesia?: number;
+  tipo?: TipoSector;
 }
 
 export interface SectorGenEntDisp {
@@ -421,75 +537,27 @@ export interface UpdateCarrouselDto {
   tiempoFrente: number;
 }
 
-export interface getEventoDto extends EntityDto<string> {
-  nombre?: string;
-  estado: EstadoEvento;
-  tiempoDeCompra: number;
-  descripcion?: string;
-  observaciones?: string;
-  establecimientoId?: string;
-  precioDesde?: number;
-  proximaFuncion?: string;
-  ubicacion?: string;
-  imagenesDetalle: ArchivoDto[];
-  imageBannerId?: string;
-  imageHomeId?: string;
-  imageBannerUrl?: string;
-  imageHomeUrl?: string;
-  isInCarrousel?: boolean;
-  creatorId?: string;
-  cantidadEntradasPorUsuario: number;
-  pocasEntradas: boolean;
-  sinEntradas: boolean;
-  duracion?: string;
-  esGratis?: boolean;
-}
-
-export interface paso1 {
-  nombre?: string;
-  customUrl?: string;
-  funciones: CreateFuncionDto[];
-  fechaDisponibilidad?: string;
-  descripcion?: string;
-  observaciones?: string;
-  terminosYCond?: string;
-  establecimientoId?: string;
-  categorias: CategoriaEvento[];
-  imagenHomeId?: string;
-  imagenHome: ArchivoDto;
-  imagenesDetalle: ArchivoDto[];
-  imagenBannerId?: string;
-  imagenBanner: ArchivoDto;
-  esPrivado: boolean;
-  esCodigoAcceso: boolean;
-  esMayorEdad: boolean;
-  duracion?: string;
-  seguridadIds: string[];
-  rrppIds: string[];
-}
-
-export interface paso2 {
-  nombre?: string;
-  idProvincia: number;
-  idPais?: string;
-  descProvincia?: string;
-  idLocalidad?: string;
-  descLocalidad?: string;
-  ubicacion?: string;
-  idImage?: string;
-  nombreImg?: string;
-  urlImg?: string;
-  urlYoutube?: string;
-  urlSpotify?: string;
-  tipoArchivo: TipoArchivo;
-  sectores: CreateSectorDto[];
-}
-
 export interface sectorPersonalizado {
   id?: string;
   nombre?: string;
   sectorAnulado: boolean;
   capacidad?: number;
+}
+
+export interface ColaboradorDTO {
+  clienteId?: string;
+  userId?: string;
+  nombreUsuario?: string;
+  dni?: string;
+  email?: string;
+}
+
+export interface ColaboradorUpdate extends EntityDto<string> {
+  clienteId?: string;
+  userId?: string;
+  nombreUsuario?: string;
+  dni?: string;
+  email?: string;
 }
 
 export interface CortesiaSectoresIdDto {
@@ -505,12 +573,6 @@ export interface CortesiaSectoresIdDto {
   tipo: TipoInvitacion;
 }
 
-export interface DtoReturnError {
-  exitoso: boolean;
-  mensajeError?: string;
-  subtitulo?: string;
-}
-
 export interface EventoRRPPDto extends EntityDto<string> {
   nombre?: string;
   proximaFuncion?: string;
@@ -521,11 +583,54 @@ export interface EventoRRPPDto extends EntityDto<string> {
   ubicacion?: string;
   esVentaDirecta: boolean;
   esReferido: boolean;
+  referidoId?: string;
   tieneSubRRPPs: boolean;
   funcionIds: string[];
+  boleteria: boolean;
+}
+
+export interface GetColaboradoresInput extends PagedAndSortedResultRequestDto {
+  clienteId?: string;
+  userId?: string;
+  nombreUsuario?: string;
+  dni?: string;
+  email?: string;
 }
 
 export interface SendCortesiasDto {
   cortesiaIds: string[];
   timeZoneName?: string;
+  enviarEmail?: boolean;
+}
+
+export interface CreateGrupoDTO extends FullAuditedEntityDto<string> {
+  nombre?: string;
+  relacionesPublicasIds: string[];
+}
+
+export interface GetGrupoListFilterDto extends PagedAndSortedResultRequestDto {
+  nombre?: string;
+}
+
+export interface GrupoDTO extends FullAuditedEntityDto<string> {
+  nombre?: string;
+  rrpps: RRPPBasicoDto[];
+}
+
+export interface GrupoYRRPPsDto {
+  grupos: GrupoDTO[];
+  rrpps: RRPPBasicoDto[];
+}
+
+export interface RRPPBasicoDto {
+  id?: string;
+  userId?: string;
+  nombreUsuario?: string;
+  email?: string;
+}
+
+export interface UpdateGrupoDTO extends FullAuditedEntityDto<string> {
+  id?: string;
+  nombre?: string;
+  relacionesPublicasIds: string[];
 }
