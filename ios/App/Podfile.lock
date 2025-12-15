@@ -1,12 +1,12 @@
 PODS:
-  - Capacitor (7.4.3):
+  - Capacitor (7.4.2):
     - CapacitorCordova
-  - CapacitorApp (7.1.0):
+  - CapacitorApp (7.0.2):
     - Capacitor
-  - CapacitorBarcodeScanner (2.1.0):
+  - CapacitorBarcodeScanner (3.0.0):
     - Capacitor
     - OSBarcodeLib (= 2.0.1)
-  - CapacitorCordova (7.4.3)
+  - CapacitorCordova (7.4.2)
   - CapacitorDevice (7.0.2):
     - Capacitor
   - CapacitorGeolocation (7.1.5):
@@ -14,9 +14,9 @@ PODS:
     - IONGeolocationLib (= 1.0.1)
   - CapacitorHaptics (7.0.2):
     - Capacitor
-  - CapacitorKeyboard (7.0.3):
+  - CapacitorKeyboard (7.0.2):
     - Capacitor
-  - CapacitorStatusBar (7.0.3):
+  - CapacitorStatusBar (7.0.2):
     - Capacitor
   - IONGeolocationLib (1.0.1)
   - OSBarcodeLib (2.0.1)
@@ -58,15 +58,15 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/status-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: 28d6c01026a9a3f7156529498ec1f389a2a28dbc
-  CapacitorApp: 26587c2ce485d88ddb39adb21cac64f8e481afe3
-  CapacitorBarcodeScanner: f9e5fc9e38229761348277c9102bfe32f3eeff7e
-  CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
+  Capacitor: 9d9e481b79ffaeacaf7a85d6a11adec32bd33b59
+  CapacitorApp: 1f6922c9c5c8b1c538d7fbe92ebe44a81b34bed3
+  CapacitorBarcodeScanner: b56bf5972818c8ef6f7ca27e877dbfd7d1345ef0
+  CapacitorCordova: 5e58d04631bc5094894ac106e2bf1da18a9e6151
   CapacitorDevice: 81ae78d5d1942707caad79276badd458bf6ec603
   CapacitorGeolocation: 84f868bea4c2499aebc3bb3a88fd0a508f87ab87
   CapacitorHaptics: b3fb2869e72c4466e18ce9ccbeb60a3d8723b3d4
-  CapacitorKeyboard: 62f36104f26d53d8b3a2a43f2a69fe714f1777d5
-  CapacitorStatusBar: 0659ddc7b1713764a05831463d215b177a15d054
+  CapacitorKeyboard: a86aa9e4741b6444a802df26440a92ae041b34a6
+  CapacitorStatusBar: e04d05e121d5a5979c29eb4249186a4e4a84cacb
   IONGeolocationLib: 20f9d0248a0b5264511fb57a37e25dd2badf797a
   OSBarcodeLib: 57987d2eb1f916f701f4554e20e349b3cb83f023
 

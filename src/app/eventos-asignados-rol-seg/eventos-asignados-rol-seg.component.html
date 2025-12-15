@@ -1,8 +1,16 @@
-<ion-header>
+<ion-header class="app-header">
   <ion-toolbar class="my-toolbar">
+
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="light" (click)="presentExitConfirm()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
     <ion-title class="titulo">
       {{ mostrarEventosActivos ? EventosActivosTitle : EventosAsignadosTitle }}
-    </ion-title>    
+    </ion-title>
+
   </ion-toolbar>
 </ion-header>
 
@@ -14,29 +22,40 @@
 
   <ng-container *ngIf="eventosAsignados.length > 0; else sinEventos">
     <ion-accordion-group>
-      <ion-accordion *ngFor="let evento of eventosAsignados; let i = index" value="{{evento.id}}">
-        <ion-item slot="header" color="light">
+
+      <ion-accordion
+        *ngFor="let evento of eventosAsignados"
+        [value]="evento.id"
+      >
+        <ion-item slot="header">
           <ion-label>
             <h2>{{ evento?.nombre }}</h2>
             <p>
-              Fecha: {{ evento?.fecha ? (evento.fecha | date:'dd/MM/yy HH:mm') : 'Sin fecha' }} <br />
-              Lugar: {{ evento?.ubicacion || 'Sin Ubicacion' }}
+              Fecha: {{ evento?.fecha ? (evento.fecha | date:'dd/MM/yy HH:mm') : 'Sin fecha' }}<br>
+              Lugar: {{ evento?.ubicacion || 'Sin Ubicación' }}
             </p>
           </ion-label>
         </ion-item>
+
         <div class="ion-btn" slot="content">
-          <ion-button expand="block" (click)="toEscanearQR(evento.id ?? '')" class="mi-boton no-effects">
+          <ion-button
+            expand="block"
+            class="mi-boton no-effects"
+            (click)="toEscanearQR(evento.id ?? '')"
+          >
             Escanear
           </ion-button>
         </div>
+
       </ion-accordion>
+
     </ion-accordion-group>
   </ng-container>
 
   <ng-template #sinEventos>
-  <div class="ion-text-center ion-padding">
-    <p class="ion-text-wrap">No hay eventos asignados.</p>
-  </div>
+    <div class="ion-text-center ion-padding">
+      <p class="ion-text-wrap">No hay eventos asignados.</p>
+    </div>
   </ng-template>
 
 </ion-content>

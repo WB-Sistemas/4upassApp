@@ -1,6 +1,6 @@
 // import { ConfigStateService, LocalizationService, PagedResultDto, PermissionService } from '';
 import { LocalizationService } from '@abp/ng.core';
-import { Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TipoDocs } from 'src/app/proxy/usuario';
@@ -12,9 +12,12 @@ import { DateUtils } from 'src/app/utils/date-utils';
 import { DeviceUtils } from 'src/app/utils/device-utils';
 import { TiposDocList } from 'src/app/utils/doc-identificacion-utils';
 import { ControlEntradasService, SeccionOutputDTO } from 'src/app/proxy/tickets/control-entradas';
+import { DropdownChangeEvent } from 'primeng/dropdown';
+import { NavController, RefresherCustomEvent } from '@ionic/angular';
+export type EntradaSimplePlus = Omit<EntradaSimpleDto, 'fecha'> & { fecha: Date };
 
 const cacheKey: string = 'camaraId';
-export type EntradaSimplePlus = Omit<EntradaSimpleDto, 'fecha'> & { fecha: Date };
+const totalsCacheKey = (eventoId: string, seccion: number | null) => `totales-${eventoId}-${seccion ?? 'all'}`;
 
 @Component({
   selector: 'app-escanear-qr',
@@ -35,7 +38,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   // datosEntradaExito?: EntradaSimpleDto;
   datosEntradaError?: ReturnDataErrors;
   solicitudCompleta: boolean = false;
-  form: FormGroup;
+  form!: FormGroup;
   modalActive: boolean = false;
   processingValue: boolean = false;
   horaDeScan: Date = new Date();
@@ -62,19 +65,21 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     private cacheLocal: CacheEventoService,
     private router: Router,
     private reportesService: ReportesService,
-    private localization: LocalizationService,
-    private controlEntradasService: ControlEntradasService
-  ) { 
-    this.form = this.initForm()
-  }
+    private localization: LocalizationService, 
+    private controlEntradasService:ControlEntradasService,
+    private navCtrl: NavController
+  ) { }
 
   ngOnInit(): void {
+    this.form = this.initForm();
     this.isMobile = DeviceUtils.isMobile();
     this.tipoIdentificacion = TiposDocList(this.localization);
     this.eventoId = this.ar.snapshot.paramMap.get("eventoId") ?? '';
+    this.loadTotalsFromCache();
 
     this.ar.queryParams.subscribe(params => {
       this.seccionSelected = params["seccionSelected"] ? Number(params["seccionSelected"]) : null;
+      this.loadTotalsFromCache();
     });
 
     this.controlEntradasService.getByControlEntradas(this.eventoId).subscribe(res => {
@@ -140,6 +145,13 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
         this.horaDeScan = DateUtils.IsoString(res.value.returnDataErrors.scanTime ?? '');
       }
     });
+  }
+
+  handleRefresh(event: RefresherCustomEvent) {
+    setTimeout(() => {
+      this.ngOnInit();
+      event.target.complete();
+    }, 2500);
   }
 
   cerrarModalAdvertencia() {
@@ -241,12 +253,11 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     }
   }
 
-  redirect(){
-    let queryParams = { eventoId: this.eventoId, seccionSelected: this.seccionSelected ?? undefined }
-    const url = "eventos-asignados/control-manual"
-    this.router.navigate([url], {queryParams});
-
-    // this.router.navigate(["account/login"], {queryParams})
+  redirect() {
+    this.navCtrl.navigateForward('eventos-asignados/control-manual', {
+      queryParams: { eventoId: this.eventoId },
+      animated: false,
+    });
   }
 
   protected switchCamera(device: MediaDeviceInfo) {
@@ -264,17 +275,40 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
       queryParamsHandling: 'merge',
       replaceUrl: true
     });
+    this.loadTotalsFromCache();
     this.loadTotales();
   }
 
   loadTotales(){
+    if (!this.eventoId) {
+      return;
+    }
     this.reportesService.getTotalEntradasEscaneadas('', this.eventoId, this.seccionSelected ?? undefined).subscribe(res => {
       this.escaneados = res.escaneadas
       this.total = res.total
+      this.cacheLocal.saveCache(totalsCacheKey(this.eventoId, this.seccionSelected), {
+        escaneados: this.escaneados,
+        total: this.total,
+      });
     })
+  }
+
+  loadTotalsFromCache(): void {
+    if (!this.eventoId) {
+      return;
+    }
+    const cached = this.cacheLocal.getCache(totalsCacheKey(this.eventoId, this.seccionSelected));
+    if (cached) {
+      this.escaneados = cached.escaneados ?? this.escaneados;
+      this.total = cached.total ?? this.total;
+    }
   }
 
   get idReferencia() {
     return this.form.get('idReferencia')
+  }
+
+  goBack() {
+    this.navCtrl.back({ animated: false });
   }
 }

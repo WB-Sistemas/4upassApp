@@ -1,57 +1,79 @@
 @import 'src/general-styles.scss';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&display=swap');
 
-body {
-  background: var(--ion-background-color);
-  color: var(--ion-text-color);
+/* ===============================
+   HEADER — FIX DEFINITIVO iOS
+   =============================== */
+
+ion-header.app-header {
+  --background: #000 !important;
+  background: #000 !important;
 }
 
-ion-header {
-  background: var(--ion-color-primary);
-}
+/* Toolbar */
+ion-toolbar.my-toolbar {
+  --background: #000 !important;
+  --color: #fff !important;
+  --border-color: transparent !important;
 
-ion-toolbar.my-toolbar::part(container) {
-  /* Dejar el header justo debajo de la status bar usando sólo el safe-area */
-  padding-top: var(--ion-safe-area-top, env(safe-area-inset-top));
-  min-height: 56px;
+  background: #000 !important;
+  color: #fff !important;
+
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  min-height: 56px;
 }
 
-/* Centrar títulos del header de forma consistente */
-ion-toolbar.my-toolbar ion-title {
+/* Botones absolutos (no empujan título) */
+ion-toolbar.my-toolbar ion-buttons {
   position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+ion-toolbar.my-toolbar ion-buttons[slot="start"] {
   left: 0;
+}
+
+ion-toolbar.my-toolbar ion-buttons[slot="end"] {
   right: 0;
-  width: 85%;
+}
+
+/* Título centrado */
+ion-toolbar.my-toolbar ion-title {
+  flex: 1;
   text-align: center;
-  pointer-events: none; /* no bloquear clicks de botones laterales */
-}
-
-ion-back-button {
-  color: #ebe0e0;
-}
-
-ion-title {
-  margin: 0; /* quitar márgenes */
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: #fff !important;
+  margin: 0;
   padding: 0;
-  font-weight: bold;
-  font-size: 1.2rem;
-  font-family: "Montserrat", sans-serif !important;
-  color: white;
-  text-align: center;
-  line-height: 1;
+  pointer-events: none;
 }
 
-// ion-toolbar.my-toolbar::part(container) {
-//   padding-top: 10px;
-// }
+/* Botón back */
+ion-toolbar.my-toolbar ion-button,
+ion-back-button {
+  color: #fff;
+}
+
+ion-toolbar.my-toolbar ion-icon {
+  color: #fff !important;
+}
+
+/* ===============================
+   BOTONES
+   =============================== */
 
 ion-button.mi-boton::part(native) {
-  font-weight: 600;
-  color: #fff;
   background: #6cc399;
+  color: #fff;
+  font-weight: 600;
 }
 
 ion-button.no-effects {
@@ -63,106 +85,52 @@ ion-button.no-effects {
   --background-hover-opacity: 0;
 }
 
-ion-label p {
-  font-weight: 600;
-  margin: 4px 0 0 0;
-}
-
-.title {
-  color: white;
-  font-size: 34px;
-}
-
-/* Revertir centrado absoluto: usar flujo nativo */
-ion-toolbar.my-toolbar ion-title {
-  position: static;
-  left: auto;
-  right: auto;
-  width: auto;
-  pointer-events: auto;
-}
-
-.accordion {
-  width: 100%;
-}
+/* ===============================
+   ACCORDION
+   =============================== */
 
 ::ng-deep ion-accordion {
   margin-bottom: 16px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
 
 ::ng-deep ion-accordion > ion-item[slot="header"] {
-  --background: #{$MP_bgAccordionHeader};
-  --color: white;
-  --inner-padding-start: 15px;
-  --inner-padding-end: 15px;
-  --border-radius: 0px;
-  font-weight: bold;
-  margin-bottom: 0;
+  --background: #222;
+  --color: #fff;
+  --inner-padding-start: 16px;
+  --inner-padding-end: 16px;
+  font-weight: 700;
 }
 
-::ng-deep ion-accordion > ion-item[slot="header"] ion-label h2 {
-  color: #{$MP_nombreEvento};
-  font-weight: bold;
+::ng-deep ion-accordion ion-label h2 {
+  font-size: 15px;
+  font-weight: 700;
   text-transform: uppercase;
-  font-size: 16px;
   margin: 0;
+  color: #f5f5f5;
 }
 
-::ng-deep ion-accordion > ion-item[slot="header"] ion-label p {
-  font-size: 14px;
-  font-weight: 500;
-  margin: 5px 0 0 0;
+::ng-deep ion-accordion ion-label p {
+  font-size: 13px;
+  margin-top: 4px;
+  color: #d2d9e5 !important;
+  font-weight: 600;
 }
 
 ::ng-deep ion-accordion > [slot="content"] {
   padding: 16px;
-  background-color: #eeeeee;
-  border-radius: 0 0 8px 8px;
-  color: black;
+  background: #eee;
+  color: #000;
 }
 
-.eticket-btn {
-  background-color: $MP_ETicketBg;
-  color: $MP_ETicketText;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  font-size: 12px;
-  font-weight: bold;
-}
+/* ===============================
+   RESPONSIVE
+   =============================== */
 
-.ion-button {
-  background: #A0E1BE !important;
-}
-
-@media screen and (min-width: 768px) {
-  ::ng-deep ion-accordion > ion-item[slot="header"] ion-label p {
-    text-align: center;
+@media (max-width: 480px) {
+  ion-toolbar.my-toolbar ion-title {
+    font-size: 1rem;
   }
-}
-
-@media (max-width: 480px) { 
-  ion-title {
-    font-size: 1.2rem !important;
-    line-height: 1.2;
-  }
-
-  .title {
-    font-size: 28px !important;
-  }
-
-  // ::ng-deep ion-accordion > ion-item[slot="header"] ion-label h2 {
-  //   font-size: 18px !important;
-  //   margin-top: 20px;
-  //   margin-bottom: 10px;
-  // }
-
-  // ::ng-deep ion-accordion > ion-item[slot="header"] ion-label p {
-  //   font-size: 15px !important;
-  //   margin-top: 10px;
-  //   margin-bottom: 15px;
-  // }
 }

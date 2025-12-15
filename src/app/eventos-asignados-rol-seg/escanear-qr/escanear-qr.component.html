@@ -1,13 +1,19 @@
-<ion-header>
+<ion-header class="app-header">
   <ion-toolbar class="my-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="#"></ion-back-button>
+      <ion-button fill="clear" color="light" (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>Control De Entradas</ion-title>  
+    <ion-title class="titulo">Control De Entradas</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content fullscreen class="scan-content">
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
   <div class="ion-text-center ion-margin-bottom escaneos-container">
     <ion-card>
@@ -37,7 +43,7 @@
     </div>
   </ng-container>
 
-  <ion-card>
+  <ion-card class="scan-card">
     <ion-card-content>
 
       <!-- Formulario input con margen abajo -->

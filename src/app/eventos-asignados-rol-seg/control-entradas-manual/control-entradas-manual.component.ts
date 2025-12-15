@@ -1,12 +1,12 @@
 import { LocalizationService } from '@abp/ng.core';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TipoDocs } from 'src/app/proxy/usuario';
 import { EntradaSimpleDto, EntradasService } from 'src/app/proxy/tickets/entradas';
 import { CustomModalService } from 'src/app/services/custom-modal.service';
 import { DeviceUtils } from 'src/app/utils/device-utils';
 import { TiposDocList } from 'src/app/utils/doc-identificacion-utils';
-import { RefresherCustomEvent } from '@ionic/angular';
+import { NavController, RefresherCustomEvent } from '@ionic/angular';
 
 @Component({
   selector: 'app-control-entradas-manual',
@@ -26,13 +26,13 @@ export class ControlEntradasManualComponent  implements OnInit {
   isScanModalOpen  = false; 
   modalMessage = ''; 
   
-  constructor
-  (
+  constructor(
     private ar: ActivatedRoute,
     private entradaService: EntradasService,
     private customModal: CustomModalService,
-    private localization:LocalizationService
-  ){}
+    private localization: LocalizationService,
+    private navCtrl: NavController
+  ) {}
 
   ngOnInit(): void {
     this.isMobile = DeviceUtils.isMobile();
@@ -88,6 +88,10 @@ export class ControlEntradasManualComponent  implements OnInit {
   getTipoIdentificacionNombre(tipoValor: TipoDocs): string {
     const tipo = this.tipoIdentificacion.find(t => t.value === tipoValor);
     return tipo ? tipo.name : 'Desconocido';
+  }
+
+  goBack() {
+    this.navCtrl.back({ animated: false });
   }
 
 

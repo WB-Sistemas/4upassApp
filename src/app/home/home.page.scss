@@ -119,13 +119,29 @@ form {
 }
 
 /* Botón ingresar */
-ion-button {
+.btn-ingresar {
   margin: 16px 0;
   border-radius: 10px;
   width: 100%;
   max-width: 360px;
-  --background: #A0E1BE !important;
-  --color: black !important;
+  --background: #a0e1be;
+  --background-activated: #85c9a5;
+  --background-focused: #85c9a5;
+  --background-hover: #8fd3af;
+  --background-activated-opacity: 1;
+  --background-focused-opacity: 1;
+  --background-hover-opacity: 1;
+  --color: #111;
+
+  &::part(native) {
+    transition: transform 120ms ease-in-out;
+    background: #a0e1be;
+    color: #111;
+  }
+
+  &:active::part(native) {
+    transform: scale(0.98);
+  }
 }
 
 /* Icono imagen principal */

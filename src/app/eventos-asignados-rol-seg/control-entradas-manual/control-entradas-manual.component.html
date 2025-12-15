@@ -1,25 +1,31 @@
-<ion-header>
+<ion-header class="app-header">
   <ion-toolbar class="my-toolbar">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="#"></ion-back-button>
+      <ion-button fill="clear" color="light" (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>Buscar Entradas</ion-title>  
   </ion-toolbar>
 </ion-header>
 
+<ion-content fullscreen class="control-content">
 
-<div class="ion-text-center ion-margin-bottom">
-  <ion-item class="input-search">
-    <ion-icon slot="start" name="search" class="fs-3"></ion-icon>
-    <ion-input
-    [(ngModel)]="filter"
-    (ionInput)="search($event.target.value)"
-    placeholder="Buscar">
-  </ion-input>
-</ion-item>
-</div>
+  <div class="search-wrapper ion-text-center">
+    <ion-item class="input-search">
+      <ion-icon slot="start" name="search"></ion-icon>
+      <ion-input
+        [(ngModel)]="filter"
+        (ionInput)="search($event.target.value)"
+        placeholder="Buscar">
+      </ion-input>
+    </ion-item>
+  </div>
 
-<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div *ngIf="entr.length > 0; else noData">
     <ion-card *ngFor="let item of entr; index as i">
       <ion-card-content>
@@ -42,10 +48,10 @@
           <p>{{item.nombre}}</p>
           <p class="sub">Sector:</p>
           <p style="padding-bottom: 5px;">{{ item.nombreSector }}</p>
-          <p class="sub" *ngIf="item.nombreFila">Fila: </p>
-          <p *ngIf="item.nombreFila">{{item.nombreFila}}</p>
-          <p class="sub" *ngIf="item.nombreAsiento">Butaca: </p>
-          <p *ngIf="item.nombreFila">{{item.nombreAsiento}}</p>
+          <p class="sub" *ngIf="item?.nombreFila">Fila: </p>
+          <p *ngIf="item?.nombreFila">{{item?.nombreFila}}</p>
+          <p class="sub" *ngIf="item?.nombreAsiento">Butaca: </p>
+          <p *ngIf="item?.nombreAsiento">{{item?.nombreAsiento}}</p>
         </ion-text>
 
         <ion-button

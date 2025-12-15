@@ -44,15 +44,10 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
-	<!-- Permisos de privacidad -->
+	<false/>
 	<key>NSCameraUsageDescription</key>
-	<string>Necesitamos la cámara para escanear códigos QR.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Usaremos tus contactos para facilitar el envío/compartir información.</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-	<string>whatsapp</string>
-	</array>
+	<string>Necesitamos acceder a la cámara para escanear los códigos QR de las entradas.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>El micrófono solo se utiliza cuando el lector de QR lo requiere para optimizar el escaneo.</string>
 </dict>
 </plist>

@@ -10,12 +10,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { registerLocale } from '@abp/ng.core/locale';
 import { CoreModule } from '@abp/ng.core';
 import { environment } from 'src/environments/environment';
+import { fadeNavAnimation } from './shared/animations/fade-nav.animation';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      navAnimation: fadeNavAnimation,
+    }),
     AppRoutingModule,
     CoreModule.forRoot({
       environment,

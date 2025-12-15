@@ -24,7 +24,7 @@
           class="input-native"
         />
        <ion-text 
-          *ngIf="fb.get('email')?.invalid && (fb.get('email')?.dirty || fb.get('email')?.touched)" 
+          *ngIf="fb.get('email')?.invalid && (fb.get('email')?.dirty || fb.get('email')?.touched) && summited" 
           class="text-danger"
         >
           <p>El E-mail es requerido.</p>
@@ -53,12 +53,12 @@
         </div>
 
       <ion-text 
-        *ngIf="fb.get('password')?.invalid && (fb.get('password')?.dirty || fb.get('password')?.touched)"
+        *ngIf="fb.get('password')?.invalid && (fb.get('password')?.dirty || fb.get('password')?.touched) && summited"
         class="text-danger">
         <p>La contraseña es requerida.</p>
       </ion-text>
 
-      <ion-button type="submit">Ingresar</ion-button>
+      <ion-button type="submit" class="btn-ingresar">Ingresar</ion-button>
 
       <p style="text-align: center;">
         ¿Olvidaste tu contraseña?

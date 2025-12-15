@@ -1,6 +1,6 @@
 import { Environment } from '@abp/ng.core';
 
-const baseUrl = 'http://localhost:8100';
+const baseUrl = 'https://tickets.wbsistemas.com.ar';
 
 export const environment = {
   production: false,
@@ -10,7 +10,7 @@ export const environment = {
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44350/',
+    issuer: baseUrl,
     clientId: 'Tickets_Ionic',
     ClientSecret: '1q2w3E*',
     scope: 'offline_access Tickets',
@@ -19,7 +19,7 @@ export const environment = {
   },
   apis: {
     default: {
-      url: 'https://localhost:44350',
+      url: baseUrl,
       rootNamespace: 'Tickets.WB',
     },
   },

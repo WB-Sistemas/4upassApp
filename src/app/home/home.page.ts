@@ -22,6 +22,7 @@ export class HomePage implements OnInit, AfterViewInit {
   isKeyboardOpen = false;
   envi = environment.application.baseUrl + '/account/recuperar-password'; 
   mostrarPassword = false;
+  summited = false;
 
   get hasLoggedIn(): boolean {
     return this.oAuthService.hasValidAccessToken();
@@ -54,6 +55,7 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   login() {
+    this.summited = true;
     if (this.fb.invalid) {
       this.fb.markAllAsTouched();
       return;

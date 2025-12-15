@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
@@ -7,24 +8,27 @@ import { StatusBar, Style } from '@capacitor/status-bar';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {
-    this.configureStatusBar();
+  constructor(private platform: Platform) {
+    this.platform.ready().then(() => {
+      this.configureStatusBar();
+    });
   }
 
   private async configureStatusBar() {
     try {
-      // No superponer la status bar; el contenido arranca debajo
+      // No superponer la status bar
       await StatusBar.setOverlaysWebView({ overlay: false });
-      // Asegurar que la barra esté visible
+
+      // Mostrar siempre la barra
       await StatusBar.show();
-      // Fijar color de fondo para que combine con el header oscuro
-      await StatusBar.setBackgroundColor({ color: '##ffffff' });
-      // Usa iconos claros porque el header es oscuro
+
+      // Fondo oscuro (⚠️ un solo #)
+      await StatusBar.setBackgroundColor({ color: '#000000' });
+
+      // Íconos claros porque el fondo es oscuro
       await StatusBar.setStyle({ style: Style.Light });
     } catch (e) {
-      // En web o si el plugin no está disponible, ignorar
       console.debug('StatusBar config skipped:', e);
     }
   }
-
 }

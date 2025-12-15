@@ -1,41 +1,74 @@
 @import 'src/general-styles.scss';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&display=swap');
 
-// * {
-//   margin: 0;
-//   padding: 0;
-//   box-sizing: border-box;
-// }
-
-body{
-  background: var(--ion-background-color);
-  color: var(--ion-text-color);
+ion-header.app-header {
+  --background: #000 !important;
+  background: #000 !important;
 }
 
-ion-toolbar.my-toolbar::part(container) {
-  min-height: 56px;
+ion-toolbar.my-toolbar {
+  --background: #000 !important;
+  --color: #fff !important;
+  --border-color: transparent !important;
+
+  background: #000 !important;
+  color: #fff !important;
+
+  display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
+  min-height: 56px;
 }
 
-ion-back-button {
-  color: #ebe0e0;
+ion-toolbar.my-toolbar ion-buttons {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
 }
 
-ion-title {
-  margin: 0; /* quitar márgenes */
-  padding: 0;
-  font-weight: bold;
-  font-size: 1.2rem;
-  font-family: "Montserrat", sans-serif !important;
-  color: white;
+ion-toolbar.my-toolbar ion-buttons[slot="start"] {
+  left: 0;
+}
+
+ion-toolbar.my-toolbar ion-buttons[slot="end"] {
+  right: 0;
+}
+
+ion-toolbar.my-toolbar ion-title {
+  flex: 1;
   text-align: center;
-  line-height: 1;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: #fff !important;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
 }
 
-// ion-toolbar.my-toolbar::part(container) {
-//   padding-top: 10px;
-// }
+ion-toolbar.my-toolbar ion-button,
+ion-back-button {
+  color: #fff !important;
+}
+
+ion-toolbar.my-toolbar ion-icon {
+  color: #fff !important;
+}
+
+.scan-content {
+  --background: #000;
+  background: #000;
+  color: #fff;
+}
+
+.escaneos-container ion-card,
+.scan-card {
+  background: #111;
+  color: #fff;
+}
 
 ion-button.mi-boton::part(native) {
   font-weight: 600;

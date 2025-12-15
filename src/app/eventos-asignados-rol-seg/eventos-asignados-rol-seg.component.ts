@@ -1,76 +1,88 @@
 import { ConfigStateService, PermissionService } from '@abp/ng.core';
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { EventosAsignadosDto } from '../proxy';
 import { SeguridadService } from '../proxy/tickets/seguridad';
 import { DateUtils } from 'src/app/utils/date-utils';
-import { Platform, AlertController, NavController, RefresherCustomEvent } from '@ionic/angular';
+import {
+  Platform,
+  AlertController,
+  RefresherCustomEvent,
+  IonRouterOutlet,
+  NavController,
+} from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-eventos-asignados-rol-seg',
   templateUrl: './eventos-asignados-rol-seg.component.html',
   styleUrls: ['./eventos-asignados-rol-seg.component.scss'],
 })
-export class EventosAsignadosRolSegComponent{
+export class EventosAsignadosRolSegComponent implements OnInit {
 
-  eventosAsignados: EventosAsignadosDto[] = []
-  redirect: boolean = false;
-  hasAccess: boolean = false;
-  @Input() mostrarEventosActivos:boolean= false;
+  eventosAsignados: EventosAsignadosDto[] = [];
+  @Input() mostrarEventosActivos: boolean = false;
+
   backButtonSubscription: any;
-
-
-  constructor(
-    private seguridadService: SeguridadService,
-    private permissionsService: PermissionService,
-    private router: Router,
-    private plataform: Platform,
-    private alert: AlertController,
-    private navCtrl: NavController
-  )
-  {}
 
   EventosActivosTitle = 'Eventos Activos';
   EventosAsignadosTitle = 'Eventos Asignados';
 
-  ngOnInit(){
+  constructor(
+    private seguridadService: SeguridadService,
+    private permissionsService: PermissionService,
+    private platform: Platform,
+    private alert: AlertController,
+    private routerOutlet: IonRouterOutlet,
+    private navCtrl: NavController,
+    private router: Router
+  ) {}
 
+  ngOnInit() {
+    console.log(
+      'EventosAsignadosRolSegComponent ngOnInit - mostrarEventosActivos:',
+      this.mostrarEventosActivos
+    );
 
-    console.log('EventosAsignadosRolSegComponent ngOnInit - mostrarEventosActivos:', this.mostrarEventosActivos);
     if (!this.mostrarEventosActivos) {
-      this.seguridadService.getEventosAsignadosRolSeg().subscribe(res=>{
-        this.eventosAsignados = res.map(funcion => {
-          return {
-            ...funcion,
-            fecha: DateUtils.IsoString(funcion.fecha ?? '').toISOString()
-          }
-        });
-      })
+      this.seguridadService.getEventosAsignadosRolSeg().subscribe((res) => {
+        this.eventosAsignados = res.map((funcion) => ({
+          ...funcion,
+          fecha: DateUtils.IsoString(funcion.fecha ?? '').toISOString(),
+        }));
+      });
     } else {
       this.seguridadService.getEventosActivosAdmCliente().subscribe((res) => {
-          this.eventosAsignados = res.map((funcion) => ({
-            ...funcion,
-            fecha: DateUtils.IsoString(funcion.fecha?? '').toISOString(),
-          }));
-        });
+        this.eventosAsignados = res.map((funcion) => ({
+          ...funcion,
+          fecha: DateUtils.IsoString(funcion.fecha ?? '').toISOString(),
+        }));
+      });
     }
-
   }
 
-  handleRefresh(event: RefresherCustomEvent){
+  handleRefresh(event: RefresherCustomEvent) {
     setTimeout(() => {
       this.ngOnInit();
       event.target.complete();
-    },2000);
+    }, 2500);
   }
 
   ionViewDidEnter() {
-    this.backButtonSubscription = this.plataform.backButton.subscribeWithPriority(10, () => {
+  
+    if (this.platform.is('ios')) {
+      this.routerOutlet.swipeGesture = false;
+    }
+
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, () => {
       this.presentExitConfirm();
     });
   }
 
   ionViewWillLeave() {
+    if (this.platform.is('ios')) {
+      this.routerOutlet.swipeGesture = true;
+    }
+
     if (this.backButtonSubscription) {
       this.backButtonSubscription.unsubscribe();
     }
@@ -84,13 +96,11 @@ export class EventosAsignadosRolSegComponent{
         {
           text: 'No',
           role: 'cancel',
-          handler: () => {            
-          },
         },
         {
           text: 'Sí',
           handler: () => {
-            this.router.navigate(['/'], {replaceUrl: true});
+            this.navCtrl.navigateRoot('/', { animated: false });
           },
         },
       ],
@@ -99,7 +109,8 @@ export class EventosAsignadosRolSegComponent{
   }
 
   toEscanearQR(id:string){
-   this.router.navigate(['/eventos-asignados/escanear', id]);
+    this.navCtrl.navigateForward(['/eventos-asignados/escanear', id], {
+      animated: false,
+    });
   }
-
 }
