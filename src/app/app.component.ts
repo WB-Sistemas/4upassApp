@@ -22,11 +22,12 @@ export class AppComponent {
       // Mostrar siempre la barra
       await StatusBar.show();
 
-      // Fondo oscuro (⚠️ un solo #)
-      await StatusBar.setBackgroundColor({ color: '#000000' });
+      // Fondo oscuro alineado al layout
+      await StatusBar.setBackgroundColor({ color: '#000' });
 
-      // Íconos claros porque el fondo es oscuro
-      await StatusBar.setStyle({ style: Style.Light });
+      // Iconos claros; en Android Style.Dark quita el modo "light status bar" (iconos oscuros)
+      const style = this.platform.is('android') ? Style.Dark : Style.Light;
+      await StatusBar.setStyle({ style });
     } catch (e) {
       console.debug('StatusBar config skipped:', e);
     }

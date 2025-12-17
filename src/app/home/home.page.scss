@@ -3,6 +3,7 @@ html, body, ion-app, ion-content {
   height: 100%;
   margin: 0;
   padding: 0;
+  background: #000;
 }
 
 /* Quitar padding por defecto del scroll en ion-content */
@@ -21,7 +22,7 @@ ion-content::part(scroll) {
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
-  background: url('/assets/img/Vector.svg') no-repeat bottom left;
+  background: #000 url('/assets/img/Vector.svg') no-repeat bottom left;
   background-size: 425px;
 }
 
