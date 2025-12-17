@@ -138,7 +138,15 @@ ion-content {
    =============================== */
 
 @media (max-width: 480px) {
-  ion-toolbar.my-toolbar ion-title {
-    font-size: 1rem;
+  ion-accordion > ion-item[slot="header"] ion-label h2 {
+    font-size: 16px !important;
+    margin: 0 !important;        /* 🔥 CLAVE */
+    line-height: 1.2;
+  }
+
+  ion-accordion > ion-item[slot="header"] ion-label p {
+    font-size: 14px !important;
+    margin: 0 !important;  
+    line-height: 1.3;
   }
 }
