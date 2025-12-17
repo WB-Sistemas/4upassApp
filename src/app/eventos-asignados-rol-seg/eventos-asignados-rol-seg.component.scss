@@ -89,19 +89,27 @@ ion-button.no-effects {
    ACCORDION
    =============================== */
 
+ion-content {
+  --background: #121212;
+  background: #121212;
+}
+
 ::ng-deep ion-accordion {
   margin-bottom: 16px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  box-shadow: 0 2px 10px rgba(0,0,0,.35);
 }
 
 ::ng-deep ion-accordion > ion-item[slot="header"] {
-  --background: #222;
-  --color: #fff;
-  --inner-padding-start: 16px;
-  --inner-padding-end: 16px;
+  --background: #2a2d34;
+  --color: #e5e7eb;
   font-weight: 700;
+}
+
+::ng-deep ion-accordion > ion-item[slot="header"]::part(native) {
+  // padding-left: 0;
+  border-style: none;
 }
 
 ::ng-deep ion-accordion ion-label h2 {
@@ -109,20 +117,20 @@ ion-button.no-effects {
   font-weight: 700;
   text-transform: uppercase;
   margin: 0;
-  color: #f5f5f5;
+  color: #6cc399;
 }
 
 ::ng-deep ion-accordion ion-label p {
   font-size: 13px;
   margin-top: 4px;
-  color: #d2d9e5 !important;
+  color: #e5e7eb !important;
   font-weight: 600;
 }
 
 ::ng-deep ion-accordion > [slot="content"] {
   padding: 16px;
-  background: #eee;
-  color: #000;
+  background: #1a1c21;
+  color: #f5f5f5;
 }
 
 /* ===============================

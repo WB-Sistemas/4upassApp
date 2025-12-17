@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package ccom.rodevito.fourupass.dev;
 
 import com.getcapacitor.BridgeActivity;
 
