@@ -42,7 +42,7 @@ ion-toolbar.my-toolbar ion-title {
   text-align: center;
   font-family: "Montserrat", sans-serif;
   font-weight: 900;
-  font-size: 1.15rem;
+  font-size: 1.15rem !important;
   color: #fff !important;
   margin: 0;
   padding: 0;
@@ -72,8 +72,8 @@ ion-toolbar.my-toolbar ion-icon {
 
 ion-button.mi-boton::part(native) {
   font-weight: 600;
-  color: #fff;
-  background: #6cc399;
+  color: #000;
+  background: #BADD50 !important;
 }
 
 ion-button.no-effects {
@@ -286,6 +286,22 @@ ion-text{
   font-weight: 700;
   padding-top: 7px;
 }
+
+.cont-bot ion-button::part(native) {
+  background: #A0E1BE;
+  color: #000;
+}
+
+// .cont-bot ion-button::part(native)::after {
+//   left: 0;
+//   right: 0;
+//   top: 0;
+//   bottom: 0;
+//   position: absolute;
+//   content: "";
+//   opacity: 0;
+//   background: #A0E1BE;
+// }
 
 .cameras {
   display: flex;

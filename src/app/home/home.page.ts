@@ -70,7 +70,7 @@ export class HomePage implements OnInit, AfterViewInit {
       next: () => {
         console.log('Login successful');
         this.router.navigate(['/eventos-asignados']);
-        this.fb.reset();
+        // this.fb.reset();
         this.loginError = '';
       },
       error: (error) => {

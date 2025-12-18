@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
 export type IconName = 'confirm' | 'confirmPassword' | 'confirmCard' | 'confirmTicket' | 'warning' | 'warningTimer' | 'warningCard' | '';
+export type Severity = 'info' | 'warning' | 'watch' | 'confirm';
 
 export interface ModalData {
   icono?: IconName;
@@ -17,6 +18,7 @@ export interface ModalData {
   masTiempo?:boolean,
   noCerrar?:boolean,
   infoExtra?: string,
+  severity?: Severity,
 }
 
 @Injectable({

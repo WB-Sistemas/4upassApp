@@ -67,7 +67,7 @@
 
   <ng-template #noData>
     <ion-text class="ion-text-center" style="margin: 1px;">
-      <p style="margin: 0px;">Ningún dato coincide</p>
+      <p style="margin: 0px; color: #fff !important;">Ningún dato coincide</p>
     </ion-text>
   </ng-template>
 
@@ -77,7 +77,7 @@
     (click)="closeScanModal()"
   >
     <div class="custom-modal-content" (click)="$event.stopPropagation()">
-      <ion-img src="/assets/confirm.svg" style="max-width: 150px; margin: 20px auto;"></ion-img>
+      <ion-img src="assets/confirm.svg" style="max-width: 150px; margin: 20px auto;"></ion-img>
       <h2 style="
         color:#badd50;
         margin-bottom: 16px;

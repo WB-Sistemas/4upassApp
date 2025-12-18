@@ -48,7 +48,7 @@ ion-toolbar.my-toolbar ion-title {
   text-align: center;
   font-family: "Montserrat", sans-serif;
   font-weight: 900;
-  font-size: 1.15rem;
+  font-size: 1.15rem !important;
   color: #fff !important;
   margin: 0;
   padding: 0;
@@ -69,6 +69,16 @@ ion-toolbar.my-toolbar ion-icon {
   --background: #121212;
   background: #121212;
   color: #e5e7eb;
+}
+
+.control-content ion-card {
+  background: #f8f8fb;
+  color: #1f1f1f;
+  border-radius: 8px;
+  border-bottom: 4px solid #A0E1BE;
+  box-shadow: 0 4px 6px #00000080;
+  position: relative;
+  overflow: hidden;
 }
 
 .search-wrapper {
@@ -99,15 +109,17 @@ ion-button.no-effects {
 }
 
 ion-text {
-  color: #e5e7eb;
+  color: #1f1f1f;
 
   .sub {
-    color: #a6adbd;
+    color: #a5a0c1;
     margin: 0;
+    font-weight: 700;
   }
 
   p {
     margin: 0;
+    color: #1f1f1f;
   }
 }
 
@@ -121,6 +133,18 @@ ion-text {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
   margin: 0;
+  --padding-start: 8px;
+  --inner-padding-start: 8px;
+  --inner-padding-end: 8px;
+
+  ion-icon[slot="start"] {
+    margin-right: 5px;
+    color: #9ca3af;
+  }
+
+  ion-input {
+    margin-left: 0;
+  }
 }
 
 ion-input {
@@ -143,6 +167,28 @@ ion-input {
   color: #e5e7eb;
 }
 
+.btn-green {
+  --background: #a0e1be;
+  --background-activated: #a0e1be;
+  --background-focused: #a0e1be;
+  --background-hover: #a0e1be;
+  --color: #0f1b14;
+  border-radius: 10px;
+}
+
+.btn-gray {
+  --background: #b0b0b0;
+  --background-activated: #a2a2a2;
+  --background-focused: #a2a2a2;
+  --background-hover: #a8a8a8;
+  --color: #1f1f1f;
+  border-radius: 10px;
+}
+
+.escaneos-container ion-card ion-button {
+  margin-top: 12px;
+}
+
 /* ===============================
    SELECT
    =============================== */
@@ -160,4 +206,35 @@ ion-input {
   ion-toolbar.my-toolbar ion-title {
     font-size: 1rem;
   }
+}
+
+/* ===============================
+   MODAL SCAN OK (FIX DEFINITIVO)
+   =============================== */
+
+.custom-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 99999; // 🔥 más alto que ion-content
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-modal-content {
+  background: #2f2f2f;
+  border-radius: 16px;
+  padding: 32px 24px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.custom-modal-content h2 {
+  color: #badd50;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
 }
