@@ -3,7 +3,7 @@
 
     <ion-buttons slot="start">
       <ion-button fill="clear" color="light" (click)="presentExitConfirm()">
-        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
 
@@ -20,7 +20,11 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ng-container *ngIf="eventosAsignados.length > 0; else sinEventos">
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <ng-container *ngIf="!loading && eventosAsignados.length > 0">
     <ion-accordion-group>
 
       <ion-accordion
@@ -31,7 +35,8 @@
           <ion-label>
             <h2>{{ evento?.nombre }}</h2>
             <p>
-              Fecha: {{ evento?.fecha ? (evento.fecha | date:'dd/MM/yy HH:mm') : 'Sin fecha' }}<br>
+              Fecha:
+              {{ evento?.fecha ? (evento.fecha | date:'dd/MM/yy HH:mm') : 'Sin fecha' }}<br>
               Lugar: {{ evento?.ubicacion || 'Sin Ubicación' }}
             </p>
           </ion-label>
@@ -52,10 +57,10 @@
     </ion-accordion-group>
   </ng-container>
 
-  <ng-template #sinEventos>
+  <ng-container *ngIf="!loading && eventosAsignados.length === 0">
     <div class="ion-text-center ion-padding">
       <p class="ion-text-wrap">No hay eventos asignados.</p>
     </div>
-  </ng-template>
+  </ng-container>
 
 </ion-content>

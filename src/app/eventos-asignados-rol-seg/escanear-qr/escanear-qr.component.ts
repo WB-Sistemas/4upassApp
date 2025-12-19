@@ -43,7 +43,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   processingValue: boolean = false;
   horaDeScan: Date = new Date();
   modalExpiradoActive: boolean = false;
-  fechaExpiracion: Date = new Date();
+  fechaExpiracion: Date | null = null;
   camaraHabilitada: boolean = false;
   datosEntradaExito?: EntradaSimplePlus;
 
@@ -54,6 +54,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   total:number = 0;  
   seccionSelected: number | null = null;
   seccionesOptions: SeccionOutputDTO[] = [];
+  selectAlertOpts = { cssClass: 'select-alert' };
   isErrorSeccion: boolean = false;
   errorSeccionSub: string = '';
   datosSeccionError?: ReturnDataErrors;
@@ -114,6 +115,8 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   }
   procesarValor(valor: string) {
     console.warn('procesarValor', valor, this.eventoId);
+    this.modalExpiradoActive = false;
+    this.fechaExpiracion = null;
     this.entradaService.buscarTicketQR(this.eventoId, valor.toUpperCase(), true, this.seccionSelected ?? undefined).subscribe(res => {
       console.log('res escaneo: ',res);
       this.mensajeError = res.mensajeError ?? '';
@@ -131,6 +134,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
         this.tipoIdentificacionNombre = this.getTipoIdentificacionNombre(this.datosEntradaExito.tipoIdentificacion);
       }
       else if (this.mensajeError.includes("Entrada expirada")){
+        this.modalActive = false;
         this.modalExpiradoActive = true;
         this.fechaExpiracion = DateUtils.IsoString(res.value.returnDataErrors.expiredDate ?? '');
       }
@@ -209,6 +213,17 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     this.errorSeccionSub = '';
     this.datosSeccionError = undefined;
     this.modalExpiradoActive = false;
+  }
+
+  closeExpiredModal() {
+    this.modalExpiradoActive = false;
+    this.modalActive = false;
+    this.fechaExpiracion = null;
+    this.mensajeError = '';
+    this.camaraActive = true;
+    setTimeout(() => {
+      this.scanQr?.activarCamara();
+    }, 100);
   }
 
   confirmScan() {

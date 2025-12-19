@@ -527,6 +527,129 @@ ion-text{
   font-size: 16px;
 }
 
+:host ::ng-deep .select-alert .alert-button {
+  color: #A0E1BE !important;
+  font-weight: 700;
+}
+
+.expiry-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1200;
+}
+
+.expiry-card {
+  position: relative;
+  width: 92%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 52px 24px 26px 24px;
+  box-shadow: 0 6px 0 #ff6060, 0 16px 24px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.expiry-icon-circle {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: #ff6060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -41px;
+  left: 50%;
+  transform: translateX(-50%);
+  // box-shadow: 0 8px 12px rgba(0, 0, 0, 0.25);
+}
+
+.expiry-icon-circle ion-icon {
+  color: #fff;
+  font-size: 42px;
+}
+
+.expiry-modal {
+  text-align: center;
+}
+
+.expiry-body {
+  margin: 6px 0 18px 0;
+}
+
+.expiry-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 6px 0;
+  color: #232323;
+}
+
+.expiry-subtitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 14px 0;
+  color: #232323;
+}
+
+.expiry-date-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.expiry-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  background: #b2add4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expiry-icon ion-icon {
+  font-size: 24px;
+  color: #fff;
+}
+
+.expiry-date-text {
+  text-align: left;
+}
+
+.expiry-date {
+  margin: 0;
+  font-weight: 700;
+  color: #6c63a6;
+  font-size: 16px;
+}
+
+.expiry-time {
+  margin: 0;
+  font-weight: 800;
+  color: #ff6060;
+  font-size: 16px;
+}
+
+.expiry-missing {
+  margin: 0;
+  font-weight: 700;
+  color: #ff6060;
+}
+
+ion-button.expiry-close::part(native) {
+  background-color: #ff6060 !important;
+  color: #1a1a1a !important;
+  font-weight: 800;
+  border-radius: 14px;
+  box-shadow: 0 4px 0 #e14f57;
+}
+
 @media screen and (min-width: 800px) {
   .box {
     margin: 24px auto;

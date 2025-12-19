@@ -28,12 +28,19 @@
 
   <ion-card *ngIf="seccionesOptions.length > 0">
     <ion-card-content>
-      <ion-item>
-        <ion-label>Seccion</ion-label>
-        <ion-select [value]="seccionSelected" placeholder="Seleccione seccion" (ionChange)="seccionOnChange($event)">
-          <ion-select-option *ngFor="let sec of seccionesOptions" [value]="sec.num">{{ sec.nombre }}</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <ion-item>
+          <ion-label>Seccion</ion-label>
+          <ion-select
+            [value]="seccionSelected"
+            placeholder="Seleccione seccion"
+            (ionChange)="seccionOnChange($event)"
+            cancelText="Cancelar"
+            okText="OK"
+            [interfaceOptions]="selectAlertOpts"
+          >
+            <ion-select-option *ngFor="let sec of seccionesOptions" [value]="sec.num">{{ sec.nombre }}</ion-select-option>
+          </ion-select>
+        </ion-item>
     </ion-card-content>
   </ion-card>
   <!-- Botón Buscar Entrada para desktop -->
@@ -178,5 +185,33 @@
     </div>
   </div>
 
+  <!-- Modal de Expiración -->
+  <div *ngIf="modalExpiradoActive" class="expiry-overlay">
+    <div class="expiry-card">
+      <div class="expiry-icon-circle">
+        <img src="assets/errorScan.svg" alt="Error" />
+      </div>
+      <div class="expiry-modal">
+        <div class="expiry-body">
+          <p class="expiry-title">Entrada expirada.</p>
+          <p class="expiry-subtitle">Válida hasta</p>
+
+          <div *ngIf="fechaExpiracion; else missingDate" class="expiry-date-row">
+            <div class="expiry-icon">
+              <ion-icon name="time-outline"></ion-icon>
+            </div>
+            <div class="expiry-date-text">
+              <p class="expiry-date">{{ fechaExpiracion | date: "dd-LLL-yyyy" }}</p>
+              <p class="expiry-time">{{ fechaExpiracion | date: "HH:mm'hs'" }}</p>
+            </div>
+          </div>
+          <ng-template #missingDate>
+            <p class="expiry-missing">Fecha no disponible</p>
+          </ng-template>
+        </div>
+      </div>
+      <ion-button expand="block" class="expiry-close" (click)="closeExpiredModal()">Cerrar</ion-button>
+    </div>
+  </div>
 
 </ion-content>
