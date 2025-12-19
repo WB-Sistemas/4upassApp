@@ -11,6 +11,24 @@
 
 <ion-content fullscreen class="control-content">
 
+  <div class="section-select" *ngIf="seccionesOptions.length > 0">
+    <p class="section-title">
+      Seleccione la sección que va a escanear
+    </p>
+    <ion-item lines="none" class="section-select-item">
+      <ion-select
+        [value]="seccionSelected"
+        placeholder="Seleccione sección"
+        (ionChange)="seccionOnChange($event)"
+        [interfaceOptions]="selectAlertOpts"
+        cancelText="Cancelar"
+        okText="OK"
+      >
+        <ion-select-option *ngFor="let sec of seccionesOptions" [value]="sec.num">{{ sec.nombre }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
   <div class="search-wrapper ion-text-center">
     <ion-item class="input-search">
       <ion-icon slot="start" name="search"></ion-icon>
@@ -57,7 +75,7 @@
         <ion-button
           expand="block"
           [ngClass]="item.used ? 'btn-gray' : 'btn-green'"
-          (click)="confirmScan(item.used ?? true, item.idLegible ?? '')">
+          (click)="confirmScan(item.used ?? false, item.idLegible ?? '')">
           {{ item.used ? 'Escaneado' : 'Escanear' }}
         </ion-button>
 
@@ -72,18 +90,40 @@
   </ng-template>
 
   <div
-    *ngIf="isScanModalOpen"
+    *ngIf="isScanModalOpen && modalType === 'success'"
     class="custom-modal-backdrop"
     (click)="closeScanModal()"
   >
     <div class="custom-modal-content" (click)="$event.stopPropagation()">
-      <ion-img src="assets/confirm.svg" style="max-width: 150px; margin: 20px auto;"></ion-img>
-      <h2 style="
-        color:#badd50;
-        margin-bottom: 16px;
-      ">
+      <ion-img [src]="modalIcon" style="max-width: 150px; margin: 20px auto;"></ion-img>
+      <h2 [ngClass]="modalType">
         {{ modalMessage }}
       </h2>
+    </div>
+  </div>
+
+  <div
+    *ngIf="isScanModalOpen && modalType === 'error'"
+    class="required-modal-backdrop"
+  >
+    <div class="required-modal-card" (click)="$event.stopPropagation()">
+      <div class="required-icon">
+        <img [src]="modalIcon" alt="estado">
+      </div>
+      <h2 class="required-title">{{ modalTitle }}</h2>
+      <p class="required-subtitle" *ngIf="modalMessage">{{ modalMessage }}</p>
+      <p class="required-subtitle" *ngIf="modalSubtitle">{{ modalSubtitle }}</p>
+      <div class="required-expiry" *ngIf="modalExpiryDate || modalExpiryTime">
+        <div class="required-expiry-icon">
+          <ion-icon name="time-outline"></ion-icon>
+        </div>
+        <div class="required-expiry-text">
+          <p class="expiry-date" *ngIf="modalExpiryDate">{{ modalExpiryDate }}</p>
+          <p class="expiry-time" *ngIf="modalExpiryTime">{{ modalExpiryTime }}</p>
+        </div>
+      </div>
+      <p class="required-section" *ngIf="modalSectionName">{{ modalSectionName }}</p>
+      <ion-button expand="block" class="required-button" (click)="closeScanModal()">Cerrar</ion-button>
     </div>
   </div>
 

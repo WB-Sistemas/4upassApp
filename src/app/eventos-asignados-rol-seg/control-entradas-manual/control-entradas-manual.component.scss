@@ -71,6 +71,43 @@ ion-toolbar.my-toolbar ion-icon {
   color: #e5e7eb;
 }
 
+.section-select {
+  padding: 16px 16px 6px;
+  background: #121212;
+  color: #e5e7eb;
+}
+
+.section-title {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e5e7eb;
+}
+
+.section-title ion-icon {
+  color: #badd50;
+  font-size: 20px;
+}
+
+.section-select-item {
+  --background: #f8f8fb;
+  --color: #1f1f1f;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --padding-start: 10px;
+  --inner-padding-start: 10px;
+  --inner-padding-end: 10px;
+}
+
+.section-select-item ion-select {
+  width: 100%;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
 .control-content ion-card {
   background: #f8f8fb;
   color: #1f1f1f;
@@ -237,4 +274,116 @@ ion-input {
   font-size: 22px;
   font-weight: 600;
   margin: 0;
+}
+
+.custom-modal-content h2.error {
+  color: #ff6060;
+}
+
+/* ===============================
+   MODAL SECCION REQUERIDA
+   =============================== */
+
+.required-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.required-modal-card {
+  position: relative;
+  background: #fff;
+  border-radius: 18px;
+  width: 92%;
+  max-width: 420px;
+  padding: 60px 26px 28px 26px;
+  box-shadow: 0 6px 0 #ff6060, 0 12px 20px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.required-icon {
+  position: absolute;
+  top: -42px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 84px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.required-icon img {
+  width: 84px;
+  height: 84px;
+}
+
+.required-title {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #262626;
+}
+
+.required-subtitle {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #8f8bab;
+}
+
+.required-section {
+  margin: 2px 0 14px 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #8f8bab;
+  text-transform: uppercase;
+}
+
+.required-expiry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 8px 0 10px 0;
+}
+
+.required-expiry-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: #b2add4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 22px;
+}
+
+.required-expiry-text {
+  text-align: left;
+}
+
+.required-expiry-text .expiry-date {
+  margin: 0;
+  font-weight: 700;
+  color: #6c63a6;
+}
+
+.required-expiry-text .expiry-time {
+  margin: 0;
+  font-weight: 800;
+  color: #ff6060;
+}
+
+.required-button::part(native) {
+  background: #ff6060 !important;
+  color: #1f1f1f !important;
+  font-weight: 800;
+  border-radius: 10px;
+  box-shadow: 0 4px 0 #e14f57;
 }

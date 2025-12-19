@@ -270,7 +270,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
 
   redirect() {
     this.navCtrl.navigateForward('eventos-asignados/control-manual', {
-      queryParams: { eventoId: this.eventoId },
+      queryParams: { eventoId: this.eventoId, seccionSelected: this.seccionSelected ?? undefined },
       animated: false,
     });
   }
