@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'ccom.rodevito.fourupass.dev',   // tu Bundle Identifier real
+  appId: 'com.wbsistemas.4upass', 
   appName: '4upass',
   webDir: 'www',
   plugins: {
