@@ -42,6 +42,22 @@ body {
   color: var(--ion-text-color);
 }
 
+body.scanner-active,
+body.scanner-active ion-app,
+body.scanner-active ion-content,
+body.scanner-active .ion-page {
+  background: transparent !important;
+}
+
+body.scanner-active ion-content::part(background) {
+  background: transparent !important;
+}
+
+body.scanner-active .scan-content {
+  --background: transparent !important;
+  background: transparent !important;
+}
+
 ion-toolbar.my-toolbar {
   --background: var(--ion-color-primary) !important;
   --color: var(--ion-toolbar-color, #fff) !important;

@@ -11,77 +11,97 @@
 
 <ion-content fullscreen class="scan-content">
 
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+  <div class="scanner-page" [class.scanner-hidden]="camaraActive && isNativeScanner">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
 
-  <div class="ion-text-center ion-margin-bottom escaneos-container">
-    <ion-card>
+    <div class="ion-text-center ion-margin-bottom escaneos-container">
+      <ion-card>
+        <ion-card-content>
+          <ion-text>
+            <h4>Escaneos</h4>
+            <h1>{{ escaneados }}/{{ total }}</h1>
+          </ion-text>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <ion-card *ngIf="seccionesOptions.length > 0">
       <ion-card-content>
-        <ion-text>
-          <h4>Escaneos</h4>
-          <h1>{{ escaneados }}/{{ total }}</h1>
-        </ion-text>
+          <ion-item>
+            <ion-label>Seccion</ion-label>
+            <ion-select
+              [value]="seccionSelected"
+              placeholder="Seleccione seccion"
+              (ionChange)="seccionOnChange($event)"
+              cancelText="Cancelar"
+              okText="OK"
+              [interfaceOptions]="selectAlertOpts"
+            >
+              <ion-select-option *ngFor="let sec of seccionesOptions" [value]="sec.num">{{ sec.nombre }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+      </ion-card-content>
+    </ion-card>
+    <!-- Botón Buscar Entrada para desktop -->
+    <ng-container *ngIf="!isMobile">
+      <div class="cont-bot">
+        <ion-button expand="block" (click)="redirect()">Buscar Entrada</ion-button>
+      </div>
+    </ng-container>
+
+    <ion-card class="scan-card">
+      <ion-card-content>
+
+        <!-- Formulario input con margen abajo -->
+        <form [formGroup]="form" class="form-referencia">
+          <ion-item>
+            <ion-input formControlName="idReferencia" maxlength="10" placeholder="Id Referencia"></ion-input>
+          </ion-item>
+        </form>
+
+        <!-- Botones juntos con separación -->
+        <div class="cont-bot botones-accion">
+          <ion-button expand="block" color="medium" (click)="switchQr()">
+            Habilitar Cámara
+          </ion-button>
+
+          <ion-button expand="block" (click)="redirect()" class="mi-boton no-effects" >
+            Buscar Entrada
+          </ion-button>
+        </div>
+
+        <!-- Contenedor para el QR, con margen arriba -->
+        <div class="cont-qr" *ngIf="camaraActive">
+          <app-qr 
+            [encendido]="camaraActive"
+            (valor)="procesarValor($event)"
+            (devices)="initCameras($event)"
+          ></app-qr>
+        </div>
+
       </ion-card-content>
     </ion-card>
   </div>
 
-  <ion-card *ngIf="seccionesOptions.length > 0">
-    <ion-card-content>
-        <ion-item>
-          <ion-label>Seccion</ion-label>
-          <ion-select
-            [value]="seccionSelected"
-            placeholder="Seleccione seccion"
-            (ionChange)="seccionOnChange($event)"
-            cancelText="Cancelar"
-            okText="OK"
-            [interfaceOptions]="selectAlertOpts"
-          >
-            <ion-select-option *ngFor="let sec of seccionesOptions" [value]="sec.num">{{ sec.nombre }}</ion-select-option>
-          </ion-select>
-        </ion-item>
-    </ion-card-content>
-  </ion-card>
-  <!-- Botón Buscar Entrada para desktop -->
-  <ng-container *ngIf="!isMobile">
-    <div class="cont-bot">
-      <ion-button expand="block" (click)="redirect()">Buscar Entrada</ion-button>
+  <div class="native-scanner-overlay" *ngIf="camaraActive && isNativeScanner">
+    <div class="native-scanner-top">
+      <p class="native-title">Apunta el QR dentro del marco</p>
     </div>
-  </ng-container>
-
-  <ion-card class="scan-card">
-    <ion-card-content>
-
-      <!-- Formulario input con margen abajo -->
-      <form [formGroup]="form" class="form-referencia">
-        <ion-item>
-          <ion-input formControlName="idReferencia" maxlength="10" placeholder="Id Referencia"></ion-input>
-        </ion-item>
-      </form>
-
-      <!-- Botones juntos con separación -->
-      <div class="cont-bot botones-accion">
-        <ion-button expand="block" color="medium" (click)="switchQr()">
-          Habilitar Cámara
-        </ion-button>
-
-        <ion-button expand="block" (click)="redirect()" class="mi-boton no-effects" >
-          Buscar Entrada
-        </ion-button>
-      </div>
-
-      <!-- Contenedor para el QR, con margen arriba -->
-      <div class="cont-qr" *ngIf="camaraActive">
-        <app-qr 
-          [encendido]="camaraActive"
-          (valor)="procesarValor($event)"
-          (devices)="initCameras($event)"
-        ></app-qr>
-      </div>
-
-    </ion-card-content>
-  </ion-card>
+    <div class="native-scanner-frame">
+      <span class="corner tl"></span>
+      <span class="corner tr"></span>
+      <span class="corner bl"></span>
+      <span class="corner br"></span>
+      <span class="scan-line"></span>
+    </div>
+    <div class="native-scanner-actions">
+      <ion-button expand="block" class="native-close" (click)="desactivarQr()">
+        Cerrar
+      </ion-button>
+    </div>
+  </div>
 
   <!-- ✅ Modal de Éxito -->
   <div *ngIf="modalActive && exitoso" class="modal-overlay" style="display: flex; justify-content: center; align-items: center;">

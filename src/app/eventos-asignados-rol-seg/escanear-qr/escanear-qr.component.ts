@@ -14,6 +14,7 @@ import { TiposDocList } from 'src/app/utils/doc-identificacion-utils';
 import { ControlEntradasService, SeccionOutputDTO } from 'src/app/proxy/tickets/control-entradas';
 import { DropdownChangeEvent } from 'primeng/dropdown';
 import { NavController, RefresherCustomEvent } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
 export type EntradaSimplePlus = Omit<EntradaSimpleDto, 'fecha'> & { fecha: Date };
 
 const cacheKey: string = 'camaraId';
@@ -50,6 +51,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   tipoIdentificacionNombre: string = '';
   tipoIdentificacion: { name: string, value: TipoDocs }[] = [];
   isMobile: boolean = false;
+  isNativeScanner: boolean = false;
   escaneados:number = 0; 
   total:number = 0;  
   seccionSelected: number | null = null;
@@ -74,6 +76,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.initForm();
     this.isMobile = DeviceUtils.isMobile();
+    this.isNativeScanner = Capacitor.isNativePlatform();
     this.tipoIdentificacion = TiposDocList(this.localization);
     this.eventoId = this.ar.snapshot.paramMap.get("eventoId") ?? '';
     this.loadTotalsFromCache();
