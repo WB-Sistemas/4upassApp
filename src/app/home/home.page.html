@@ -58,7 +58,13 @@
         <p>La contraseña es requerida.</p>
       </ion-text>
 
-      <ion-button type="submit" class="btn-ingresar">Ingresar</ion-button>
+      <ion-button type="submit" class="btn-ingresar" [disabled]="isLoading">
+        <span class="btn-content" *ngIf="!isLoading">Ingresar</span>
+        <span class="btn-content" *ngIf="isLoading">
+          <ion-spinner name="crescent"></ion-spinner>
+          Ingresando...
+        </span>
+      </ion-button>
 
       <p style="text-align: center;">
         ¿Olvidaste tu contraseña?

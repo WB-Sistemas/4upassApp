@@ -20,6 +20,7 @@ export class EventosAsignadosRolSegComponent implements OnInit {
 
   eventosAsignados: EventosAsignadosDto[] = [];
   loading = true;
+  isRefreshing = false;
 
   @Input() mostrarEventosActivos = false;
 
@@ -41,9 +42,11 @@ export class EventosAsignadosRolSegComponent implements OnInit {
     this.cargarEventos();
   }
 
-  cargarEventos() {
-    this.loading = true;
-    this.eventosAsignados = [];
+  cargarEventos(showLoader = true, clearList = true) {
+    this.loading = showLoader;
+    if (clearList) {
+      this.eventosAsignados = [];
+    }
 
     const request$ = this.mostrarEventosActivos
       ? this.seguridadService.getEventosActivosAdmCliente()
@@ -57,16 +60,20 @@ export class EventosAsignadosRolSegComponent implements OnInit {
         }));
       },
       error: () => {
-        this.eventosAsignados = [];
+        if (clearList) {
+          this.eventosAsignados = [];
+        }
       },
       complete: () => {
         this.loading = false;
+        this.isRefreshing = false;
       },
     });
   }
 
   handleRefresh(event: RefresherCustomEvent) {
-    this.cargarEventos();
+    this.isRefreshing = true;
+    this.cargarEventos(false, false);
     setTimeout(() => event.target.complete(), 800);
   }
 

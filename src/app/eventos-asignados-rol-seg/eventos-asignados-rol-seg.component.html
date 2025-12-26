@@ -57,7 +57,7 @@
     </ion-accordion-group>
   </ng-container>
 
-  <ng-container *ngIf="!loading && eventosAsignados.length === 0">
+  <ng-container *ngIf="!loading && !isRefreshing && eventosAsignados.length === 0">
     <div class="ion-text-center ion-padding">
       <p class="ion-text-wrap">No hay eventos asignados.</p>
     </div>

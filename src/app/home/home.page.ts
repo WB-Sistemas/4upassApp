@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Keyboard } from '@capacitor/keyboard';
 import { environment } from 'src/environments/environment';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,7 @@ export class HomePage implements OnInit, AfterViewInit {
   envi = environment.application.baseUrl + '/account/recuperar-password'; 
   mostrarPassword = false;
   summited = false;
+  isLoading = false;
 
   get hasLoggedIn(): boolean {
     return this.oAuthService.hasValidAccessToken();
@@ -62,11 +64,16 @@ export class HomePage implements OnInit, AfterViewInit {
     }
 
     const { email, password } = this.fb.value;
+    this.isLoading = true;
     this.authService.login({
       username: email,
       password: password,
       rememberMe: false,
-    }).subscribe({
+    }).pipe(
+      finalize(() => {
+        this.isLoading = false;
+      })
+    ).subscribe({
       next: () => {
         console.log('Login successful');
         this.router.navigate(['/eventos-asignados']);

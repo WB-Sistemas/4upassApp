@@ -145,6 +145,17 @@ form {
   }
 }
 
+.btn-ingresar .btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-ingresar ion-spinner {
+  width: 18px;
+  height: 18px;
+}
+
 /* Icono imagen principal */
 .icono {
   height: 120px;
