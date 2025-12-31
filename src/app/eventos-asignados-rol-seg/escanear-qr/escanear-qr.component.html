@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen class="scan-content">
+<ion-content fullscreen class="scan-content" [class.native-active]="camaraActive && isNativeScanner">
 
   <div class="scanner-page" [class.scanner-hidden]="camaraActive && isNativeScanner">
     <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
@@ -73,34 +73,15 @@
         </div>
 
         <!-- Contenedor para el QR, con margen arriba -->
-        <div class="cont-qr" *ngIf="camaraActive">
-          <app-qr 
+        <div class="cont-qr" *ngIf="camaraActive && !isNativeScanner">
+          <app-qr
             [encendido]="camaraActive"
             (valor)="procesarValor($event)"
             (devices)="initCameras($event)"
           ></app-qr>
         </div>
-
       </ion-card-content>
     </ion-card>
-  </div>
-
-  <div class="native-scanner-overlay" *ngIf="camaraActive && isNativeScanner">
-    <div class="native-scanner-top">
-      <p class="native-title">Apunta el QR dentro del marco</p>
-    </div>
-    <div class="native-scanner-frame">
-      <span class="corner tl"></span>
-      <span class="corner tr"></span>
-      <span class="corner bl"></span>
-      <span class="corner br"></span>
-      <span class="scan-line"></span>
-    </div>
-    <div class="native-scanner-actions">
-      <ion-button expand="block" class="native-close" (click)="desactivarQr()">
-        Cerrar
-      </ion-button>
-    </div>
   </div>
 
   <!-- ✅ Modal de Éxito -->

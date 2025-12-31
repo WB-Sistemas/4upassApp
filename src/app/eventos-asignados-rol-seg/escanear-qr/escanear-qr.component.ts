@@ -15,6 +15,7 @@ import { ControlEntradasService, SeccionOutputDTO } from 'src/app/proxy/tickets/
 import { DropdownChangeEvent } from 'primeng/dropdown';
 import { NavController, RefresherCustomEvent } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
+import NativeQrScanner from '@wbsistemas/native-qr-scanner';
 export type EntradaSimplePlus = Omit<EntradaSimpleDto, 'fecha'> & { fecha: Date };
 
 const cacheKey: string = 'camaraId';
@@ -28,7 +29,7 @@ const totalsCacheKey = (eventoId: string, seccion: number | null) => `totales-${
 
 export class EscanearQrComponent implements OnInit, OnDestroy {
   
- @ViewChild(QrComponent) scanQr!: QrComponent;
+ @ViewChild(QrComponent) scanQr?: QrComponent;
   cameras: MediaDeviceInfo[] = [];
   selectedCameraId: string = '';
   camaraActive: boolean = false;
@@ -113,7 +114,10 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.camaraActive) {
       this.camaraActive = false;
-      this.scanQr.desactivarCamara();
+      this.scanQr?.desactivarCamara();
+    }
+    if (this.isNativeScanner) {
+      NativeQrScanner.close();
     }
   }
   procesarValor(valor: string) {
@@ -166,33 +170,41 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   }
 
   switchQr(): void {
-  this.camaraActive = true;
-  
-  if(this.camaraActive){
+    this.camaraActive = true;
+    if (this.isNativeScanner) {
+      this.abrirScannerNativo();
+      return;
+    }
     setTimeout(() => {
-      this.scanQr.activarCamara();
+      this.scanQr?.activarCamara();
     }, 100);
-  }
   }
 
   desactivarQr(): void {
     this.camaraActive = false;
-    this.scanQr.desactivarCamara();
+    if (this.isNativeScanner) {
+      NativeQrScanner.close();
+      return;
+    }
+    this.scanQr?.desactivarCamara();
   }
 
   activarQr() {
     this.camaraActive = true;
     this.camaraHabilitada = true;
-    this.scanQr.activarCamara()
+    if (!this.isNativeScanner) {
+      this.scanQr?.activarCamara();
+    }
   }
 
   closeModal() {
     this.modalActive = false;
     this.camaraActive = true;
-  
-    if(this.camaraActive){
+    if (this.isNativeScanner) {
+      this.abrirScannerNativo();
+    } else if (this.camaraActive) {
       setTimeout(() => {
-        this.scanQr.activarCamara();
+        this.scanQr?.activarCamara();
       }, 100);
     }
     
@@ -224,9 +236,13 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     this.fechaExpiracion = null;
     this.mensajeError = '';
     this.camaraActive = true;
-    setTimeout(() => {
-      this.scanQr?.activarCamara();
-    }, 100);
+    if (this.isNativeScanner) {
+      this.abrirScannerNativo();
+    } else {
+      setTimeout(() => {
+        this.scanQr?.activarCamara();
+      }, 100);
+    }
   }
 
   confirmScan() {
@@ -267,7 +283,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
         this.selectedCameraId = this.cameras[0].deviceId;
         cam = this.cameras[0];
       }
-      this.scanQr.cambiarCamara(cam);
+      this.scanQr?.cambiarCamara(cam);
     }
   }
 
@@ -281,7 +297,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   protected switchCamera(device: MediaDeviceInfo) {
     this.selectedCameraId = device.deviceId;
     this.cacheLocal.saveCache(cacheKey, this.selectedCameraId);
-    this.scanQr.cambiarCamara(device);
+    this.scanQr?.cambiarCamara(device);
   }
 
   seccionOnChange(event: any){
@@ -328,5 +344,24 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
 
   goBack() {
     this.navCtrl.back({ animated: false });
+  }
+
+  async abrirScannerNativo() {
+    if (!Capacitor.isNativePlatform()) {
+      return;
+    }
+
+    try {
+      const res = await (NativeQrScanner.open() as unknown as { value?: string });
+      const value = res?.value ?? '';
+      if (value) {
+        this.procesarValor(value);
+        return;
+      }
+      this.camaraActive = false;
+    } catch (e) {
+      console.error('Error abriendo scanner nativo', e);
+      this.camaraActive = false;
+    }
   }
 }

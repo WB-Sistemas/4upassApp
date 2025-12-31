@@ -64,136 +64,14 @@ ion-toolbar.my-toolbar ion-icon {
   color: #e5e7eb;
 }
 
+.scan-content.native-active {
+  --background: transparent;
+  background: transparent;
+}
+
 .scanner-page.scanner-hidden {
   opacity: 0;
   pointer-events: none;
-}
-
-.native-scanner-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: calc(20px + env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom));
-  pointer-events: none;
-}
-
-.native-scanner-top {
-  text-align: center;
-  color: #fff;
-  max-width: 320px;
-  z-index: 2;
-}
-
-.native-title {
-  margin: 0 0 6px 0;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-}
-
-.native-subtitle {
-  margin: 0;
-  font-size: 14px;
-  color: #d1d5db;
-}
-
-.native-scanner-frame {
-  position: relative;
-  width: min(72vw, 320px);
-  height: min(72vw, 320px);
-  border-radius: 18px;
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-}
-
-.native-scanner-frame .corner {
-  position: absolute;
-  width: 26px;
-  height: 26px;
-  border: 3px solid #a0e1be;
-}
-
-.native-scanner-frame .corner.tl {
-  top: -2px;
-  left: -2px;
-  border-right: 0;
-  border-bottom: 0;
-}
-
-.native-scanner-frame .corner.tr {
-  top: -2px;
-  right: -2px;
-  border-left: 0;
-  border-bottom: 0;
-}
-
-.native-scanner-frame .corner.bl {
-  bottom: -2px;
-  left: -2px;
-  border-right: 0;
-  border-top: 0;
-}
-
-.native-scanner-frame .corner.br {
-  bottom: -2px;
-  right: -2px;
-  border-left: 0;
-  border-top: 0;
-}
-
-.native-scanner-frame .scan-line {
-  position: absolute;
-  width: 78%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #a0e1be, transparent);
-  animation: scanline 2.2s ease-in-out infinite;
-}
-
-.native-scanner-actions {
-  width: min(82vw, 320px);
-  pointer-events: auto;
-  z-index: 2;
-}
-
-ion-button.native-close::part(native) {
-  background: #ffffff;
-  color: #000;
-  font-weight: 700;
-  border-radius: 14px;
-}
-
-ion-button.native-close {
-  --background-activated: #f1f5f9;
-  --background-focused: #ffffff;
-  --background-hover: #ffffff;
-  --color-activated: #000;
-  --ripple-color: rgba(0, 0, 0, 0.12);
-}
-
-ion-button.native-close::part(native):active {
-  transform: scale(0.985);
-  filter: brightness(0.94);
-}
-
-@keyframes scanline {
-  0% {
-    transform: translateY(-110px);
-    opacity: 0.2;
-  }
-  45% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(110px);
-    opacity: 0.2;
-  }
 }
 
 .escaneos-container ion-card,
