@@ -15,7 +15,7 @@ import { ControlEntradasService, SeccionOutputDTO } from 'src/app/proxy/tickets/
 import { DropdownChangeEvent } from 'primeng/dropdown';
 import { NavController, RefresherCustomEvent } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
-import NativeQrScanner from '@wbsistemas/native-qr-scanner';
+import NativeQrScanner from 'src/app/native-qr-scanner';
 export type EntradaSimplePlus = Omit<EntradaSimpleDto, 'fecha'> & { fecha: Date };
 
 const cacheKey: string = 'camaraId';
