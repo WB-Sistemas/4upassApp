@@ -22,6 +22,8 @@ PODS:
     - Capacitor
   - IONGeolocationLib (1.0.1)
   - OSBarcodeLib (2.0.1)
+  - WbsistemasNativeQrScanner (0.0.1):
+    - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -34,6 +36,7 @@ DEPENDENCIES:
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - WbsistemasNativeQrScanner (from `../../native-qr-scanner`)
 
 SPEC REPOS:
   trunk:
@@ -61,6 +64,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/keyboard"
   CapacitorStatusBar:
     :path: "../../node_modules/@capacitor/status-bar"
+  WbsistemasNativeQrScanner:
+    :path: "../../native-qr-scanner"
 
 SPEC CHECKSUMS:
   Capacitor: 9d9e481b79ffaeacaf7a85d6a11adec32bd33b59
@@ -75,7 +80,8 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: e04d05e121d5a5979c29eb4249186a4e4a84cacb
   IONGeolocationLib: 20f9d0248a0b5264511fb57a37e25dd2badf797a
   OSBarcodeLib: 57987d2eb1f916f701f4554e20e349b3cb83f023
+  WbsistemasNativeQrScanner: 4c61195746d85a7265487b953b1db8d95f4fb56d
 
-PODFILE CHECKSUM: 3c93b5943565fba2fcc1d34bd0234df84986a1a4
+PODFILE CHECKSUM: d81c87eb0460ed552f4652ed3f01dab6c6ad4683
 
 COCOAPODS: 1.16.2

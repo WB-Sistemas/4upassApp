@@ -77,7 +77,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.initForm();
     this.isMobile = DeviceUtils.isMobile();
-    this.isNativeScanner = Capacitor.isNativePlatform();
+    this.isNativeScanner = Capacitor.isNativePlatform() && Capacitor.isPluginAvailable('NativeQrScanner');
     this.tipoIdentificacion = TiposDocList(this.localization);
     this.eventoId = this.ar.snapshot.paramMap.get("eventoId") ?? '';
     this.loadTotalsFromCache();
@@ -347,7 +347,7 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   }
 
   async abrirScannerNativo() {
-    if (!Capacitor.isNativePlatform()) {
+    if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('NativeQrScanner')) {
       return;
     }
 

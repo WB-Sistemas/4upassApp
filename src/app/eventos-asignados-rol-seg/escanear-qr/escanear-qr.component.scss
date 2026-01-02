@@ -83,6 +83,7 @@ ion-button.mi-boton::part(native) {
   font-weight: 600;
   color: #000;
   background: #BADD50 !important;
+  --btn-bg: #BADD50;
 }
 
 ion-button.no-effects {
@@ -109,8 +110,13 @@ ion-input {
   color: white;
 }
 
-.ion-color-medium{
-  --ion-color-base: #ffffff !important;
+.ion-color-medium {
+  --ion-color-base: #A0E1BE !important;
+  --ion-color-base-rgb: 160, 225, 190 !important;
+  --ion-color-contrast: #000 !important;
+  --ion-color-contrast-rgb: 0, 0, 0 !important;
+  --ion-color-shade: #A0E1BE !important;
+  --ion-color-tint: #A0E1BE !important;
 }
 
 ion-text{
@@ -147,9 +153,33 @@ ion-text{
   padding-top: 7px;
 }
 
+.cont-bot ion-button {
+  --btn-bg: #A0E1BE;
+  --background-activated: var(--btn-bg);
+  --background-focused: var(--btn-bg);
+  --background-hover: var(--btn-bg);
+}
+
+.cont-bot ion-button.btn-camara {
+  --btn-bg: #A0E1BE;
+  --background-activated-opacity: 1;
+}
+
+.cont-bot ion-button.mi-boton {
+  --btn-bg: #BADD50;
+}
+
 .cont-bot ion-button::part(native) {
-  background: #A0E1BE;
+  background: var(--btn-bg);
   color: #000;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.18);
+  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+}
+
+.cont-bot ion-button:active::part(native) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+  background: var(--btn-bg);
 }
 
 .modal-overlay {

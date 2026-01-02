@@ -13,8 +13,7 @@ class NativeQrScannerViewController: UIViewController, AVCaptureMetadataOutputOb
     private var didFinish = false
 
     private let overlayView = UIView()
-    private let titleLabel = UILabel()
-    private let closeButton = UIButton(type: .system)
+    private let closeButton = UIButton(type: .custom)
     private let flashButton = UIButton(type: .system)
     private let buttonStack = UIStackView()
 
@@ -89,31 +88,32 @@ class NativeQrScannerViewController: UIViewController, AVCaptureMetadataOutputOb
             overlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "Apunta el QR dentro del marco"
-        titleLabel.textColor = .white
-        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        titleLabel.textAlignment = .center
-        overlayView.addSubview(titleLabel)
-
         closeButton.setTitle("CERRAR", for: .normal)
         closeButton.setTitleColor(.black, for: .normal)
+        closeButton.setTitleColor(.black, for: .highlighted)
+        closeButton.setTitleColor(.black, for: .disabled)
         closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
         closeButton.backgroundColor = .white
-        closeButton.layer.cornerRadius = 18
+        closeButton.layer.backgroundColor = UIColor.white.cgColor
+        closeButton.setBackgroundImage(solidImage(color: .white), for: .normal)
+        closeButton.setBackgroundImage(solidImage(color: .white), for: .highlighted)
+        closeButton.setBackgroundImage(solidImage(color: .white), for: .disabled)
+        closeButton.setBackgroundImage(solidImage(color: .white), for: .selected)
+        closeButton.layer.cornerRadius = 22
+        closeButton.clipsToBounds = true
         closeButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
-        closeButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
-        closeButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        closeButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        closeButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
 
         if let image = UIImage(systemName: "bolt.fill") {
             flashButton.setImage(image, for: .normal)
         }
         flashButton.tintColor = .black
         flashButton.backgroundColor = .white
-        flashButton.layer.cornerRadius = 18
-        flashButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        flashButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        flashButton.layer.cornerRadius = 24
+        flashButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        flashButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         flashButton.addTarget(self, action: #selector(toggleFlashAction), for: .touchUpInside)
 
         buttonStack.translatesAutoresizingMaskIntoConstraints = false
@@ -122,13 +122,10 @@ class NativeQrScannerViewController: UIViewController, AVCaptureMetadataOutputOb
         buttonStack.alignment = .center
         buttonStack.addArrangedSubview(closeButton)
         buttonStack.addArrangedSubview(flashButton)
-        overlayView.addSubview(buttonStack)
+        view.addSubview(buttonStack)
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 14),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            buttonStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+            buttonStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -96),
             buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
@@ -144,6 +141,7 @@ class NativeQrScannerViewController: UIViewController, AVCaptureMetadataOutputOb
         scanLineLayer.strokeColor = UIColor(red: 0.63, green: 0.88, blue: 0.75, alpha: 1).cgColor
         scanLineLayer.lineWidth = 2
         overlayView.layer.addSublayer(scanLineLayer)
+        view.bringSubviewToFront(buttonStack)
     }
 
     private func updateOverlayFrame() {
@@ -180,14 +178,15 @@ class NativeQrScannerViewController: UIViewController, AVCaptureMetadataOutputOb
 
         let linePadding: CGFloat = 12
         let linePath = UIBezierPath()
-        linePath.move(to: CGPoint(x: r.minX + linePadding, y: r.midY))
-        linePath.addLine(to: CGPoint(x: r.maxX - linePadding, y: r.midY))
+        linePath.move(to: CGPoint(x: r.minX + linePadding, y: r.minY + 12))
+        linePath.addLine(to: CGPoint(x: r.maxX - linePadding, y: r.minY + 12))
         scanLineLayer.path = linePath.cgPath
+        scanLineLayer.frame = view.bounds
 
         scanLineLayer.removeAllAnimations()
-        let anim = CABasicAnimation(keyPath: "position.y")
-        anim.fromValue = r.minY + 12
-        anim.toValue = r.maxY - 12
+        let anim = CABasicAnimation(keyPath: "transform.translation.y")
+        anim.fromValue = 0
+        anim.toValue = (r.maxY - r.minY) - 24
         anim.duration = 2.2
         anim.repeatCount = .infinity
         scanLineLayer.add(anim, forKey: "scan")
@@ -197,6 +196,14 @@ class NativeQrScannerViewController: UIViewController, AVCaptureMetadataOutputOb
         guard let output = metadataOutput, let layer = previewLayer else { return }
         let rect = layer.metadataOutputRectConverted(fromLayerRect: frameRect)
         output.rectOfInterest = rect
+    }
+
+    private func solidImage(color: UIColor) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1, height: 1))
+        return renderer.image { ctx in
+            color.setFill()
+            ctx.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
+        }
     }
 
     // MARK: - Actions
