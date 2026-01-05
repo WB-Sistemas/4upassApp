@@ -123,7 +123,7 @@ public class NativeQrScannerPlugin extends Plugin {
         bottomClose.setTextColor(Color.BLACK);
         bottomClose.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
         bottomClose.setPadding(dp(8), 0, dp(8), 0);
-        bottomClose.setBackground(createRoundBackground(Color.WHITE, dp(18)));
+        bottomClose.setBackground(createRoundBackground(Color.WHITE, dp(22)));
         bottomClose.setOnClickListener(v -> resolveCancelled());
 
         int flashResId = getDrawableId("ic_flash");
@@ -134,7 +134,7 @@ public class NativeQrScannerPlugin extends Plugin {
         flashButton.setOnClickListener(v -> toggleTorch());
         flashButton.setEnabled(false);
         flashButton.setAlpha(0.35f);
-        flashButton.setBackground(createRoundBackground(Color.WHITE, dp(18)));
+        flashButton.setBackground(createRoundBackground(Color.WHITE, dp(24)));
         flashButton.setColorFilter(Color.BLACK);
 
         LinearLayout bottomRow = new LinearLayout(getContext());
@@ -146,14 +146,14 @@ public class NativeQrScannerPlugin extends Plugin {
                 FrameLayout.LayoutParams.WRAP_CONTENT
         );
         bottomParams.gravity = Gravity.BOTTOM;
-        bottomParams.setMargins(dp(20), 0, dp(20), dp(60));
+        bottomParams.setMargins(dp(20), 0, dp(20), dp(56));
         bottomRow.setLayoutParams(bottomParams);
 
-        LinearLayout.LayoutParams closeParams = new LinearLayout.LayoutParams(dp(90), dp(36));
+        LinearLayout.LayoutParams closeParams = new LinearLayout.LayoutParams(dp(120), dp(44));
         closeParams.setMargins(0, 0, dp(12), 0);
         bottomClose.setLayoutParams(closeParams);
 
-        LinearLayout.LayoutParams flashParams = new LinearLayout.LayoutParams(dp(44), dp(44));
+        LinearLayout.LayoutParams flashParams = new LinearLayout.LayoutParams(dp(48), dp(48));
         flashButton.setLayoutParams(flashParams);
 
         bottomRow.addView(bottomClose);

@@ -188,5 +188,31 @@ export class ControlEntradasManualComponent  implements OnInit {
     this.navCtrl.back({ animated: false });
   }
 
+  formatEntradaFecha(value: unknown): string {
+    const date = this.toValidDate(value);
+    if (!date) return '';
+    return date.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  private toValidDate(value: unknown): Date | null {
+    if (!value) return null;
+    if (value instanceof Date) {
+      return isNaN(value.getTime()) ? null : value;
+    }
+    if (typeof value === 'number') {
+      const date = new Date(value);
+      return isNaN(date.getTime()) ? null : date;
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) return null;
+      const direct = new Date(trimmed);
+      if (!isNaN(direct.getTime())) return direct;
+      const normalized = trimmed.endsWith('Z') ? trimmed : `${trimmed}Z`;
+      const isoDate = new Date(normalized);
+      return isNaN(isoDate.getTime()) ? null : isoDate;
+    }
+    return null;
+  }
 
 }

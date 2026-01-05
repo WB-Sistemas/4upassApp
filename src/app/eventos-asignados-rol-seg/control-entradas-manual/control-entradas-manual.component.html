@@ -59,7 +59,7 @@
           <p class="sub">Id:</p>
           <p> {{ item.idLegible }}</p>
           <p class="sub">Funcion: </p>
-          <p>{{item.fecha | date}}</p>
+          <p>{{ formatEntradaFecha(item.fecha) }}</p>
           <p class="sub">N° de referencia:</p>
           <p *ngIf="item.idRef">{{ item.idRef }}</p>
           <p class="sub">Tipo de Precio: </p>
