@@ -36,7 +36,7 @@
             <h2>{{ evento?.nombre }}</h2>
             <p>
               Fecha:
-              {{ evento?.fecha ? (evento.fecha | date:'dd/MM/yy HH:mm') : 'Sin fecha' }}<br>
+              {{ formatEventoFecha(evento?.fecha) }}<br>
               Lugar: {{ evento?.ubicacion || 'Sin Ubicación' }}
             </p>
           </ion-label>

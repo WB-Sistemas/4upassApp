@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EventosAsignadosDto } from '../proxy';
 import { SeguridadService } from '../proxy/tickets/seguridad';
-import { DateUtils } from 'src/app/utils/date-utils';
 import {
   Platform,
   AlertController,
@@ -54,10 +53,7 @@ export class EventosAsignadosRolSegComponent implements OnInit {
 
     request$.subscribe({
       next: (res) => {
-        this.eventosAsignados = res.map((funcion) => ({
-          ...funcion,
-          fecha: DateUtils.IsoString(funcion.fecha ?? '').toISOString(),
-        }));
+        this.eventosAsignados = res;
       },
       error: () => {
         if (clearList) {
@@ -125,5 +121,48 @@ export class EventosAsignadosRolSegComponent implements OnInit {
     this.navCtrl.navigateForward(['/eventos-asignados/escanear', id], {
       animated: false,
     });
+  }
+
+  formatEventoFecha(value: unknown): string {
+    const date = this.toValidDate(value);
+    if (date) {
+      const fmtDate = date.toLocaleDateString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+      });
+      const fmtTime = date.toLocaleTimeString('es-AR', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      return `${fmtDate} ${fmtTime}`;
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      return trimmed || '';
+    }
+    return '';
+  }
+
+  private toValidDate(value: unknown): Date | null {
+    if (!value) return null;
+    if (value instanceof Date) {
+      return isNaN(value.getTime()) ? null : value;
+    }
+    if (typeof value === 'number') {
+      const date = new Date(value);
+      return isNaN(date.getTime()) ? null : date;
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) return null;
+      const direct = new Date(trimmed);
+      if (!isNaN(direct.getTime())) return direct;
+      const hasTz = /Z$|[+-]\d{2}:?\d{2}$/.test(trimmed);
+      const normalized = hasTz ? trimmed : `${trimmed}Z`;
+      const isoDate = new Date(normalized);
+      return isNaN(isoDate.getTime()) ? null : isoDate;
+    }
+    return null;
   }
 }

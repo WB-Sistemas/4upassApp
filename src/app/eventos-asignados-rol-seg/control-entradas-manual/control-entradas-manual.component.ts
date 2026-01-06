@@ -190,8 +190,14 @@ export class ControlEntradasManualComponent  implements OnInit {
 
   formatEntradaFecha(value: unknown): string {
     const date = this.toValidDate(value);
-    if (!date) return '';
-    return date.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
+    if (date) {
+      return date.toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      return trimmed ? trimmed : '';
+    }
+    return '';
   }
 
   private toValidDate(value: unknown): Date | null {
