@@ -1,5 +1,5 @@
 import type { CreateGrupoDTO, GetGrupoListFilterDto, GrupoDTO, GrupoYRRPPsDto, UpdateGrupoDTO } from './tickets/eventos/models';
-import type { GetGrupoIdDto } from './tickets/models';
+import type { GetIdDto } from './tickets/models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedAndSortedResultRequestDto, PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
@@ -72,11 +72,11 @@ export class GrupoAppServicesService {
     { apiName: this.apiName,...config });
   
 
-  getTodosGruposYRrppsDelClienteActual = (input: GetGrupoIdDto, config?: Partial<Rest.Config>) =>
+  getTodosGruposYRrppsDelClienteActual = (input: GetIdDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, GrupoYRRPPsDto>({
       method: 'GET',
       url: '/api/app/grupo-app-services/todos-grupos-yRrpps-del-cliente-actual',
-      params: { filtrarPorVentas: input.filtrarPorVentas, id: input.id },
+      params: { id: input.id },
     },
     { apiName: this.apiName,...config });
   

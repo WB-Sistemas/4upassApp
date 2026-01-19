@@ -51,7 +51,7 @@ export class CompraService {
     this.restService.request<any, PagedResultWithData<ReporteVentasDto, ReporteDropdownsDto>>({
       method: 'GET',
       url: '/api/app/compra/reporte',
-      params: { eventoId: input.eventoId, rrppIds: input.rrppIds, desde: input.desde, hasta: input.hasta, timezoneName: input.timezoneName, filtroGlobal: input.filtroGlobal, funcionDropdown: input.funcionDropdown, sectorDropdown: input.sectorDropdown, rrpPsDropdown: input.rrpPsDropdown, tipoPrecioDropdown: input.tipoPrecioDropdown, metodoPagoDropdown: input.metodoPagoDropdown, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount, paginar },
+      params: { eventoId: input.eventoId, rrppId: input.rrppId, desde: input.desde, hasta: input.hasta, timezoneName: input.timezoneName, filtroGlobal: input.filtroGlobal, funcionDropdown: input.funcionDropdown, sectorDropdown: input.sectorDropdown, rrpPsDropdown: input.rrpPsDropdown, tipoPrecioDropdown: input.tipoPrecioDropdown, metodoPagoDropdown: input.metodoPagoDropdown, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount, paginar },
     },
     { apiName: this.apiName,...config });
   

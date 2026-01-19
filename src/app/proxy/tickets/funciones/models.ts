@@ -8,6 +8,7 @@ export interface GetPrecioByFuncionDto {
   descripcion?: string;
   groupId: number;
   final?: string;
+  order: number;
   sectores: Either<SectoresEntradasDto, SectorEntradasNumeradoDto>[];
 }
 

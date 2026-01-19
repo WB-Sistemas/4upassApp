@@ -25,14 +25,6 @@ export class EventoMetadaService {
     { apiName: this.apiName,...config });
   
 
-  getUrlRRPPByIdAndPid = (id: string, pid: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, IActionResult>({
-      method: 'GET',
-      url: `/evento/${id}/${pid}`,
-    },
-    { apiName: this.apiName,...config });
-  
-
   redirectEventosCatchAllByPath = (path: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, IActionResult>({
       method: 'GET',

@@ -121,7 +121,7 @@ export class EntradasService {
     { apiName: this.apiName,...config });
   
 
-  getETicketsByCompraId = (compraId: string, config?: Partial<Rest.Config>) =>
+  getETickets = (compraId: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, DtoReturnErrorData<ListResultDto<ETicketsDto>>>({
       method: 'GET',
       url: `/api/app/entradas/e-tickets/${compraId}`,

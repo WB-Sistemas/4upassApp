@@ -35,6 +35,8 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
   camaraActive: boolean = false;
   qrValue: string | null = null;
   eventoId: string = '';
+  eventoNombre: string = '';
+  isEventoLanchas: boolean = false;
   exitoso: boolean = false;
   mensajeError: string = '';
   // datosEntradaExito?: EntradaSimpleDto;
@@ -80,10 +82,12 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
     this.isNativeScanner = Capacitor.isNativePlatform() && Capacitor.isPluginAvailable('NativeQrScanner');
     this.tipoIdentificacion = TiposDocList(this.localization);
     this.eventoId = this.ar.snapshot.paramMap.get("eventoId") ?? '';
+    this.updateEventoNombre(this.ar.snapshot.queryParamMap.get('eventoNombre'));
     this.loadTotalsFromCache();
 
     this.ar.queryParams.subscribe(params => {
       this.seccionSelected = params["seccionSelected"] ? Number(params["seccionSelected"]) : null;
+      this.updateEventoNombre(params["eventoNombre"]);
       this.loadTotalsFromCache();
     });
 
@@ -344,6 +348,11 @@ export class EscanearQrComponent implements OnInit, OnDestroy {
 
   goBack() {
     this.navCtrl.back({ animated: false });
+  }
+
+  private updateEventoNombre(nombre: string | null | undefined) {
+    this.eventoNombre = (nombre ?? '').trim();
+    this.isEventoLanchas = this.eventoNombre.toLowerCase().includes('lancha');
   }
 
   async abrirScannerNativo() {

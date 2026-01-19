@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.wbsistemas.4upass', 
+  appId: 'ccom.foryoupass.dev',
   appName: '4upass',
   webDir: 'www',
   plugins: {

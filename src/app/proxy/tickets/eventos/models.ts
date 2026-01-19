@@ -544,22 +544,6 @@ export interface sectorPersonalizado {
   capacidad?: number;
 }
 
-export interface ColaboradorDTO {
-  clienteId?: string;
-  userId?: string;
-  nombreUsuario?: string;
-  dni?: string;
-  email?: string;
-}
-
-export interface ColaboradorUpdate extends EntityDto<string> {
-  clienteId?: string;
-  userId?: string;
-  nombreUsuario?: string;
-  dni?: string;
-  email?: string;
-}
-
 export interface CortesiaSectoresIdDto {
   funcionId?: string;
   compraId?: string;
@@ -587,14 +571,6 @@ export interface EventoRRPPDto extends EntityDto<string> {
   tieneSubRRPPs: boolean;
   funcionIds: string[];
   boleteria: boolean;
-}
-
-export interface GetColaboradoresInput extends PagedAndSortedResultRequestDto {
-  clienteId?: string;
-  userId?: string;
-  nombreUsuario?: string;
-  dni?: string;
-  email?: string;
 }
 
 export interface SendCortesiasDto {

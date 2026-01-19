@@ -1,10 +1,12 @@
 export class DateUtils{
     static IsoString(fecha: string): Date {
-        const ultimaLetra = fecha.charAt(-1);
-        if (ultimaLetra !== 'Z') {
-            fecha += 'Z';
+        const trimmed = (fecha ?? '').trim();
+        if (!trimmed) {
+            return new Date(NaN);
         }
-        return new Date(fecha);
+        const hasTz = /Z$|[+-]\d{2}:?\d{2}$/.test(trimmed);
+        const normalized = hasTz ? trimmed : `${trimmed}Z`;
+        return new Date(normalized);
     }
 
     static DateToIsoStringWithCustomTime(fecha: Date, horas: number = 0, minutos: number = 0, segundos: number = 0): string {

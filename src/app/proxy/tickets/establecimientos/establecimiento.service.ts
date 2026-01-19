@@ -12,15 +12,6 @@ export class EstablecimientoService {
   apiName = 'Default';
   
 
-  asignarEstablecimientoAClientes = (establecimientoId: string, clienteIds: string[], config?: Partial<Rest.Config>) =>
-    this.restService.request<any, void>({
-      method: 'POST',
-      url: `/api/app/establecimiento/asignar-establecimiento-aClientes/${establecimientoId}`,
-      body: clienteIds,
-    },
-    { apiName: this.apiName,...config });
-  
-
   create = (input: EstablecimientoDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, EstablecimientoDto>({
       method: 'POST',
@@ -42,14 +33,6 @@ export class EstablecimientoService {
     this.restService.request<any, EstablecimientoDto>({
       method: 'GET',
       url: `/api/app/establecimiento/${id}`,
-    },
-    { apiName: this.apiName,...config });
-  
-
-  getClientesAsignados = (establecimientoId: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, string[]>({
-      method: 'GET',
-      url: `/api/app/establecimiento/clientes-asignados/${establecimientoId}`,
     },
     { apiName: this.apiName,...config });
   

@@ -3,7 +3,6 @@ import type { EstadoPrecio } from '../../estado-precio.enum';
 import type { SectorDto, SectorNoTrackDto } from '../establecimientos/models';
 import type { FuncionDto } from '../eventos/models';
 import type { DescuentoDto } from '../descuentos/models';
-import type { EstadoTemplateEstab } from '../../estado-template-estab.enum';
 
 export interface FuncionPrecio {
   funcionId?: string;
@@ -77,7 +76,6 @@ export interface PreciosDescuentos {
   descuentos: DescuentoDto[];
   compraMaxUser: number;
   minutosCompra: number;
-  template: EstadoTemplateEstab;
 }
 
 export interface SectorDePrecioSeleccionadoDto extends EntityDto<string> {

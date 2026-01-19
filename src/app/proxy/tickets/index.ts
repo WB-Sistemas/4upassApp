@@ -1,7 +1,6 @@
 import * as Account from './account';
 import * as Application from './application';
 import * as Archivos from './archivos';
-import * as Colaboradores from './colaboradores';
 import * as Compras from './compras';
 import * as ControlEntradas from './control-entradas';
 import * as Controllers from './controllers';
@@ -31,4 +30,4 @@ import * as Usuarios from './usuarios';
 import * as Utils from './utils';
 import * as VentasDirectas from './ventas-directas';
 export * from './models';
-export { Account, Application, Archivos, Colaboradores, Compras, ControlEntradas, Controllers, Descuentos, EntidadesExternas, Entradas, Establecimientos, Eventos, EventosDatosBancarios, Funciones, Links, Localidades, Logger, Notificaciones, Pagos, Precios, ReporteEventosVentas, Reportes, Rrpp, SeccionEntradasDto, Seguridad, SolicitudesPagos, Soporte, TipoControl, Tutoriales, Usuarios, Utils, VentasDirectas };
+export { Account, Application, Archivos, Compras, ControlEntradas, Controllers, Descuentos, EntidadesExternas, Entradas, Establecimientos, Eventos, EventosDatosBancarios, Funciones, Links, Localidades, Logger, Notificaciones, Pagos, Precios, ReporteEventosVentas, Reportes, Rrpp, SeccionEntradasDto, Seguridad, SolicitudesPagos, Soporte, TipoControl, Tutoriales, Usuarios, Utils, VentasDirectas };

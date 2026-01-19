@@ -64,7 +64,7 @@
         <!-- Botones juntos con separación -->
         <div class="cont-bot botones-accion">
           <ion-button expand="block" color="medium" (click)="switchQr()" class="btn-camara">
-            Habilitar Cámara
+            Abrir cámara
           </ion-button>
 
           <ion-button expand="block" (click)="redirect()" class="mi-boton" >
@@ -101,7 +101,7 @@
           <p style="text-align: start; color: #212529; margin: 0px; ">{{datosEntradaExito?.fecha | date}}</p>
           <p class="sub-title" style="color: #ada5bd; text-align: start; margin: 0px;" >Tipo de Precio: </p>
           <p style="text-align: start; color: #212529; margin: 0px;">{{datosEntradaExito?.nombre}}</p>
-          <p class="sub-title" style="color: #ada5bd; text-align: start; margin: 0px;" >Sector:</p>
+          <p class="sub-title" style="color: #ada5bd; text-align: start; margin: 0px;" >{{ (datosEntradaExito?.textoVisualETickets?.replace('::', '') || (isEventoLanchas ? 'Hora' : 'Sector')) }}:</p>
           <p class="text-wrap" style="margin: 0px; text-align: start; color: #212529">{{ datosEntradaExito?.nombreSector  }}</p>
           <p class="sub-title" style="color: #ada5bd; text-align: start;  margin: 0px;" *ngIf="datosEntradaExito?.nombreFila">Fila: </p>
           <p class="text-wrap" style="margin: 0px; text-align: start; color: #212529" >{{datosEntradaExito?.nombreFila}}</p>

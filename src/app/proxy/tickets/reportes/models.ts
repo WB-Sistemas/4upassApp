@@ -22,8 +22,6 @@ export interface GetAllVentasRRPPDto extends EntityDto<string> {
   totalRecaudadoVentaDirecta?: number;
   subRRPPs: DatosSubRRPP[];
   ventaDirecta?: number;
-  identificadorString?: string;
-  asignadoEvento: boolean;
 }
 
 export interface GetVentasRRPPAndSubRRPPDto extends PagedAndSortedResultRequestDto {

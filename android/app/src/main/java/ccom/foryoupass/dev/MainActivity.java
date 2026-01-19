@@ -1,4 +1,4 @@
-package ccom.rodevito.fourupass.dev;
+package ccom.foryoupass.dev;
 
 import com.getcapacitor.BridgeActivity;
 

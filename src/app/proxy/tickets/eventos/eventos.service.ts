@@ -1,4 +1,3 @@
-import type { EventoClonarDto } from './clonar/models';
 import type { BuscarFuncionesDto, CodigoSectorDto, ConfiguracionDto, CortesiaDeEventos, CreateUpdateEventoDto, CustomUrlCheckDto, DatosCortesiaDto, DatosEventoEntradas, DtoReturnErrorData, EventoCarouselDto, EventoDropdownDto, EventoDto, EventoFuncionesDto, EventoSingleDto, EventosCortesiaDto, EventosPorFuncionActivaDto, EventosPorFuncionActivaFilterDto, GetClientEventsDto, GetComprasDto, GetEventoDetalleDto, GetEventoDto, GetEventosDestacadosDto, GetEventosListFilterDto, MisEventosDto, PedidosDto, PreciosSectoresDto, ReturnEventoDto, UpdateCarrouselDto } from './models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { ListResultDto, PagedResultDto } from '@abp/ng.core';
@@ -17,14 +16,6 @@ import type { Rol } from '../../rol.enum';
 })
 export class EventosService {
   apiName = 'Default';
-  
-
-  clonarEvento = (eventoId: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, EventoClonarDto>({
-      method: 'POST',
-      url: `/api/app/eventos/clonar-evento/${eventoId}`,
-    },
-    { apiName: this.apiName,...config });
   
 
   codigoUsado = (codigos: string[], eventoId: string, compraId: string, config?: Partial<Rest.Config>) =>

@@ -38,7 +38,6 @@ export interface CreateSectorDto extends EntityDto<string> {
 export interface EstablecimientoDropDto extends EntityDto<string> {
   nombre?: string;
   nombreEvento?: string;
-  ubicacion?: string;
 }
 
 export interface EstablecimientoDto extends FullAuditedEntityDto<string> {

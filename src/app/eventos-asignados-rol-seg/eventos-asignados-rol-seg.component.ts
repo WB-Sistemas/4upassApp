@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ConfigStateService } from '@abp/ng.core';
 import { EventosAsignadosDto } from '../proxy';
 import { SeguridadService } from '../proxy/tickets/seguridad';
 import {
@@ -27,8 +28,11 @@ export class EventosAsignadosRolSegComponent implements OnInit {
 
   EventosActivosTitle = 'Eventos Activos';
   EventosAsignadosTitle = 'Eventos Asignados';
+  esAdmin = false;
+  esCliente = false;
 
   constructor(
+    private config: ConfigStateService,
     private seguridadService: SeguridadService,
     private platform: Platform,
     private alert: AlertController,
@@ -38,6 +42,9 @@ export class EventosAsignadosRolSegComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    const currentUser = this.config.getOne('currentUser');
+    this.esAdmin = currentUser?.roles?.includes('administrador') ?? false;
+    this.esCliente = currentUser?.roles?.includes('cliente') ?? false;
     this.cargarEventos();
   }
 
@@ -47,7 +54,7 @@ export class EventosAsignadosRolSegComponent implements OnInit {
       this.eventosAsignados = [];
     }
 
-    const request$ = this.mostrarEventosActivos
+    const request$ = this.mostrarEventosActivos || this.esAdmin || this.esCliente
       ? this.seguridadService.getEventosActivosAdmCliente()
       : this.seguridadService.getEventosAsignadosRolSeg();
 
@@ -117,9 +124,10 @@ export class EventosAsignadosRolSegComponent implements OnInit {
     await alert.present();
   }
 
-  toEscanearQR(id: string) {
-    this.navCtrl.navigateForward(['/eventos-asignados/escanear', id], {
+  toEscanearQR(evento: EventosAsignadosDto) {
+    this.navCtrl.navigateForward(['/eventos-asignados/escanear', evento.id ?? ''], {
       animated: false,
+      queryParams: { eventoNombre: evento.nombre ?? '' },
     });
   }
 

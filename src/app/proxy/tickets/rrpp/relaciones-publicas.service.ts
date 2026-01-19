@@ -137,15 +137,6 @@ export class RelacionesPublicasService {
     { apiName: this.apiName,...config });
   
 
-  getRrppByPrettyId = (pretty: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, RRPPUserDto>({
-      method: 'GET',
-      url: '/api/app/relaciones-publicas/rrpp-by-pretty-id',
-      params: { pretty },
-    },
-    { apiName: this.apiName,...config });
-  
-
   getRrppIdsInBoleteria = (EventoId: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, string[]>({
       method: 'GET',

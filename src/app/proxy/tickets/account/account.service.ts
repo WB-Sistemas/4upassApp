@@ -1,4 +1,4 @@
-import type { UserIsActiveDto, UserRolesResultDto, UsersInRolesRequestDto } from './models';
+import type { UserIsActiveDto } from './models';
 import { RestService, Rest } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
 import type { DtoReturnError, DtoReturnErrorData } from '../eventos/models';
@@ -189,15 +189,6 @@ export class AccountService {
       method: 'GET',
       url: '/api/app/account/users-change-password',
       params: { input },
-    },
-    { apiName: this.apiName,...config });
-  
-
-  getUsersInRoles = (input: UsersInRolesRequestDto, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, UserRolesResultDto[]>({
-      method: 'POST',
-      url: '/api/app/account/get-users-in-roles',
-      body: input,
     },
     { apiName: this.apiName,...config });
   

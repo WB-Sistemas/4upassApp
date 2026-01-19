@@ -39,7 +39,6 @@ export interface EventosRRPPDto extends EntityDto<string> {
   esReferido?: boolean;
   tieneSubRRPPs: boolean;
   rrppId?: string;
-  rrppIdentificador?: string;
 }
 
 export interface GetEventoWithRrppDto extends EntityDto<string> {
@@ -102,9 +101,6 @@ export interface RelacionesPublicasDto extends EntityDto<string> {
   telefono?: string;
   userId?: string;
   tipo: TipoRRPP;
-  identificador: number;
-  nombreIdentificador?: string;
-  identificadorString?: string;
 }
 
 export interface RrppAutocompleteDto {

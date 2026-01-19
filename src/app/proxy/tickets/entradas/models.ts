@@ -66,6 +66,7 @@ export interface EntradaSimpleDto {
   email?: string;
   nombreFila?: string;
   nombreAsiento?: string;
+  textoVisualETickets?: string;
 }
 
 export interface EntradasCombinadasDto extends EntradasDto {
@@ -175,7 +176,7 @@ export interface ReporteVentasDto extends EntityDto<string> {
 
 export interface ReporteVentasRequestDto extends PagedAndSortedResultRequestDto {
   eventoId?: string;
-  rrppIds: string[];
+  rrppId?: string;
   desde?: string;
   hasta?: string;
   timezoneName?: string;
@@ -199,6 +200,7 @@ export interface ReturnDataErrors {
 export interface SectoresForETicketsDto {
   id?: string;
   nombre?: string;
+  nombrePrecio?: string;
   precio?: number;
   guiaMapa?: string;
   establecimientoId?: string;
