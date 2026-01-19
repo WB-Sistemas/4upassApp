@@ -1,6 +1,6 @@
 import { Environment } from '@abp/ng.core';
 
-const baseUrl = 'https://tickets.wbsistemas.com.ar';
+const baseUrl = 'https://4upass.com';
 
 export const environment = {
   production: false,
